@@ -2,31 +2,15 @@ use std::env;
 use std::ffi::OsStr;
 use std::fs;
 
+mod utils;
+
 const COLOR_RESET: &str = "\x1b[0m";
 const COLOR_CYAN: &str = "\x1b[36m";
 const COLOR_GREEN: &str = "\x1b[32m";
 
-const FILE_SIZE_WIDTH: usize = 5;
-
 struct Flags {
   all: bool,
   size: bool,
-}
-
-fn human_readable_size(size: u64) -> String {
-  if size < 1024 {
-    // bytes
-    return format!("{1:>0$}B", FILE_SIZE_WIDTH, size);
-  } else if size < 1049000 {
-    // kibibytes
-    format!("{1:>0$.1}K", FILE_SIZE_WIDTH, size as f64 / 1024f64)
-  } else if size < 1074000000 {
-    // mebibytes
-    format!("{1:>0$.1}M", FILE_SIZE_WIDTH, size as f64 / 1049000f64)
-  } else {
-    // gibibytes
-    format!("{1:>0$.1}G", FILE_SIZE_WIDTH, size as f64 / 1074000000f64)
-  }
 }
 
 fn print_item(path: std::path::PathBuf, flags: &Flags) {
@@ -50,26 +34,10 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
       Err(_) => size = 0,
     }
 
-    extra += format!("{} ", human_readable_size(size)).as_str();
+    extra += format!("{} ", utils::human_readable_size(size)).as_str();
   }
 
   println!("{}{}{}{}", extra, color, file_name, COLOR_RESET);
-}
-
-fn print_help() {
-  println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
-  println!("{}", env!("CARGO_PKG_AUTHORS"));
-  println!("{}", env!("CARGO_PKG_DESCRIPTION"));
-  println!();
-  println!("usage:");
-  println!("    ls [options] [path]");
-  println!();
-  println!("flags:");
-  println!("    -h, --help    Prints help information");
-  println!();
-  println!("options:");
-  println!("    -a, --all     Shows all (hidden) files and directories");
-  println!("    -s, --size    Shows file sizes");
 }
 
 fn main() {
@@ -84,10 +52,7 @@ fn main() {
     let arg = arg_str.as_str();
 
     match arg {
-      "-h" | "--help" => {
-        print_help();
-        std::process::exit(0);
-      }
+      "-h" | "--help" => utils::print_help(),
       "-a" | "--all" => flags.all = true,
       "-s" | "--size" => flags.size = true,
       _ => continue,
