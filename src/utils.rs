@@ -9,17 +9,20 @@ pub fn print_help() {
   println!("{}", env!("CARGO_PKG_AUTHORS"));
   println!("{}", env!("CARGO_PKG_DESCRIPTION"));
   println!();
-  println!("usage:");
-  println!("    ls [options] [path]");
+  println!("USAGE:");
+  println!("    {} [OPTIONS] [path]", env!("CARGO_PKG_NAME"));
   println!();
-  println!("flags:");
+  println!("FLAGS:");
   println!("    -h, --help       Print help information");
   println!("    -v, --version    Print version");
   println!();
-  println!("options:");
+  println!("OPTIONS:");
   println!("    -a, --all     Show all (hidden) files and directories");
   println!("    -s, --size    Show file sizes");
   println!("    --no-color    Do not output any color (automatically set with NO_COLOR env)");
+  println!();
+  println!("ARGS:");
+  println!("    path    Path to run in (defaults to .)");
 
   std::process::exit(0);
 }
