@@ -96,8 +96,10 @@ fn main() {
     args_to_remove.push(i);
   }
 
+  let mut removed_count = 0;
   for arg_to_remove in args_to_remove {
-    args.remove(arg_to_remove);
+    args.remove(arg_to_remove - removed_count);
+    removed_count += 1;
   }
 
   let path_to_scan = match args.pop() {
