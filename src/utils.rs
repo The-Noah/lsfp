@@ -13,11 +13,11 @@ pub fn print_help() {
   println!("    ls [options] [path]");
   println!();
   println!("flags:");
-  println!("    -h, --help    Prints help information");
+  println!("    -h, --help    Print help information");
   println!();
   println!("options:");
-  println!("    -a, --all     Shows all (hidden) files and directories");
-  println!("    -s, --size    Shows file sizes");
+  println!("    -a, --all     Show all (hidden) files and directories");
+  println!("    -s, --size    Show file sizes");
 
   std::process::exit(0);
 }
