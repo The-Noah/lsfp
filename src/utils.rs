@@ -13,11 +13,13 @@ pub fn print_help() {
   println!("    ls [options] [path]");
   println!();
   println!("flags:");
-  println!("    -h, --help    Print help information");
+  println!("    -h, --help       Print help information");
+  println!("    -v, --version    Print version");
   println!();
   println!("options:");
   println!("    -a, --all     Show all (hidden) files and directories");
   println!("    -s, --size    Show file sizes");
+  println!("    --no-color    Do not output any color (automatically set with NO_COLOR env)");
 
   std::process::exit(0);
 }

@@ -12,6 +12,7 @@ const COLOR_GREEN: &str = "\x1b[32m";
 struct Flags {
   all: bool,
   size: bool,
+  no_color: bool,
 }
 
 fn print_item(path: std::path::PathBuf, flags: &Flags) {
@@ -38,14 +39,25 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
     extra += format!("{} ", utils::human_readable_size(size)).as_str();
   }
 
-  println!("{}{}{}{}{}", extra, COLOR_BRIGHT, color, file_name, COLOR_RESET);
+  println!(
+    "{}{}{}{}{}",
+    extra,
+    if flags.no_color { "" } else { COLOR_BRIGHT },
+    if flags.no_color { "" } else { color },
+    file_name,
+    if flags.no_color { "" } else { COLOR_RESET }
+  );
 }
 
 fn main() {
   let mut args: Vec<String> = env::args().collect();
   args.remove(0); // remove first arguement which is self
 
-  let mut flags = Flags { all: false, size: false };
+  let mut flags = Flags {
+    all: false,
+    size: false,
+    no_color: env::var("NO_COLOR").is_ok(),
+  };
 
   let mut args_to_remove = vec![];
 
@@ -60,6 +72,7 @@ fn main() {
       }
       "-a" | "--all" => flags.all = true,
       "-s" | "--size" => flags.size = true,
+      "--no-color" => flags.no_color = true,
       _ => continue,
     }
 
