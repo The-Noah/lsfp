@@ -37,3 +37,28 @@ pub fn human_readable_size(size: u64) -> String {
     format!("{1:>0$.1}G", FILE_SIZE_WIDTH, size as f64 / 1074000000f64)
   }
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn b() {
+    assert_eq!("   50B", human_readable_size(50));
+  }
+
+  #[test]
+  fn kb() {
+    assert_eq!("  1.0K", human_readable_size(1024));
+  }
+
+  #[test]
+  fn mb() {
+    assert_eq!("150.2M", human_readable_size(157600000));
+  }
+
+  #[test]
+  fn gb() {
+    assert_eq!("1000.0G", human_readable_size(1074000000000));
+  }
+}
