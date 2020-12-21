@@ -7,7 +7,8 @@ mod utils;
 const COLOR_RESET: &str = "\x1b[0m";
 const COLOR_BRIGHT: &str = "\x1b[1m";
 const COLOR_CYAN: &str = "\x1b[36m";
-const COLOR_GREEN: &str = "\x1b[32m";
+
+const FILE_EXTENSION_COLORS: [(&str, (u8, u8, u8)); 2] = [("js", (241, 224, 90)), ("ts", (43, 116, 137))];
 
 struct Flags {
   all: bool,
@@ -16,12 +17,12 @@ struct Flags {
 }
 
 fn print_item(path: std::path::PathBuf, flags: &Flags) {
-  let color = if path.is_dir() { COLOR_CYAN } else { COLOR_GREEN };
+  let mut color = if path.is_dir() { COLOR_CYAN } else { COLOR_RESET };
 
   let mut extra = String::new();
 
   let file_name = match path.file_name() {
-    Some(file_name) => OsStr::new(file_name).to_str().unwrap_or("??"),
+    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
     None => "??",
   };
 
@@ -37,6 +38,17 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
     }
 
     extra += format!("{} ", utils::human_readable_size(size)).as_str();
+  }
+
+  let the_color_so_it_lives: String; // FIXME: plz 😭
+  if path.is_file() {
+    for extension_color in FILE_EXTENSION_COLORS.iter() {
+      if utils::extension_matches(&path, extension_color.0) {
+        the_color_so_it_lives = format!("\x1b[38;2;{};{};{}m", extension_color.1 .0, extension_color.1 .1, extension_color.1 .2);
+        color = the_color_so_it_lives.as_str();
+        break;
+      }
+    }
   }
 
   println!(

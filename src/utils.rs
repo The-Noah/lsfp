@@ -1,3 +1,5 @@
+use std::ffi::OsStr;
+
 const FILE_SIZE_WIDTH: usize = 5;
 
 pub fn print_name_version() {
@@ -40,6 +42,18 @@ pub fn human_readable_size(size: u64) -> String {
   } else {
     // gibibytes
     format!("{1:>0$.1}G", FILE_SIZE_WIDTH, size as f64 / 1074000000f64)
+  }
+}
+
+pub fn extension_matches(path: &std::path::PathBuf, extension: &str) -> bool {
+  if match path.extension() {
+    Some(val) => OsStr::new(val).to_str().unwrap_or(""),
+    None => "",
+  } == extension
+  {
+    true
+  } else {
+    false
   }
 }
 
