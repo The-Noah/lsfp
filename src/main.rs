@@ -26,12 +26,12 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
 }
 
 fn print_help() {
-  println!("ls 0.1.0");
-  println!("The Noah <thenoahbz@gmail.com>");
-  println!("The best ls command (I hope)");
+  println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
+  println!("{}", env!("CARGO_PKG_AUTHORS"));
+  println!("{}", env!("CARGO_PKG_DESCRIPTION"));
   println!();
   println!("usage:");
-  println!("    ls [OPTIONS] [path]");
+  println!("    ls [options] [path]");
   println!();
   println!("flags:");
   println!("    -h, --help    Prints help information");

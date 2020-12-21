@@ -3,6 +3,7 @@ name = "ls"
 version = "0.1.0"
 authors = ["The Noah <thenoahbz@gmail.com>"]
 edition = "2018"
+description = "The best ls command (I hope)"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
