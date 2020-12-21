@@ -5,6 +5,7 @@ use std::fs;
 mod utils;
 
 const COLOR_RESET: &str = "\x1b[0m";
+const COLOR_BRIGHT: &str = "\x1b[1m";
 const COLOR_CYAN: &str = "\x1b[36m";
 const COLOR_GREEN: &str = "\x1b[32m";
 
@@ -37,7 +38,7 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
     extra += format!("{} ", utils::human_readable_size(size)).as_str();
   }
 
-  println!("{}{}{}{}", extra, color, file_name, COLOR_RESET);
+  println!("{}{}{}{}{}", extra, COLOR_BRIGHT, color, file_name, COLOR_RESET);
 }
 
 fn main() {
