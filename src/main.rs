@@ -6,12 +6,33 @@ const COLOR_RESET: &str = "\x1b[0m";
 const COLOR_CYAN: &str = "\x1b[36m";
 const COLOR_GREEN: &str = "\x1b[32m";
 
+const FILE_SIZE_WIDTH: usize = 5;
+
 struct Flags {
   all: bool,
+  size: bool,
+}
+
+fn human_readable_size(size: u64) -> String {
+  if size < 1024 {
+    // bytes
+    return format!("{1:>0$}B", FILE_SIZE_WIDTH, size);
+  } else if size < 1049000 {
+    // kibibytes
+    format!("{1:>0$.1}K", FILE_SIZE_WIDTH, size as f64 / 1024f64)
+  } else if size < 1074000000 {
+    // mebibytes
+    format!("{1:>0$.1}M", FILE_SIZE_WIDTH, size as f64 / 1049000f64)
+  } else {
+    // gibibytes
+    format!("{1:>0$.1}G", FILE_SIZE_WIDTH, size as f64 / 1074000000f64)
+  }
 }
 
 fn print_item(path: std::path::PathBuf, flags: &Flags) {
   let color = if path.is_dir() { COLOR_CYAN } else { COLOR_GREEN };
+
+  let mut extra = String::new();
 
   let file_name = match path.file_name() {
     Some(file_name) => OsStr::new(file_name).to_str().unwrap_or("??"),
@@ -22,7 +43,17 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
     return;
   }
 
-  println!("{}{}{}", color, file_name, COLOR_RESET);
+  if flags.size {
+    let size;
+    match path.metadata() {
+      Ok(metadata) => size = metadata.len(),
+      Err(_) => size = 0,
+    }
+
+    extra += format!("{} ", human_readable_size(size)).as_str();
+  }
+
+  println!("{}{}{}{}", extra, color, file_name, COLOR_RESET);
 }
 
 fn print_help() {
@@ -37,14 +68,15 @@ fn print_help() {
   println!("    -h, --help    Prints help information");
   println!();
   println!("options:");
-  println!("    -a, --all    Shows all (hidden) files and directories");
+  println!("    -a, --all     Shows all (hidden) files and directories");
+  println!("    -s, --size    Shows file sizes");
 }
 
 fn main() {
   let mut args: Vec<String> = env::args().collect();
   args.remove(0); // remove first arguement which is self
 
-  let mut flags = Flags { all: false };
+  let mut flags = Flags { all: false, size: false };
 
   let mut args_to_remove = vec![];
 
@@ -57,6 +89,7 @@ fn main() {
         std::process::exit(0);
       }
       "-a" | "--all" => flags.all = true,
+      "-s" | "--size" => flags.size = true,
       _ => continue,
     }
 
