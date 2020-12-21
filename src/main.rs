@@ -54,6 +54,10 @@ fn main() {
 
     match arg {
       "-h" | "--help" => utils::print_help(),
+      "-v" | "--version" => {
+        utils::print_name_version();
+        std::process::exit(0);
+      }
       "-a" | "--all" => flags.all = true,
       "-s" | "--size" => flags.size = true,
       _ => continue,

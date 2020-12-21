@@ -1,7 +1,11 @@
 const FILE_SIZE_WIDTH: usize = 5;
 
+pub fn print_name_version() {
+  println!("{} v{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
+}
+
 pub fn print_help() {
-  println!("{} {}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
+  print_name_version();
   println!("{}", env!("CARGO_PKG_AUTHORS"));
   println!("{}", env!("CARGO_PKG_DESCRIPTION"));
   println!();
