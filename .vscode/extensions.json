@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "bungcip.better-toml",
+    "editorconfig.editorconfig",
+    "rust-lang.rust"
+  ]
+}
