@@ -33,6 +33,7 @@ const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
   (&["bat"], (193, 241, 46)),               // Batch
   (&["ps1", "psm1", "psd1"], (1, 36, 86)),  // Powershell
   (&["sh"], (137, 224, 81)),                // Shell
+  (&["lua"], (0, 0, 128)),                  // LUA
 ];
 
 const LICENSES: &[(&str, &str)] = &[
