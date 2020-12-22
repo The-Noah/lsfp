@@ -178,6 +178,11 @@ fn main() {
 
   let mut paths = vec![];
 
+  if !path_to_scan.exists() {
+    println!("Path does not exist");
+    std::process::exit(0);
+  }
+
   if path_to_scan.is_file() {
     paths.push(path::PathBuf::from(path_to_scan));
   } else {
