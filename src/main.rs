@@ -25,7 +25,12 @@ const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
   (&["py"], (53, 114, 165)),                // Python
   (&["html", "htm"], (227, 76, 38)),        // HTML
   (&["css"], (86, 61, 124)),                // CSS
-  (&["scss", "sass"], (198, 83, 140)),      // SASS
+  (&["scss"], (198, 83, 140)),              // SCSS
+  (&["sass"], (165, 59, 112)),              // SASS
+  (&["less"], (29, 54, 93)),                // Less
+  (&["bat"], (193, 241, 46)),               // Batch
+  (&["ps1", "psm1", "psd1"], (1, 36, 86)),  // Powershell
+  (&["sh"], (137, 224, 81)),                // Shell
 ];
 
 struct Flags {
