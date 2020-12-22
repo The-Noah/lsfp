@@ -8,7 +8,23 @@ const COLOR_RESET: &str = "\x1b[0m";
 const COLOR_BRIGHT: &str = "\x1b[1m";
 const COLOR_CYAN: &str = "\x1b[36m";
 
-const FILE_EXTENSION_COLORS: [(&str, (u8, u8, u8)); 2] = [("js", (241, 224, 90)), ("ts", (43, 116, 137))];
+const FILE_EXTENSION_COLORS: [(&str, (u8, u8, u8)); 15] = [
+  ("js", (241, 224, 90)),
+  ("ts", (43, 116, 137)),
+  ("cpp", (243, 75, 125)),
+  ("c", (85, 85, 85)),
+  ("yaml", (203, 23, 30)),
+  ("yml", (203, 23, 30)),
+  ("json", (64, 212, 126)),
+  ("rs", (222, 165, 132)),
+  ("php", (79, 93, 149)),
+  ("cs", (23, 134, 0)),
+  ("rb", (112, 21, 22)),
+  ("pl", (2, 152, 195)),
+  ("swift", (255, 172, 69)),
+  ("md", (8, 63, 161)),
+  ("markdown", (8, 63, 161)),
+];
 
 struct Flags {
   all: bool,
