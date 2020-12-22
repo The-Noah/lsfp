@@ -2,6 +2,7 @@ use std::env;
 use std::ffi::OsStr;
 use std::fs;
 use std::path;
+use std::process::Command;
 
 mod color;
 mod constants;
@@ -20,10 +21,12 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
   };
 
   let mut indentation: u32 = 0;
-  let mut parent_path = path.parent().unwrap().to_path_buf();
-  while parent_path != root {
-    parent_path = parent_path.parent().unwrap().to_path_buf();
-    indentation += 1;
+  if flags.tree {
+    let mut parent_path = path.parent().unwrap().to_path_buf();
+    while parent_path != root {
+      parent_path = parent_path.parent().unwrap().to_path_buf();
+      indentation += 1;
+    }
   }
 
   if !flags.all && file_detection::is_hidden(file_name) {
@@ -50,6 +53,13 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
       the_color_so_it_lives = file_detection::file_extension_color(&path);
       color = the_color_so_it_lives.as_str();
     }
+
+    // file status in git
+    let git_status = match String::from_utf8(Command::new("git").arg("status").arg(file_name).output().expect("failed to execute process").stdout) {
+      Ok(val) => val.to_string(),
+      Err(err) => panic!(err),
+    };
+    // println!("git: {}", git_status); // TODO: add proper output
   }
 
   suffix += color::get_color(color::RESET, &flags).as_str();
