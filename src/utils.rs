@@ -21,6 +21,7 @@ pub fn print_help() {
   println!("OPTIONS:");
   println!("    -a, --all     Show all (hidden) files and directories");
   println!("    -s, --size    Show file sizes");
+  println!("    -t, --tree    Show output as a tree");
   println!("    --no-color    Do not output any color (automatically set with NO_COLOR env)");
   println!();
   println!("ARGS:");
