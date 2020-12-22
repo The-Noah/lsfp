@@ -7,6 +7,16 @@ The best ls command (I hope)
 
 ## Installation
 
+### Cargo
+
+You can install directly using Cargo with:
+
+```sh
+cargo install --git https://github.com/The-Noah/ls.git
+```
+
+### Git
+
 To keep up-to-date with any changes, first clone this repo and `cd` into it:
 
 ```sh
