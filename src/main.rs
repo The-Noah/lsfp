@@ -8,7 +8,7 @@ const COLOR_RESET: &str = "\x1b[0m";
 const COLOR_BRIGHT: &str = "\x1b[1m";
 const COLOR_CYAN: &str = "\x1b[36m";
 
-const FILE_EXTENSION_COLORS: [(&str, (u8, u8, u8)); 15] = [
+const FILE_EXTENSION_COLORS: [(&str, (u8, u8, u8)); 16] = [
   ("js", (241, 224, 90)),
   ("ts", (43, 116, 137)),
   ("cpp", (243, 75, 125)),
@@ -24,6 +24,7 @@ const FILE_EXTENSION_COLORS: [(&str, (u8, u8, u8)); 15] = [
   ("swift", (255, 172, 69)),
   ("md", (8, 63, 161)),
   ("markdown", (8, 63, 161)),
+  ("py", (53, 114, 165)),
 ];
 
 struct Flags {
