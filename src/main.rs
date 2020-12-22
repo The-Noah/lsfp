@@ -8,26 +8,24 @@ const COLOR_RESET: &str = "\x1b[0m";
 const COLOR_BRIGHT: &str = "\x1b[1m";
 const COLOR_CYAN: &str = "\x1b[36m";
 
-const FILE_EXTENSION_COLORS: [(&str, (u8, u8, u8)); 19] = [
-  ("js", (241, 224, 90)),
-  ("ts", (43, 116, 137)),
-  ("cpp", (243, 75, 125)),
-  ("c", (85, 85, 85)),
-  ("yaml", (203, 23, 30)),
-  ("yml", (203, 23, 30)),
-  ("json", (64, 212, 126)),
-  ("rs", (222, 165, 132)),
-  ("php", (79, 93, 149)),
-  ("cs", (23, 134, 0)),
-  ("rb", (112, 21, 22)),
-  ("pl", (2, 152, 195)),
-  ("swift", (255, 172, 69)),
-  ("md", (8, 63, 161)),
-  ("markdown", (8, 63, 161)),
-  ("py", (53, 114, 165)),
-  ("html", (227, 76, 38)),
-  ("css", (86, 61, 124)),
-  ("scss", (198, 83, 140)),
+const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
+  (&["js"], (241, 224, 90)),                // JavaScript
+  (&["ts"], (43, 116, 137)),                // TypeScript
+  (&["cpp", "cxx", "hpp"], (243, 75, 125)), // C++
+  (&["c", "h"], (85, 85, 85)),              // C
+  (&["yaml, yml"], (203, 23, 30)),          // YAML
+  (&["json"], (64, 212, 126)),              // JSON
+  (&["rs"], (222, 165, 132)),               // Rust
+  (&["php"], (79, 93, 149)),                // PHP
+  (&["cs"], (23, 134, 0)),                  // C#
+  (&["rb"], (112, 21, 22)),                 // Ruby
+  (&["pl"], (2, 152, 195)),                 // Pearl
+  (&["swift"], (255, 172, 69)),             // Switft
+  (&["md", "markdown"], (8, 63, 161)),      // Markdown
+  (&["py"], (53, 114, 165)),                // Python
+  (&["html", "htm"], (227, 76, 38)),        // HTML
+  (&["css"], (86, 61, 124)),                // CSS
+  (&["scss", "sass"], (198, 83, 140)),      // SASS
 ];
 
 struct Flags {
@@ -62,11 +60,13 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
 
   let the_color_so_it_lives: String; // FIXME: plz 😭
   if path.is_file() {
-    for extension_color in FILE_EXTENSION_COLORS.iter() {
-      if utils::extension_matches(&path, extension_color.0) {
-        the_color_so_it_lives = format!("\x1b[38;2;{};{};{}m", extension_color.1 .0, extension_color.1 .1, extension_color.1 .2);
-        color = the_color_so_it_lives.as_str();
-        break;
+    'extension_loop: for extension_color in FILE_EXTENSION_COLORS.iter() {
+      for extension in extension_color.0 {
+        if utils::extension_matches(&path, extension) {
+          the_color_so_it_lives = format!("\x1b[38;2;{};{};{}m", extension_color.1 .0, extension_color.1 .1, extension_color.1 .2);
+          color = the_color_so_it_lives.as_str();
+          break 'extension_loop;
+        }
       }
     }
   }
