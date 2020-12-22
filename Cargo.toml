@@ -1,6 +1,6 @@
 [package]
 name = "ls"
-version = "0.2.0"
+version = "0.2.1"
 authors = ["The Noah <thenoahbz@gmail.com>"]
 edition = "2018"
 description = "The best ls command (I hope)"
