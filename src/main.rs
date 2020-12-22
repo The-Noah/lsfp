@@ -27,7 +27,7 @@ const FILE_EXTENSION_COLORS: [(&str, (u8, u8, u8)); 19] = [
   ("py", (53, 114, 165)),
   ("html", (227, 76, 38)),
   ("css", (86, 61, 124)),
-  ("sass", (198, 83, 140)),
+  ("scss", (198, 83, 140)),
 ];
 
 struct Flags {
