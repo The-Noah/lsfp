@@ -188,7 +188,7 @@ fn main() {
       }
       "-a" | "--all" => flags.all = true,
       "-s" | "--size" => flags.size = true,
-      "-t" | "--tree" => flags.tree = true,
+      "-t" | "--tree" | "-r" | "--recursive" => flags.tree = true,
       "--no-color" => flags.no_color = true,
       _ => continue,
     }

@@ -19,10 +19,11 @@ pub fn print_help() {
   println!("    -v, --version    Print version");
   println!();
   println!("OPTIONS:");
-  println!("    -a, --all     Show all (hidden) files and directories");
-  println!("    -s, --size    Show file sizes");
-  println!("    -t, --tree    Show output as a tree");
-  println!("    --no-color    Do not output any color (automatically set with NO_COLOR env)");
+  println!("    -a, --all          Show all (hidden) files and directories");
+  println!("    -s, --size         Show file sizes");
+  println!("    -t, --tree         Show output as a tree (recursive)");
+  println!("    -r, --recursive    Alias for --tree");
+  println!("    --no-color         Do not output any color (automatically set with NO_COLOR env)");
   println!();
   println!("ARGS:");
   println!("    path    Path to run in (defaults to .)");
