@@ -54,11 +54,19 @@ struct Flags {
   no_color: bool,
 }
 
+fn get_color(color: &str, flags: &Flags) -> String {
+  if flags.no_color {
+    String::new()
+  } else {
+    String::from(color)
+  }
+}
+
 fn print_item(path: std::path::PathBuf, flags: &Flags) {
   let mut color = if path.is_dir() { COLOR_CYAN } else { COLOR_RESET };
 
   let mut prefix = String::new();
-  let mut suffix = String::from(COLOR_GREY);
+  let mut suffix = get_color(COLOR_GREY, &flags);
 
   let file_name = match path.file_name() {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
@@ -93,7 +101,9 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
       let mut license_type = "Custom";
       for license in LICENSES {
         if final_contents.starts_with(license.1) {
-          color = COLOR_WHITE;
+          the_color_so_it_lives = get_color(COLOR_WHITE, &flags);
+          color = the_color_so_it_lives.as_str();
+
           license_type = license.0;
           break;
         }
@@ -113,15 +123,15 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
     }
   }
 
-  suffix += COLOR_RESET;
+  suffix += get_color(COLOR_RESET, &flags).as_str();
 
   println!(
     "{}{}{}{}{} {}",
     prefix,
-    if flags.no_color { "" } else { COLOR_BRIGHT },
-    if flags.no_color { "" } else { color },
+    get_color(COLOR_BRIGHT, &flags),
+    get_color(color, &flags),
     file_name,
-    if flags.no_color { "" } else { COLOR_RESET },
+    get_color(COLOR_RESET, &flags),
     suffix
   );
 }
