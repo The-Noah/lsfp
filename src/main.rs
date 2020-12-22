@@ -7,6 +7,8 @@ mod utils;
 const COLOR_RESET: &str = "\x1b[0m";
 const COLOR_BRIGHT: &str = "\x1b[1m";
 const COLOR_CYAN: &str = "\x1b[36m";
+const COLOR_WHITE: &str = "\x1b[37m";
+const COLOR_GREY: &str = "\x1b[90m";
 
 const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
   (&["js"], (241, 224, 90)),                // JavaScript
@@ -33,6 +35,18 @@ const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
   (&["sh"], (137, 224, 81)),                // Shell
 ];
 
+const LICENSES: &[(&str, &str)] = &[
+  ("MIT", "MIT License"),
+  ("GPLv3", "GNU GENERAL PUBLIC LICENSE\nVersion 3"),
+  ("GPLv2", "GNU GENERAL PUBLIC LICENSE\nVersion 2"),
+  ("LGPLv3", "GNU LESSER GENERAL PUBLIC LICENSE\nVersion 3"),
+  ("AGPLv3", "GNU AFFERO GENERAL PUBLIC LICENSE\nVersion 3"),
+  ("Mozilla Public License 2.0", "Mozilla Public License Version 2.0"),
+  ("Apache License 2.0", "Apache License\nVersion 2.0"),
+  ("Boost Software License 1.0", "Boost Software License - Version 1.0"),
+  ("The Unlicense", "This is free and unencumbered software released into the public domain."),
+];
+
 struct Flags {
   all: bool,
   size: bool,
@@ -42,7 +56,8 @@ struct Flags {
 fn print_item(path: std::path::PathBuf, flags: &Flags) {
   let mut color = if path.is_dir() { COLOR_CYAN } else { COLOR_RESET };
 
-  let mut extra = String::new();
+  let mut prefix = String::new();
+  let mut suffix = String::from(COLOR_GREY);
 
   let file_name = match path.file_name() {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
@@ -60,29 +75,53 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
       Err(_) => size = 0,
     }
 
-    extra += format!("{} ", utils::human_readable_size(size)).as_str();
+    prefix += format!("{} ", utils::human_readable_size(size)).as_str();
   }
 
   let the_color_so_it_lives: String; // FIXME: plz 😭
   if path.is_file() {
-    'extension_loop: for extension_color in FILE_EXTENSION_COLORS.iter() {
-      for extension in extension_color.0 {
-        if utils::extension_matches(&path, extension) {
-          the_color_so_it_lives = format!("\x1b[38;2;{};{};{}m", extension_color.1 .0, extension_color.1 .1, extension_color.1 .2);
-          color = the_color_so_it_lives.as_str();
-          break 'extension_loop;
+    if file_name.to_lowercase().starts_with("license") {
+      let mut contents = fs::read_to_string(path.as_path()).expect("Something went wrong reading the file");
+      contents = contents.replace("\r", "").trim().to_string();
+
+      let mut final_contents = String::new();
+      for line in contents.split("\n") {
+        final_contents += &(line.trim().to_string() + "\n");
+      }
+
+      let mut license_type = "Custom";
+      for license in LICENSES {
+        if final_contents.starts_with(license.1) {
+          color = COLOR_WHITE;
+          license_type = license.0;
+          break;
+        }
+      }
+
+      suffix += format!("[{}]", license_type).as_str();
+    } else {
+      'extension_loop: for extension_color in FILE_EXTENSION_COLORS.iter() {
+        for extension in extension_color.0 {
+          if utils::extension_matches(&path, extension) {
+            the_color_so_it_lives = format!("\x1b[38;2;{};{};{}m", extension_color.1 .0, extension_color.1 .1, extension_color.1 .2);
+            color = the_color_so_it_lives.as_str();
+            break 'extension_loop;
+          }
         }
       }
     }
   }
 
+  suffix += COLOR_RESET;
+
   println!(
-    "{}{}{}{}{}",
-    extra,
+    "{}{}{}{}{} {}",
+    prefix,
     if flags.no_color { "" } else { COLOR_BRIGHT },
     if flags.no_color { "" } else { color },
     file_name,
-    if flags.no_color { "" } else { COLOR_RESET }
+    if flags.no_color { "" } else { COLOR_RESET },
+    suffix
   );
 }
 
