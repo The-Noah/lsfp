@@ -16,7 +16,7 @@ const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
   (&["ts"], (43, 116, 137)),                // TypeScript
   (&["cpp", "cxx", "hpp"], (243, 75, 125)), // C++
   (&["c", "h"], (85, 85, 85)),              // C
-  (&["yaml, yml"], (203, 23, 30)),          // YAML
+  (&["yaml", "yml"], (203, 23, 30)),        // YAML
   (&["json"], (64, 212, 126)),              // JSON
   (&["rs"], (222, 165, 132)),               // Rust
   (&["php"], (79, 93, 149)),                // PHP
@@ -52,6 +52,7 @@ const LICENSES: &[(&str, &str)] = &[
 struct Flags {
   all: bool,
   size: bool,
+  tree: bool,
   no_color: bool,
 }
 
@@ -63,7 +64,7 @@ fn get_color(color: &str, flags: &Flags) -> String {
   }
 }
 
-fn print_item(path: std::path::PathBuf, flags: &Flags) {
+fn print_item(root: &path::Path, path: path::PathBuf, flags: &Flags) {
   let mut color = if path.is_dir() { COLOR_CYAN } else { COLOR_RESET };
 
   let mut prefix = String::new();
@@ -73,6 +74,13 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
     None => "??",
   };
+
+  let mut indentation: u32 = 0;
+  let mut parent_path = path.parent().unwrap().to_path_buf();
+  while parent_path != root {
+    parent_path = parent_path.parent().unwrap().to_path_buf();
+    indentation += 1;
+  }
 
   if !flags.all && file_name.chars().nth(0).unwrap() == '.' {
     return;
@@ -127,14 +135,33 @@ fn print_item(path: std::path::PathBuf, flags: &Flags) {
   suffix += get_color(COLOR_RESET, &flags).as_str();
 
   println!(
-    "{}{}{}{}{} {}",
+    "{}{}{}{}{}{}{} {}",
     prefix,
+    (3..indentation * 3).map(|_| " ").collect::<String>(),
+    if indentation > 0 { "└──" } else { "" },
     get_color(COLOR_BRIGHT, &flags),
     get_color(color, &flags),
     file_name,
     get_color(COLOR_RESET, &flags),
     suffix
   );
+}
+
+fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &Flags) {
+  if path_to_scan.is_file() {
+    let path = path::PathBuf::from(path_to_scan);
+    print_item(root, path, flags);
+  } else {
+    for entry in fs::read_dir(path_to_scan).unwrap() {
+      let path = entry.unwrap().path();
+
+      print_item(root, path.clone(), flags);
+
+      if path.is_dir() {
+        do_scan(root, path.as_path(), flags);
+      }
+    }
+  }
 }
 
 fn main() {
@@ -144,6 +171,7 @@ fn main() {
   let mut flags = Flags {
     all: false,
     size: false,
+    tree: false,
     no_color: env::var("NO_COLOR").is_ok(),
   };
 
@@ -160,6 +188,7 @@ fn main() {
       }
       "-a" | "--all" => flags.all = true,
       "-s" | "--size" => flags.size = true,
+      "-t" | "--tree" | "-r" | "--recursive" => flags.tree = true,
       "--no-color" => flags.no_color = true,
       _ => continue,
     }
@@ -176,25 +205,21 @@ fn main() {
   let raw_path = args.pop().unwrap_or(String::from("."));
   let path_to_scan = path::Path::new(raw_path.as_str());
 
-  let mut paths = vec![];
-
   if !path_to_scan.exists() {
-    println!("Path does not exist");
+    println!("File or directory does not exist");
     std::process::exit(0);
   }
-
   if path_to_scan.is_file() {
-    paths.push(path::PathBuf::from(path_to_scan));
+    print_item(path_to_scan, path::PathBuf::from(path_to_scan), &flags);
   } else {
-    for entry in fs::read_dir(path_to_scan).unwrap() {
-      let path = entry.unwrap().path();
-
-      paths.push(path);
+    if flags.tree {
+      do_scan(path_to_scan, path_to_scan, &flags);
+    } else {
+      for entry in fs::read_dir(path_to_scan).unwrap() {
+        let path = entry.unwrap().path();
+        print_item(path_to_scan, path, &flags);
+      }
     }
-  }
-
-  for path in paths {
-    print_item(path, &flags);
   }
 }
 
@@ -207,6 +232,7 @@ mod tests {
     let flags = Flags {
       all: false,
       size: false,
+      tree: false,
       no_color: false,
     };
 
@@ -221,6 +247,7 @@ mod tests {
     let flags = Flags {
       all: false,
       size: false,
+      tree: false,
       no_color: true,
     };
 
