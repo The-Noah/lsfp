@@ -1,6 +1,7 @@
 use std::env;
 use std::ffi::OsStr;
 use std::fs;
+use std::path;
 
 mod utils;
 
@@ -172,17 +173,19 @@ fn main() {
     removed_count += 1;
   }
 
-  let path_to_scan = match args.pop() {
-    Some(val) => val,
-    None => String::from("."),
-  };
+  let raw_path = args.pop().unwrap_or(String::from("."));
+  let path_to_scan = path::Path::new(raw_path.as_str());
 
   let mut paths = vec![];
 
-  for entry in fs::read_dir(path_to_scan).unwrap() {
-    let path = entry.unwrap().path();
+  if path_to_scan.is_file() {
+    paths.push(path::PathBuf::from(path_to_scan));
+  } else {
+    for entry in fs::read_dir(path_to_scan).unwrap() {
+      let path = entry.unwrap().path();
 
-    paths.push(path);
+      paths.push(path);
+    }
   }
 
   for path in paths {
