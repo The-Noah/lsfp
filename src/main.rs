@@ -26,7 +26,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     indentation += 1;
   }
 
-  if !flags.all && file_name.chars().nth(0).unwrap() == '.' {
+  if !flags.all && file_detection::is_hidden(file_name) {
     return;
   }
 
@@ -68,6 +68,14 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
 }
 
 fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &utils::Flags) {
+  let file_name = match path_to_scan.file_name() {
+    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
+    None => "??",
+  };
+  if !flags.all && file_detection::is_hidden(file_name) {
+    return;
+  }
+
   if path_to_scan.is_file() {
     let path = path::PathBuf::from(path_to_scan);
     print_item(root, path, flags);

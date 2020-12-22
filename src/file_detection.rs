@@ -4,6 +4,10 @@ use std::path;
 
 use crate::constants;
 
+pub fn is_hidden(name: &str) -> bool {
+  name.chars().nth(0).unwrap() == '.'
+}
+
 pub fn get_license(path: &path::Path) -> String {
   let mut contents = fs::read_to_string(path).expect("Something went wrong reading the file");
   contents = contents.replace("\r", "").trim().to_string();
