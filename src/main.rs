@@ -19,7 +19,10 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
     None => "??",
   };
-
+  let file_path = match path.strip_prefix(root) {
+    Ok(val) => OsStr::new(val).to_str().unwrap_or("??"),
+    Err(err) => panic!(err),
+  };
   let mut indentation: u32 = 0;
   if flags.tree {
     let mut parent_path = path.parent().unwrap().to_path_buf();
@@ -48,24 +51,41 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     if file_name.to_lowercase().starts_with("license") {
       the_color_so_it_lives = color::get_color(color::WHITE, &flags);
       color = the_color_so_it_lives.as_str();
-      suffix += format!("[{}]", file_detection::get_license(path.as_path())).as_str();
+      suffix += format!(" [{}]", file_detection::get_license(path.as_path())).as_str();
     } else {
       the_color_so_it_lives = file_detection::file_extension_color(&path);
       color = the_color_so_it_lives.as_str();
     }
-
     // file status in git
-    let git_status = match String::from_utf8(Command::new("git").arg("status").arg(file_name).output().expect("failed to execute process").stdout) {
-      Ok(val) => val.to_string(),
-      Err(err) => panic!(err),
-    };
-    // println!("git: {}", git_status); // TODO: add proper output
+    let mut final_path = root.clone().to_path_buf();
+    if !root.is_file() {
+      final_path.push(file_path);
+    }
+    let git_status = Command::new("git")
+      .arg("diff")
+      .arg("--exit-code")
+      .arg(final_path)
+      .output()
+      .expect("failed to execute process")
+      .status
+      .code()
+      == Some(1);
+    if git_status {
+      suffix += format!(
+        " [{}{}+{}{}]",
+        color::get_color(color::BRIGHT, &flags),
+        color::get_color(color::GREEN, &flags),
+        color::get_color(color::RESET, &flags),
+        color::get_color(color::GREY, &flags)
+      )
+      .as_str();
+    }
   }
 
   suffix += color::get_color(color::RESET, &flags).as_str();
 
   println!(
-    "{}{}{}{}{}{}{} {}",
+    "{}{}{}{}{}{}{}{}",
     prefix,
     (3..indentation * 3).map(|_| " ").collect::<String>(),
     if indentation > 0 { "└──" } else { "" },
