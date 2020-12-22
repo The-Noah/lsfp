@@ -59,7 +59,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     prefix,
     (3..indentation * 3).map(|_| " ").collect::<String>(),
     if indentation > 0 { "└──" } else { "" },
-    color::get_color(color::BRIGHT, &flags),
+    if !color.is_empty() { color::get_color(color::BRIGHT, &flags) } else { String::new() },
     color::get_color(color, &flags),
     file_name,
     color::get_color(color::RESET, &flags),
