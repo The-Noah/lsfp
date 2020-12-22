@@ -189,3 +189,33 @@ fn main() {
     print_item(path, &flags);
   }
 }
+
+#[cfg(test)]
+mod tests {
+  use super::*;
+
+  #[test]
+  fn color() {
+    let flags = Flags {
+      all: false,
+      size: false,
+      no_color: false,
+    };
+
+    assert_eq!(
+      format!("{}abc{}", COLOR_CYAN, COLOR_RESET),
+      format!("{}abc{}", get_color(COLOR_CYAN, &flags), get_color(COLOR_RESET, &flags))
+    );
+  }
+
+  #[test]
+  fn no_color() {
+    let flags = Flags {
+      all: false,
+      size: false,
+      no_color: true,
+    };
+
+    assert_eq!("abc", format!("{}abc{}", get_color(COLOR_CYAN, &flags), get_color(COLOR_RESET, &flags)));
+  }
+}
