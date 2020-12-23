@@ -66,18 +66,17 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     }
 
     // file changed (git)
-    if !git::command(format!("diff --exit-code {}", final_path.into_os_string().into_string().unwrap()).as_str())
-      .unwrap_or((true, String::new()))
-      .0
-    {
-      suffix += format!(
-        " [{}{}+{}{}]",
-        color::get_color(color::BRIGHT, &flags),
-        color::get_color(color::GREEN, &flags),
-        color::get_color(color::RESET, &flags),
-        color::get_color(color::GREY, &flags)
-      )
-      .as_str();
+    if !flags.no_git {
+      if !git::check(&final_path).unwrap_or((true, String::new())).0 {
+        suffix += format!(
+          " [{}{}+{}{}]",
+          color::get_color(color::BRIGHT, &flags),
+          color::get_color(color::GREEN, &flags),
+          color::get_color(color::RESET, &flags),
+          color::get_color(color::GREY, &flags)
+        )
+        .as_str();
+      }
     }
   } else if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
     name_prefix = format!("{}{}", color::get_color(color::RESET, &flags), color::get_color(color::UNDERLINE, &flags));
