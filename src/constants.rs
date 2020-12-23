@@ -1,3 +1,4 @@
+// https://github.com/ozh/github-colors/blob/master/colors.json
 pub const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
   (&["js"], (241, 224, 90)),                // JavaScript
   (&["ts"], (43, 116, 137)),                // TypeScript
@@ -22,8 +23,11 @@ pub const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
   (&["ps1", "psm1", "psd1"], (1, 36, 86)),  // Powershell
   (&["sh"], (137, 224, 81)),                // Shell
   (&["lua"], (0, 0, 128)),                  // LUA
+  (&["java"], (176, 114, 25)),              // Java
+  (&["m"], (67, 142, 255)),                 // Objective-C
 ];
 
+// https://choosealicense.com/
 pub const LICENSES: &[(&str, &str)] = &[
   ("MIT", "MIT License"),
   ("GPLv3", "GNU GENERAL PUBLIC LICENSE\nVersion 3"),
