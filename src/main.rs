@@ -66,9 +66,10 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     }
 
     // file changed (git)
-    if !git::command(format!("diff --exit-code {}", final_path.into_os_string().into_string().unwrap()).as_str())
-      .unwrap_or((true, String::new()))
-      .0
+    if !flags.no_git
+      && !git::command(format!("diff --exit-code {}", final_path.into_os_string().into_string().unwrap()).as_str())
+        .unwrap_or((true, String::new()))
+        .0
     {
       suffix += format!(
         " [{}{}+{}{}]",
