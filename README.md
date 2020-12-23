@@ -5,6 +5,26 @@
 
 The best ls command (I hope)
 
+## Features
+
+- Colored output.
+- Git integration.
+- License file detection.
+- Dynamic colors based on files.
+
+### What is it?
+
+`ls` is meant to replace the standard `ls` command, with a focus for programmers.
+
+### What is it not?
+
+- A complete replacement for `ls` (maybe one day).
+- Complete.
+
+### What will it be?
+
+Hopefully so much more.
+
 ## Installation
 
 ### Cargo
