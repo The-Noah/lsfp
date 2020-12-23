@@ -4,12 +4,15 @@ use std::fs;
 use std::path;
 
 pub fn is_hidden(path: &path::Path) -> bool {
-  // name.chars().nth(0).unwrap() == '.'
+  let item_name = match path.file_name() {
+    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
+    None => "??",
+  };
   let file = fs::File::open(path);
-  if file.is_ok() {
-    false
-  } else {
+  if item_name.chars().nth(0).unwrap() == '.' || file.is_err() {
     true
+  } else {
+    false
   }
 }
 
