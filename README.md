@@ -62,6 +62,10 @@ You can see an up-to-date usage by running the help command!
 ls --help
 ```
 
+## Contributing
+
+Contributions are welcome and much appreciated! For more details you can view the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
 ## Contributors
 
 [<img src="https://github.com/The-Noah.png?size=64" title="Author">](https://github.com/The-Noah)

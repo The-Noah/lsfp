@@ -1,11 +1,19 @@
+use crate::constants;
 use std::ffi::OsStr;
 use std::fs;
 use std::path;
 
-use crate::constants;
-
-pub fn is_hidden(name: &str) -> bool {
-  name.chars().nth(0).unwrap() == '.'
+pub fn is_hidden(path: &path::Path) -> bool {
+  let item_name = match path.file_name() {
+    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
+    None => "??",
+  };
+  let file = fs::File::open(path);
+  if item_name.chars().nth(0).unwrap() == '.' || file.is_err() {
+    true
+  } else {
+    false
+  }
 }
 
 pub fn get_license(path: &path::Path) -> String {
