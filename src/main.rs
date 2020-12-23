@@ -2,11 +2,11 @@ use std::env;
 use std::ffi::OsStr;
 use std::fs;
 use std::path;
-use std::process::Command;
 
 mod color;
 mod constants;
 mod file_detection;
+mod git;
 mod utils;
 
 fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
@@ -64,16 +64,12 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     if !root.is_file() {
       final_path.push(file_path);
     }
-    let git_status = Command::new("git")
-      .arg("diff")
-      .arg("--exit-code")
-      .arg(final_path)
-      .output()
-      .expect("failed to execute process")
-      .status
-      .code()
-      == Some(1);
-    if git_status {
+
+    // file changed (git)
+    if !git::command(format!("diff --exit-code {}", final_path.into_os_string().into_string().unwrap()).as_str())
+      .unwrap_or((true, String::new()))
+      .0
+    {
       suffix += format!(
         " [{}{}+{}{}]",
         color::get_color(color::BRIGHT, &flags),
