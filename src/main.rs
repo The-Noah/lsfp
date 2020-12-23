@@ -13,16 +13,19 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
   let mut color = if path.is_dir() { color::CYAN } else { color::RESET };
 
   let mut prefix = String::new();
+  let mut name_prefix = String::new();
   let mut suffix = color::get_color(color::GREY, &flags);
 
-  let file_name = match path.file_name() {
+  let item_name = match path.file_name() {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
     None => "??",
   };
+
   let file_path = match path.strip_prefix(root) {
     Ok(val) => OsStr::new(val).to_str().unwrap_or("??"),
     Err(err) => panic!(err),
   };
+
   let mut indentation: u32 = 0;
   if flags.tree {
     let mut parent_path = path.parent().unwrap().to_path_buf();
@@ -32,7 +35,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     }
   }
 
-  if !flags.all && file_detection::is_hidden(file_name) {
+  if !flags.all && file_detection::is_hidden(item_name) {
     return;
   }
 
@@ -48,7 +51,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
 
   let the_color_so_it_lives: String; // FIXME: plz 😭
   if path.is_file() {
-    if file_name.to_lowercase().starts_with("license") {
+    if item_name.to_lowercase().starts_with("license") {
       the_color_so_it_lives = color::get_color(color::WHITE, &flags);
       color = the_color_so_it_lives.as_str();
       suffix += format!(" [{}]", file_detection::get_license(path.as_path())).as_str();
@@ -80,29 +83,32 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
       )
       .as_str();
     }
+  } else if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
+    name_prefix = format!("{}{}", color::get_color(color::RESET, &flags), color::get_color(color::UNDERLINE, &flags));
   }
 
   suffix += color::get_color(color::RESET, &flags).as_str();
 
   println!(
-    "{}{}{}{}{}{}{}{}",
+    "{}{}{}{}{}{}{}{}{}",
     prefix,
     (3..indentation * 3).map(|_| " ").collect::<String>(),
     if indentation > 0 { "└──" } else { "" },
     if !color.is_empty() { color::get_color(color::BRIGHT, &flags) } else { String::new() },
+    name_prefix,
     color::get_color(color, &flags),
-    file_name,
+    item_name,
     color::get_color(color::RESET, &flags),
     suffix
   );
 }
 
 fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &utils::Flags) {
-  let file_name = match path_to_scan.file_name() {
+  let item_name = match path_to_scan.file_name() {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
     None => "??",
   };
-  if !flags.all && file_detection::is_hidden(file_name) {
+  if !flags.all && file_detection::is_hidden(item_name) {
     return;
   }
 
@@ -110,6 +116,10 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &utils::Flags) {
     let path = path::PathBuf::from(path_to_scan);
     print_item(root, path, flags);
   } else {
+    if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
+      return;
+    }
+
     for entry in fs::read_dir(path_to_scan).unwrap() {
       let path = entry.unwrap().path();
 

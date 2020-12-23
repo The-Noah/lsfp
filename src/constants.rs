@@ -35,3 +35,5 @@ pub const LICENSES: &[(&str, &str)] = &[
   ("Boost Software License 1.0", "Boost Software License - Version 1.0"),
   ("The Unlicense", "This is free and unencumbered software released into the public domain."),
 ];
+
+pub const COLLAPSED_DIRECTORIES: &[&str] = &[".git", "target", "node_modules", "build", "dist", "obj"];

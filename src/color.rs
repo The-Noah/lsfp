@@ -2,10 +2,11 @@ use crate::utils::Flags;
 
 pub const RESET: &str = "\x1b[0m";
 pub const BRIGHT: &str = "\x1b[1m";
+pub const UNDERLINE: &str = "\x1b[4m";
+pub const GREEN: &str = "\x1b[32m";
 pub const CYAN: &str = "\x1b[36m";
 pub const WHITE: &str = "\x1b[37m";
 pub const GREY: &str = "\x1b[90m";
-pub const GREEN: &str = "\x1b[32m";
 
 pub fn get_color(color: &str, flags: &Flags) -> String {
   if flags.no_color {
