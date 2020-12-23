@@ -5,6 +5,7 @@ pub struct Flags {
   pub size: bool,
   pub tree: bool,
   pub no_color: bool,
+  pub no_git: bool,
 }
 
 pub fn print_name_version() {
@@ -29,6 +30,7 @@ pub fn print_help() {
   println!("    -t, --tree         Show output as a tree (recursive)");
   println!("    -r, --recursive    Alias for --tree");
   println!("    --no-color         Do not output any color (automatically set with NO_COLOR env)");
+  println!("    --no-git           Do not use git integration");
   println!();
   println!("ARGS:");
   println!("    path    Path to run in (defaults to .)");

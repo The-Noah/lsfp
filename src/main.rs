@@ -137,6 +137,7 @@ fn main() {
     size: false,
     tree: false,
     no_color: env::var("NO_COLOR").is_ok(),
+    no_git: false,
   };
 
   let mut args_to_remove = vec![];
@@ -154,6 +155,7 @@ fn main() {
       "-s" | "--size" => flags.size = true,
       "-t" | "--tree" | "-r" | "--recursive" => flags.tree = true,
       "--no-color" => flags.no_color = true,
+      "--no-git" => flags.no_git = true,
       _ => continue,
     }
 
