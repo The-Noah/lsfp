@@ -27,6 +27,7 @@ mod tests {
       size: false,
       tree: false,
       no_color: false,
+      no_git: false,
     };
 
     assert_eq!(format!("{}abc{}", CYAN, RESET), format!("{}abc{}", get_color(CYAN, &flags), get_color(RESET, &flags)));
@@ -39,6 +40,7 @@ mod tests {
       size: false,
       tree: false,
       no_color: true,
+      no_git: false,
     };
 
     assert_eq!("abc", format!("{}abc{}", get_color(CYAN, &flags), get_color(RESET, &flags)));
