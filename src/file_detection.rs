@@ -1,18 +1,45 @@
 use crate::constants;
 use std::ffi::OsStr;
 use std::fs;
+use std::os::windows::fs::MetadataExt;
 use std::path;
 
-pub fn is_hidden(path: &path::Path) -> bool {
-  let item_name = match path.file_name() {
-    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
-    None => "??",
-  };
-  let file = fs::File::open(path);
-  if item_name.chars().nth(0).unwrap() == '.' || file.is_err() {
-    true
+pub fn is_hidden(path: &path::PathBuf) -> bool {
+  //Windows
+  if cfg!(windows) {
+    let file = fs::metadata(path).expect("Failed Getting metadata");
+    let mut attribs = file.file_attributes();
+    if file.is_dir() {
+      attribs -= 16;
+      if attribs == 2 {
+        true
+      } else {
+        false
+      }
+    } else if file.is_file() {
+      attribs -= 32;
+      if attribs == 2 {
+        true
+      } else {
+        false
+      }
+    } else {
+      panic!("Unknown Path")
+    }
+  } else if cfg!(unix) {
+    //Any other Linux based System
+    let item_name = match path.file_name() {
+      Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
+      None => "??",
+    };
+    let file = fs::File::open(path);
+    if item_name.chars().nth(0).unwrap() == '.' || file.is_err() {
+      true
+    } else {
+      false
+    }
   } else {
-    false
+    panic!("Unknown System OS");
   }
 }
 
