@@ -98,6 +98,9 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
 }
 
 fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &utils::Flags) {
+  if !flags.all && file_detection::is_hidden(&path_to_scan.to_path_buf()) {
+    return;
+  }
   let item_name = match path_to_scan.file_name() {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
     None => "??",

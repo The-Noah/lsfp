@@ -5,20 +5,24 @@ use std::os::windows::fs::MetadataExt;
 use std::path;
 
 pub fn is_hidden(path: &path::PathBuf) -> bool {
+  let item_name = match path.file_name() {
+    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
+    None => "??",
+  };
   //Windows
   if cfg!(windows) {
     let file = fs::metadata(path).expect("Failed Getting metadata");
     let mut attribs = file.file_attributes();
     if file.is_dir() {
       attribs -= 16;
-      if attribs == 2 {
+      if attribs == 2 || item_name.chars().nth(0).unwrap() == '.' {
         true
       } else {
         false
       }
     } else if file.is_file() {
       attribs -= 32;
-      if attribs == 2 {
+      if attribs == 2 || item_name.chars().nth(0).unwrap() == '.' {
         true
       } else {
         false
@@ -28,10 +32,6 @@ pub fn is_hidden(path: &path::PathBuf) -> bool {
     }
   } else if cfg!(unix) {
     //Any other Linux based System
-    let item_name = match path.file_name() {
-      Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
-      None => "??",
-    };
     let file = fs::File::open(path);
     if item_name.chars().nth(0).unwrap() == '.' || file.is_err() {
       true
