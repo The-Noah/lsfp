@@ -10,6 +10,9 @@ mod git;
 mod utils;
 
 fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
+  if !flags.all && file_detection::is_hidden(&path) {
+    return;
+  }
   let mut color = if path.is_dir() { color::CYAN } else { color::RESET };
 
   let mut prefix = String::new();
@@ -33,10 +36,6 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
       parent_path = parent_path.parent().unwrap().to_path_buf();
       indentation += 1;
     }
-  }
-
-  if !flags.all && file_detection::is_hidden(&path) {
-    return;
   }
 
   if flags.size {
@@ -99,13 +98,13 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
 }
 
 fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &utils::Flags) {
+  if !flags.all && file_detection::is_hidden(&path_to_scan.to_path_buf()) {
+    return;
+  }
   let item_name = match path_to_scan.file_name() {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
     None => "??",
   };
-  if !flags.all && file_detection::is_hidden(path_to_scan) {
-    return;
-  }
 
   if path_to_scan.is_file() {
     let path = path::PathBuf::from(path_to_scan);
