@@ -32,7 +32,7 @@ pub fn is_hidden(path: &path::PathBuf) -> bool {
       panic!("Unknown Path")
     }
   } else {
-    panic!("Unknown System OS");
+    false
   }
 }
 
