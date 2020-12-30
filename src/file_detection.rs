@@ -9,34 +9,27 @@ pub fn is_hidden(path: &path::PathBuf) -> bool {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
     None => "??",
   };
-  //Windows
-  if cfg!(windows) {
+  if item_name.chars().nth(0).unwrap() == '.' {
+    true
+  } else if cfg!(windows) {
     let file = fs::metadata(path).expect("Failed Getting metadata");
     let mut attribs = file.file_attributes();
     if file.is_dir() {
       attribs -= 16;
-      if attribs == 2 || item_name.chars().nth(0).unwrap() == '.' {
+      if attribs == 2 {
         true
       } else {
         false
       }
     } else if file.is_file() {
       attribs -= 32;
-      if attribs == 2 || item_name.chars().nth(0).unwrap() == '.' {
+      if attribs == 2 {
         true
       } else {
         false
       }
     } else {
       panic!("Unknown Path")
-    }
-  } else if cfg!(unix) {
-    //Any other Linux based System
-    let file = fs::File::open(path);
-    if item_name.chars().nth(0).unwrap() == '.' || file.is_err() {
-      true
-    } else {
-      false
     }
   } else {
     panic!("Unknown System OS");
