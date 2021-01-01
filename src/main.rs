@@ -66,7 +66,8 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
 
     // file changed (git)
     if !flags.no_git {
-      if !git::check(&final_path).unwrap_or((true, String::new())).0 {
+      let check = git::check(&final_path).unwrap_or((true, String::new()));
+      if !check.0 && check.1 != "" {
         suffix += format!(
           " [{}{}+{}{}]",
           color::get_color(color::BRIGHT, &flags),
