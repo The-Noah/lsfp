@@ -141,15 +141,15 @@ fn main() {
 
   let mut args_to_remove = vec![];
 
+  let mut print_help = false;
+  let mut print_version = false;
+
   for (i, arg_str) in args.iter().enumerate() {
     let arg = arg_str.as_str();
 
     match arg {
-      "-h" | "--help" => utils::print_help(),
-      "-v" | "--version" => {
-        utils::print_name_version();
-        std::process::exit(0);
-      }
+      "-h" | "--help" => print_help = true,
+      "-v" | "--version" => print_version = true,
       "-a" | "--all" => flags.all = true,
       "-s" | "--size" => flags.size = true,
       "-t" | "--tree" | "-r" | "--recursive" => flags.tree = true,
@@ -159,6 +159,14 @@ fn main() {
     }
 
     args_to_remove.push(i);
+  }
+
+  if print_help {
+    utils::print_help(&flags);
+    std::process::exit(0);
+  } else if print_version {
+    utils::print_name_version(&flags);
+    std::process::exit(0);
   }
 
   let mut removed_count = 0;

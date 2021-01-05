@@ -1,5 +1,6 @@
 use std::path;
 use std::process::Command;
+
 pub fn check(file_path: &path::Path) -> Result<(bool, String), ()> {
   let result = Command::new("git").arg("diff").arg("--exit-code").arg(file_path).output();
 

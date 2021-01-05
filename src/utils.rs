@@ -1,4 +1,7 @@
+use crate::color;
+
 const FILE_SIZE_WIDTH: usize = 5;
+const INDENT: &str = "    ";
 
 pub struct Flags {
   pub all: bool,
@@ -8,34 +11,104 @@ pub struct Flags {
   pub no_git: bool,
 }
 
-pub fn print_name_version() {
-  println!("{} v{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION"));
+pub fn print_name_version(flags: &Flags) {
+  println!(
+    "{} {}v{}{}",
+    env!("CARGO_PKG_NAME"),
+    color::get_color(color::GREEN, flags),
+    env!("CARGO_PKG_VERSION"),
+    color::get_color(color::RESET, flags)
+  );
 }
 
-pub fn print_help() {
-  print_name_version();
-  println!("{}", env!("CARGO_PKG_AUTHORS"));
-  println!("{}", env!("CARGO_PKG_DESCRIPTION"));
+pub fn print_help(flags: &Flags) {
+  print_name_version(flags);
+  println!(
+    "{}Created by {}{}",
+    color::get_color(color::GREY, flags),
+    env!("CARGO_PKG_AUTHORS"),
+    color::get_color(color::RESET, flags)
+  );
+  println!(
+    "{}{}{}",
+    color::get_color(color::GREY, flags),
+    env!("CARGO_PKG_DESCRIPTION"),
+    color::get_color(color::RESET, flags)
+  );
   println!();
-  println!("USAGE:");
-  println!("    {} [OPTIONS] [path]", env!("CARGO_PKG_NAME"));
+  println!("{}Usage:{}", color::get_color(color::ORANGE, flags), color::get_color(color::RESET, flags));
+  println!("{}{} [options] [arguments]", INDENT, env!("CARGO_PKG_NAME"));
   println!();
-  println!("FLAGS:");
-  println!("    -h, --help       Print help information");
-  println!("    -v, --version    Print version");
+  println!("{}Options:{}", color::get_color(color::ORANGE, flags), color::get_color(color::RESET, flags));
+  println!(
+    "{}{}-h, --help     {}{}Print help information",
+    INDENT,
+    color::get_color(color::GREEN, flags),
+    color::get_color(color::RESET, flags),
+    INDENT
+  );
+  println!(
+    "{}{}-v, --version  {}{}Print version",
+    INDENT,
+    color::get_color(color::GREEN, flags),
+    color::get_color(color::RESET, flags),
+    INDENT
+  );
+  println!(
+    "{}{}-a, --all      {}{}Show all (hidden) files and directories",
+    INDENT,
+    color::get_color(color::GREEN, flags),
+    color::get_color(color::RESET, flags),
+    INDENT
+  );
+  println!(
+    "{}{}-s, --size     {}{}Show file sizes",
+    INDENT,
+    color::get_color(color::GREEN, flags),
+    color::get_color(color::RESET, flags),
+    INDENT
+  );
+  println!(
+    "{}{}-t, --tree     {}{}Show output as a tree (recursive)",
+    INDENT,
+    color::get_color(color::GREEN, flags),
+    color::get_color(color::RESET, flags),
+    INDENT
+  );
+  println!(
+    "{}{}-r, --recursive{}{}Alias for {}--tree{}",
+    INDENT,
+    color::get_color(color::GREEN, flags),
+    color::get_color(color::RESET, flags),
+    INDENT,
+    color::get_color(color::ORANGE, flags),
+    color::get_color(color::RESET, flags),
+  );
+  println!(
+    "{}{}    --no-color {}{}Do not output any color (automatically set with NO_COLOR env)",
+    INDENT,
+    color::get_color(color::GREEN, flags),
+    color::get_color(color::RESET, flags),
+    INDENT
+  );
+  println!(
+    "{}{}    --no-git   {}{}Do not use git integration",
+    INDENT,
+    color::get_color(color::GREEN, flags),
+    color::get_color(color::RESET, flags),
+    INDENT
+  );
   println!();
-  println!("OPTIONS:");
-  println!("    -a, --all          Show all (hidden) files and directories");
-  println!("    -s, --size         Show file sizes");
-  println!("    -t, --tree         Show output as a tree (recursive)");
-  println!("    -r, --recursive    Alias for --tree");
-  println!("    --no-color         Do not output any color (automatically set with NO_COLOR env)");
-  println!("    --no-git           Do not use git integration");
-  println!();
-  println!("ARGS:");
-  println!("    path    Path to run in (defaults to .)");
-
-  std::process::exit(0);
+  println!("{}Arguments:{}", color::get_color(color::ORANGE, flags), color::get_color(color::RESET, flags));
+  println!(
+    "{}{}path{}{}Path to run in {}[default: .]{}",
+    INDENT,
+    color::get_color(color::GREEN, flags),
+    color::get_color(color::RESET, flags),
+    INDENT,
+    color::get_color(color::ORANGE, flags),
+    color::get_color(color::RESET, flags)
+  );
 }
 
 pub fn human_readable_size(size: u64) -> String {
