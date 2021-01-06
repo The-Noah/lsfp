@@ -4,6 +4,7 @@ use std::fs;
 use std::path;
 
 mod color;
+mod config;
 mod constants;
 mod file_detection;
 mod git;
@@ -155,10 +156,18 @@ fn main() {
       "-t" | "--tree" | "-r" | "--recursive" => flags.tree = true,
       "--no-color" => flags.no_color = true,
       "--no-git" => flags.no_git = true,
-      _ => continue,
+      _ => {
+        if !config::parse_arg(arg) {
+          continue;
+        }
+      }
     }
 
     args_to_remove.push(i);
+  }
+
+  if !flags.no_git {
+    flags.no_git = !config::get_bool("git", true);
   }
 
   if print_help {
@@ -182,6 +191,7 @@ fn main() {
     println!("File or directory does not exist");
     std::process::exit(0);
   }
+
   if path_to_scan.is_file() {
     print_item(path_to_scan, path::PathBuf::from(path_to_scan), &flags);
   } else {
