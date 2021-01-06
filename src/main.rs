@@ -72,17 +72,17 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
           " [{}{}+{}{}]",
           "".to_owned().bright(&flags),
           "".to_owned().green(&flags),
-          "".to_owned().reset(),
+          "".to_owned().reset(&flags),
           "".to_owned().grey(&flags)
         )
         .as_str();
       }
     }
   } else if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
-    name_prefix = String::new().underline();
+    name_prefix = String::new().underline(&flags);
   }
 
-  suffix += String::from("").reset().as_str();
+  suffix += String::from("").reset(&flags).as_str();
   println!(
     "{}{}{}{}{}{}{}{}",
     prefix,
@@ -91,7 +91,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     if !color.is_empty() { "".to_owned().bright(&flags) } else { String::new() },
     name_prefix.custom(color, &flags),
     item_name,
-    String::from("").reset(),
+    String::from("").reset(&flags),
     suffix
   );
 }
