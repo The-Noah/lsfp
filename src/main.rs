@@ -9,6 +9,8 @@ mod file_detection;
 mod git;
 mod utils;
 
+use color::*;
+
 fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
   if !flags.all && file_detection::is_hidden(&path) {
     return;
@@ -17,7 +19,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
 
   let mut prefix = String::new();
   let mut name_prefix = String::new();
-  let mut suffix = color::get_color(color::GREY, &flags);
+  let mut suffix = String::new().grey(&flags);
 
   let item_name = match path.file_name() {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
@@ -51,7 +53,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
   let the_color_so_it_lives: String; // FIXME: plz 😭
   if path.is_file() {
     if item_name.to_lowercase().starts_with("license") {
-      the_color_so_it_lives = color::get_color(color::WHITE, &flags);
+      the_color_so_it_lives = "".to_owned().white(&flags);
       color = the_color_so_it_lives.as_str();
       suffix += format!(" [{}]", file_detection::get_license(path.as_path())).as_str();
     } else {
@@ -70,30 +72,28 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
       if !check.0 && check.1 != "" {
         suffix += format!(
           " [{}{}+{}{}]",
-          color::get_color(color::BRIGHT, &flags),
-          color::get_color(color::GREEN, &flags),
-          color::get_color(color::RESET, &flags),
-          color::get_color(color::GREY, &flags)
+          "".to_owned().bright(&flags),
+          "".to_owned().green(&flags),
+          "".to_owned().reset(&flags),
+          "".to_owned().grey(&flags)
         )
         .as_str();
       }
     }
   } else if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
-    name_prefix = format!("{}{}", color::get_color(color::RESET, &flags), color::get_color(color::UNDERLINE, &flags));
+    name_prefix = String::new().underline(&flags);
   }
 
-  suffix += color::get_color(color::RESET, &flags).as_str();
-
+  suffix += String::from("").reset(&flags).as_str();
   println!(
-    "{}{}{}{}{}{}{}{}{}",
+    "{}{}{}{}{}{}{}{}",
     prefix,
     (3..indentation * 3).map(|_| " ").collect::<String>(),
     if indentation > 0 { "└──" } else { "" },
-    if !color.is_empty() { color::get_color(color::BRIGHT, &flags) } else { String::new() },
-    name_prefix,
-    color::get_color(color, &flags),
+    if !color.is_empty() { "".to_owned().bright(&flags) } else { String::new() },
+    name_prefix.custom(color, &flags),
     item_name,
-    color::get_color(color::RESET, &flags),
+    String::from("").reset(&flags),
     suffix
   );
 }
