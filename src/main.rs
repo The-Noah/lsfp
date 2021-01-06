@@ -61,18 +61,16 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
       the_color_so_it_lives = file_detection::file_extension_color(&path);
       color = the_color_so_it_lives.as_str();
     }
-    // file status in git
+
+    // file path for git
     let mut final_path = root.clone().to_path_buf();
     if !root.is_file() {
       final_path.push(file_path);
     }
 
     // file changed (git)
-    if !flags.no_git {
-      let check = git::check(&final_path).unwrap_or((true, String::new()));
-      if !check.0 && check.1 != "" {
-        suffix += format!(" [{}{}]", "+".to_owned().bright(flags).green(flags).reset(flags), String::new().grey(flags)).as_str();
-      }
+    if !flags.no_git && git::check(&final_path) {
+      suffix += format!(" [{}{}]", "M".to_owned().orange(flags).reset(flags), String::new().grey(flags)).as_str();
     }
   } else if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
     name_prefix = String::new().underline(&flags);
