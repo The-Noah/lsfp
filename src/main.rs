@@ -166,8 +166,12 @@ fn main() {
     args_to_remove.push(i);
   }
 
+  // config options
   if !flags.no_git {
     flags.no_git = !config::get_bool("git", true);
+  }
+  if !flags.no_color {
+    flags.no_color = !config::get_bool("color", true);
   }
 
   if print_help {
