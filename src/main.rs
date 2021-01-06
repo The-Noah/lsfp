@@ -8,7 +8,9 @@ mod constants;
 mod file_detection;
 mod git;
 mod utils;
+
 use color::*;
+
 fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
   if !flags.all && file_detection::is_hidden(&path) {
     return;
