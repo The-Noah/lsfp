@@ -40,4 +40,18 @@ pub const LICENSES: &[(&str, &str)] = &[
   ("The Unlicense", "This is free and unencumbered software released into the public domain."),
 ];
 
-pub const COLLAPSED_DIRECTORIES: &[&str] = &[".git", "target", "node_modules", "build", "dist", "obj"];
+pub const COLLAPSED_DIRECTORIES: &[&str] = &[
+  ".git",
+  "target",
+  "node_modules",
+  "build",
+  "Build",
+  "dist",
+  "obj",
+  "bin",
+  "tmp",
+  "temp",
+  "__pycache__",
+  "cache",
+  "debug",
+];
