@@ -70,7 +70,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
     }
 
     // file changed (git)
-    if !flags.no_git && git::check(&final_path) {
+    if !flags.no_git && git::changed(&final_path) {
       suffix += format!(
         " {}{}{}",
         "[".to_owned().grey(flags).reset(flags),
