@@ -54,6 +54,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
   let the_color_so_it_lives: String; // FIXME: plz 😭
   if path.is_file() {
     if item_name.to_lowercase().starts_with("license") {
+      //
       the_color_so_it_lives = "".to_owned().white(&flags);
       color = the_color_so_it_lives.as_str();
       suffix += format!(" [{}]", file_detection::get_license(path.as_path())).grey(flags).as_str();
@@ -70,7 +71,13 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
 
     // file changed (git)
     if !flags.no_git && git::check(&final_path) {
-      suffix += format!(" [{}{}]", "M".to_owned().orange(flags).reset(flags), String::new().grey(flags)).as_str();
+      suffix += format!(
+        " {}{}{}",
+        "[".to_owned().grey(flags).reset(flags),
+        "M".to_owned().bright(flags).orange(flags).reset(flags),
+        "]".to_owned().grey(flags).reset(flags)
+      )
+      .as_str();
     }
   } else if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
     name_prefix = String::new().underline(&flags);
