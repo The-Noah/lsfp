@@ -1,4 +1,4 @@
-use crate::color;
+use crate::color::*;
 
 const FILE_SIZE_WIDTH: usize = 5;
 const INDENT: &str = "    ";
@@ -12,102 +12,55 @@ pub struct Flags {
 }
 
 pub fn print_name_version(flags: &Flags) {
-  println!(
-    "{} {}v{}{}",
-    env!("CARGO_PKG_NAME"),
-    color::get_color(color::GREEN, flags),
-    env!("CARGO_PKG_VERSION"),
-    color::get_color(color::RESET, flags)
-  );
+  println!("{} v{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION").to_owned().green(flags).reset(flags));
 }
 
 pub fn print_help(flags: &Flags) {
   print_name_version(flags);
-  println!(
-    "{}Created by {}{}",
-    color::get_color(color::GREY, flags),
-    env!("CARGO_PKG_AUTHORS"),
-    color::get_color(color::RESET, flags)
-  );
-  println!(
-    "{}{}{}",
-    color::get_color(color::GREY, flags),
-    env!("CARGO_PKG_DESCRIPTION"),
-    color::get_color(color::RESET, flags)
-  );
+  println!("{}", format!("Created by {}", env!("CARGO_PKG_AUTHORS")).grey(flags).reset(flags));
+  println!("{}", env!("CARGO_PKG_DESCRIPTION").to_owned().grey(flags).reset(flags));
   println!();
-  println!("{}Usage:{}", color::get_color(color::ORANGE, flags), color::get_color(color::RESET, flags));
+  println!("{}", "Usage:".to_owned().orange(flags).reset(flags));
   println!("{}{} [options] [arguments]", INDENT, env!("CARGO_PKG_NAME"));
   println!();
-  println!("{}Options:{}", color::get_color(color::ORANGE, flags), color::get_color(color::RESET, flags));
+  println!("{}", "Options:".to_owned().orange(flags).reset(flags));
+  println!("{}{}     {}Print help information", INDENT, "-h, --help".to_owned().green(flags).reset(flags), INDENT);
+  println!("{}{}  {}Print version", INDENT, "-v, --version".to_owned().green(flags).reset(flags), INDENT);
   println!(
-    "{}{}-h, --help     {}{}Print help information",
+    "{}{}      {}Show all (hidden) files and directories",
     INDENT,
-    color::get_color(color::GREEN, flags),
-    color::get_color(color::RESET, flags),
+    "-a, --all".to_owned().green(flags).reset(flags),
+    INDENT
+  );
+  println!("{}{}     {}Show file sizes", INDENT, "-s, --size".to_owned().green(flags).reset(flags), INDENT);
+  println!(
+    "{}{}     {}Show output as a tree (recursive)",
+    INDENT,
+    "-t, --tree".to_owned().green(flags).reset(flags),
     INDENT
   );
   println!(
-    "{}{}-v, --version  {}{}Print version",
+    "{}{}{}Alias for {}",
     INDENT,
-    color::get_color(color::GREEN, flags),
-    color::get_color(color::RESET, flags),
-    INDENT
+    "-r, --recursive".to_owned().green(flags).reset(flags),
+    INDENT,
+    "--tree".to_owned().orange(flags).reset(flags)
   );
   println!(
-    "{}{}-a, --all      {}{}Show all (hidden) files and directories",
+    "{}    {} {}Do not output any color (automatically set with NO_COLOR env)",
     INDENT,
-    color::get_color(color::GREEN, flags),
-    color::get_color(color::RESET, flags),
+    "--no-color".to_owned().green(flags).reset(flags),
     INDENT
   );
-  println!(
-    "{}{}-s, --size     {}{}Show file sizes",
-    INDENT,
-    color::get_color(color::GREEN, flags),
-    color::get_color(color::RESET, flags),
-    INDENT
-  );
-  println!(
-    "{}{}-t, --tree     {}{}Show output as a tree (recursive)",
-    INDENT,
-    color::get_color(color::GREEN, flags),
-    color::get_color(color::RESET, flags),
-    INDENT
-  );
-  println!(
-    "{}{}-r, --recursive{}{}Alias for {}--tree{}",
-    INDENT,
-    color::get_color(color::GREEN, flags),
-    color::get_color(color::RESET, flags),
-    INDENT,
-    color::get_color(color::ORANGE, flags),
-    color::get_color(color::RESET, flags),
-  );
-  println!(
-    "{}{}    --no-color {}{}Do not output any color (automatically set with NO_COLOR env)",
-    INDENT,
-    color::get_color(color::GREEN, flags),
-    color::get_color(color::RESET, flags),
-    INDENT
-  );
-  println!(
-    "{}{}    --no-git   {}{}Do not use git integration",
-    INDENT,
-    color::get_color(color::GREEN, flags),
-    color::get_color(color::RESET, flags),
-    INDENT
-  );
+  println!("{}    {}   {}Do not use git integration", INDENT, "--no-git".to_owned().green(flags).reset(flags), INDENT);
   println!();
-  println!("{}Arguments:{}", color::get_color(color::ORANGE, flags), color::get_color(color::RESET, flags));
+  println!("{}", "Arguments:".to_owned().orange(flags).reset(flags));
   println!(
-    "{}{}path{}{}Path to run in {}[default: .]{}",
+    "{}{}{}Path to run in {}",
     INDENT,
-    color::get_color(color::GREEN, flags),
-    color::get_color(color::RESET, flags),
+    "path".to_owned().green(flags).reset(flags),
     INDENT,
-    color::get_color(color::ORANGE, flags),
-    color::get_color(color::RESET, flags)
+    "[default: .]".to_owned().orange(flags).reset(flags)
   );
 }
 

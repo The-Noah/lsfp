@@ -26,7 +26,7 @@ impl ColorExt for String {
     if flags.no_color {
       self.to_string()
     } else {
-      format!("{}{}", String::from(RESET), self)
+      format!("{}{}", self, String::from(RESET))
     }
   }
 
@@ -95,14 +95,6 @@ impl ColorExt for String {
   }
 }
 
-pub fn get_color(color: &str, flags: &Flags) -> String {
-  if flags.no_color {
-    String::new()
-  } else {
-    String::from(color)
-  }
-}
-
 #[cfg(test)]
 mod tests {
   use super::*;
@@ -117,7 +109,7 @@ mod tests {
       no_git: false,
     };
 
-    assert_eq!(format!("{}abc{}", CYAN, RESET), format!("{}abc{}", get_color(CYAN, &flags), get_color(RESET, &flags)));
+    assert_eq!(format!("{}abc{}", CYAN, RESET), format!("{}", "abc".to_owned().cyan(&flags).reset(&flags)));
   }
 
   #[test]
@@ -130,6 +122,6 @@ mod tests {
       no_git: false,
     };
 
-    assert_eq!("abc", format!("{}abc{}", get_color(CYAN, &flags), get_color(RESET, &flags)));
+    assert_eq!("abc", format!("{}", "abc".to_owned().cyan(&flags).reset(&flags)));
   }
 }
