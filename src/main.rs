@@ -199,9 +199,22 @@ fn main() {
     if flags.tree {
       do_scan(path_to_scan, path_to_scan, &flags);
     } else {
-      for entry in fs::read_dir(path_to_scan).unwrap() {
-        let path = entry.unwrap().path();
-        print_item(path_to_scan, path, &flags);
+      let read_dir = fs::read_dir(path_to_scan);
+      if read_dir.is_ok() {
+        for entry in read_dir.unwrap() {
+          let path = entry.unwrap().path();
+          print_item(path_to_scan, path, &flags);
+        }
+      } else if read_dir.is_err() {
+        println!(
+          "{}",
+          format!(
+            "{} {}",
+            "Error:".to_owned().red(&flags).reset(&flags),
+            "This File or Directory is hidden or cannot be accessed."
+          )
+        );
+        std::process::exit(0);
       }
     }
   }
