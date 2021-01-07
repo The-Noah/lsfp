@@ -209,8 +209,8 @@ fn main() {
           "{}",
           format!(
             "{} {}",
-            "Error:".to_owned().red(&flags).reset(&flags),
-            "This file or directory is hidden or cannot be accessed."
+            "error:".to_owned().bright(&flags).red(&flags).reset(&flags),
+            "this file or directory is hidden or cannot be accessed"
           )
         );
         std::process::exit(0);
