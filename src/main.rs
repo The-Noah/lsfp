@@ -54,7 +54,6 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
   let the_color_so_it_lives: String; // FIXME: plz 😭
   if path.is_file() {
     if item_name.to_lowercase().starts_with("license") {
-      //
       the_color_so_it_lives = "".to_owned().white(&flags);
       color = the_color_so_it_lives.as_str();
       suffix += format!(" [{}]", file_detection::get_license(path.as_path())).grey(flags).as_str();
@@ -199,9 +198,22 @@ fn main() {
     if flags.tree {
       do_scan(path_to_scan, path_to_scan, &flags);
     } else {
-      for entry in fs::read_dir(path_to_scan).unwrap() {
-        let path = entry.unwrap().path();
-        print_item(path_to_scan, path, &flags);
+      let read_dir = fs::read_dir(path_to_scan);
+      if read_dir.is_ok() {
+        for entry in read_dir.unwrap() {
+          let path = entry.unwrap().path();
+          print_item(path_to_scan, path, &flags);
+        }
+      } else if read_dir.is_err() {
+        println!(
+          "{}",
+          format!(
+            "{} {}",
+            "Error:".to_owned().red(&flags).reset(&flags),
+            "This file or directory is hidden or cannot be accessed."
+          )
+        );
+        std::process::exit(0);
       }
     }
   }
