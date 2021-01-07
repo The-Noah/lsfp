@@ -9,6 +9,7 @@ pub const CYAN: &str = "\x1b[36m";
 pub const WHITE: &str = "\x1b[37m";
 pub const GREY: &str = "\x1b[90m";
 pub const RED: &str = "\x1b[31m";
+
 pub trait ColorExt {
   fn reset(&self, flags: &Flags) -> Self;
   fn bright(&self, flags: &Flags) -> Self;
@@ -86,6 +87,7 @@ impl ColorExt for String {
       format!("{}{}", String::from(GREY), self)
     }
   }
+
   fn red(&self, flags: &Flags) -> Self {
     if flags.no_color {
       self.to_string()
@@ -93,6 +95,7 @@ impl ColorExt for String {
       format!("{}{}", String::from(RED), self)
     }
   }
+
   fn custom(&self, color: &str, flags: &Flags) -> Self {
     if flags.no_color {
       self.to_string()
