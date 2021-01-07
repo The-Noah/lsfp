@@ -12,13 +12,17 @@ pub struct Flags {
 }
 
 pub fn print_name_version(flags: &Flags) {
-  println!("{} v{}", env!("CARGO_PKG_NAME"), env!("CARGO_PKG_VERSION").to_owned().green(flags).reset(flags));
+  println!(
+    "{} v{}",
+    env!("CARGO_PKG_NAME").to_owned().bright(flags).reset(flags),
+    env!("CARGO_PKG_VERSION").to_owned().green(flags).reset(flags)
+  );
 }
 
 pub fn print_help(flags: &Flags) {
   print_name_version(flags);
+  println!("{}", env!("CARGO_PKG_DESCRIPTION"));
   println!("{}", format!("Created by {}", env!("CARGO_PKG_AUTHORS")).grey(flags).reset(flags));
-  println!("{}", env!("CARGO_PKG_DESCRIPTION").to_owned().grey(flags).reset(flags));
   println!();
   println!("{}", "Usage:".to_owned().orange(flags).reset(flags));
   println!("{}{} [options] [arguments]", INDENT, env!("CARGO_PKG_NAME"));

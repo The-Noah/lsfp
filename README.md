@@ -1,23 +1,20 @@
-<div align="center">
-
 # ls
 
+**Cross-platform alternative to ls, specifically designed for programmers**
+
 [![GitHub license](https://img.shields.io/github/license/The-Noah/ls.svg)](LICENSE)
-[![CI](https://github.com/The-Noah/ls/workflows/CI/badge.svg)](https://github.com/The-Noah/ls/actions?query=workflow%3ACI)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/The-Noah/ls?sort=semver)](https://github.com/The-Noah/ls/releases)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![Built with Love](https://img.shields.io/badge/Built%20With%20%F0%9F%92%96%20By%20Developers-For%20Developers-blue)](https://github.com/The-Noah/ls/graphs/contributors)
-
-**The best ls command (I hope)**
-
-</div>
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/The-Noah/ls?sort=semver)](https://github.com/The-Noah/ls/releases)
+[![CI](https://github.com/The-Noah/ls/workflows/CI/badge.svg)](https://github.com/The-Noah/ls/actions?query=workflow%3ACI)
+[![Built with love by devs for devs](https://img.shields.io/badge/Built%20with%20%F0%9F%92%96%20by%20developers-for%20developers-blue)](https://github.com/The-Noah/ls/graphs/contributors)
 
 ## Features
 
-- Colored output.
-- Git integration.
-- License file detection.
-- Dynamic colors based on files.
+- License type detection
+- Colored files by extension
+- Collapsed build directories
+- Git integration
+- No external dependencies
 
 ### What is it?
 
