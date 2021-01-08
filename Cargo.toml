@@ -1,12 +1,12 @@
 [package]
-name = "ls"
+name = "lsfp"
 version = "0.3.0"
 authors = ["The Noah <thenoahbz@gmail.com>"]
 edition = "2018"
 description = "Cross-platform alternative to ls, specifically designed for programmers"
 readme = "README.md"
-homepage = "https://github.com/The-Noah/ls"
-repository = "https://github.com/The-Noah/ls"
+homepage = "https://github.com/The-Noah/lsfp"
+repository = "https://github.com/The-Noah/lsfp"
 license-file = "LICENSE"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html

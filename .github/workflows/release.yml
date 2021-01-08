@@ -18,14 +18,14 @@ jobs:
           override: true
 
       - name: Build
-        run: cargo build --all --release && strip target/release/ls
+        run: cargo build --all --release && strip target/release/lsfp
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            target/release/ls
+            target/release/lsfp
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -50,7 +50,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          files: target/release/ls.exe
+          files: target/release/lsfp.exe
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -70,13 +70,13 @@ jobs:
           override: true
 
       - name: Build for mac
-        run: cargo build --all --release && strip target/release/ls && mv target/release/ls target/release/ls_macos
+        run: cargo build --all --release && strip target/release/lsfp && mv target/release/lsfp target/release/lsfp_macos
 
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
           files: |
-            target/release/ls_macos
+            target/release/lsfp_macos
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

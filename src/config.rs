@@ -1,6 +1,6 @@
 use std::fs;
 
-const CONFIG_NAME: &str = ".lsrc";
+const CONFIG_NAME: &str = ".lsfprc";
 const ARG_PREFIX: &str = "--config-";
 
 pub fn parse_arg(arg: &str) -> bool {

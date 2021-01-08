@@ -1,12 +1,14 @@
-# ls
+# lsfp
 
-**Cross-platform alternative to ls, specifically designed for programmers**
+Cross-platform alternative to **ls**, specifically designed **f**or **p**rogrammers
 
-[![GitHub license](https://img.shields.io/github/license/The-Noah/ls.svg)](LICENSE)
+[![GitHub license](https://img.shields.io/github/license/The-Noah/lsfp.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
-[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/The-Noah/ls?sort=semver)](https://github.com/The-Noah/ls/releases)
-[![CI](https://github.com/The-Noah/ls/workflows/CI/badge.svg)](https://github.com/The-Noah/ls/actions?query=workflow%3ACI)
-[![Built with love by devs for devs](https://img.shields.io/badge/Built%20with%20%F0%9F%92%96%20by%20developers-for%20developers-blue)](https://github.com/The-Noah/ls/graphs/contributors)
+[![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/The-Noah/lsfp?sort=semver)](https://github.com/The-Noah/lsfp/releases)
+[![CI](https://github.com/The-Noah/lsfp/workflows/CI/badge.svg)](https://github.com/The-Noah/lsfp/actions?query=workflow%3ACI)
+[![Built with love by devs for devs](https://img.shields.io/badge/Built%20with%20%F0%9F%92%96%20by%20developers-for%20developers-blue)](https://github.com/The-Noah/lsfp/graphs/contributors)
+
+Blog post about `lsfp` [here](https://blog.thenoah.dev/reimagining-the-ls-command-how-redacted-was-created).
 
 ## Features
 
@@ -18,12 +20,12 @@
 
 ### What is it?
 
-`ls` is meant to replace the standard `ls` command, with a focus for programmers.
+Replacement for the `ls` command with a bunch of helpful tools for developers
 
 ### What is it not?
 
-- A complete replacement for `ls` (maybe one day).
-- Complete.
+- A complete replacement for `ls` (maybe one day)
+- Complete (still WIP)
 
 ### What will it be?
 
@@ -44,8 +46,8 @@ cargo install --git https://github.com/The-Noah/ls.git
 To keep up-to-date with any changes, first clone this repo and `cd` into it:
 
 ```sh
-git clone https://github.com/The-Noah/ls.git
-cd ls
+git clone https://github.com/The-Noah/lsfp.git
+cd lsfp
 ```
 
 To build and install it on your system, run:
@@ -54,16 +56,14 @@ To build and install it on your system, run:
 cargo install --path .
 ```
 
-Now you can use `ls` from anywhere!
-
-> ⚠ **Note**: if you're on Linux I have no clue what happens when you run `ls`
+Now you can use `lsfp` from anywhere!
 
 ## Usage
 
 You can see an up-to-date usage by running the help command!
 
 ```sh
-ls --help
+lsfp --help
 ```
 
 ## Contributing
