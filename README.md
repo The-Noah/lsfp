@@ -8,7 +8,7 @@ Cross-platform alternative to **ls**, specifically designed **f**or **p**rogramm
 [![CI](https://github.com/The-Noah/lsfp/workflows/CI/badge.svg)](https://github.com/The-Noah/lsfp/actions?query=workflow%3ACI)
 [![Built with love by devs for devs](https://img.shields.io/badge/Built%20with%20%F0%9F%92%96%20by%20developers-for%20developers-blue)](https://github.com/The-Noah/lsfp/graphs/contributors)
 
-Blog post about `lsfp` [here](https://blog.thenoah.dev/reimagining-the-ls-command-how-redacted-was-created).
+My blog post about lsfp: [blog.thenoah.dev/how-lsfp-was-created](https://blog.thenoah.dev/how-lsfp-was-created)
 
 ## Features
 
@@ -38,7 +38,7 @@ Hopefully so much more.
 You can install directly using Cargo with:
 
 ```sh
-cargo install --git https://github.com/The-Noah/ls.git
+cargo install lsfp
 ```
 
 ### Git
