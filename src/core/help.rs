@@ -1,16 +1,9 @@
 use crate::color::*;
+use crate::core::*;
 
 const INDENT: &str = "    ";
 
-pub struct Flags {
-  pub all: bool,
-  pub size: bool,
-  pub tree: bool,
-  pub no_color: bool,
-  pub no_git: bool,
-}
-
-pub fn print_name_version(flags: &Flags) {
+pub fn print_name_version(flags: &args::Flags) {
   println!(
     "{} v{}",
     env!("CARGO_PKG_NAME").to_owned().bright(flags).reset(flags),
@@ -18,7 +11,7 @@ pub fn print_name_version(flags: &Flags) {
   );
 }
 
-pub fn print_help(flags: &Flags) {
+pub fn print_help(flags: &args::Flags) {
   print_name_version(flags);
   println!("{}", env!("CARGO_PKG_DESCRIPTION"));
   println!("{}", format!("Created by {}", env!("CARGO_PKG_AUTHORS")).grey(flags).reset(flags));

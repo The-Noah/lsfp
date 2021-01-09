@@ -1,4 +1,4 @@
-use crate::utils::Flags;
+use crate::core::*;
 
 pub const RESET: &str = "\x1b[0m";
 pub const BRIGHT: &str = "\x1b[1m";
@@ -11,20 +11,20 @@ pub const GREY: &str = "\x1b[90m";
 pub const RED: &str = "\x1b[31m";
 
 pub trait ColorExt {
-  fn reset(&self, flags: &Flags) -> Self;
-  fn bright(&self, flags: &Flags) -> Self;
-  fn underline(&self, flags: &Flags) -> Self;
-  fn green(&self, flags: &Flags) -> Self;
-  fn orange(&self, flags: &Flags) -> Self;
-  fn cyan(&self, flags: &Flags) -> Self;
-  fn white(&self, flags: &Flags) -> Self;
-  fn grey(&self, flags: &Flags) -> Self;
-  fn red(&self, flags: &Flags) -> Self;
-  fn custom(&self, color: &str, flags: &Flags) -> Self;
+  fn reset(&self, flags: &args::Flags) -> Self;
+  fn bright(&self, flags: &args::Flags) -> Self;
+  fn underline(&self, flags: &args::Flags) -> Self;
+  fn green(&self, flags: &args::Flags) -> Self;
+  fn orange(&self, flags: &args::Flags) -> Self;
+  fn cyan(&self, flags: &args::Flags) -> Self;
+  fn white(&self, flags: &args::Flags) -> Self;
+  fn grey(&self, flags: &args::Flags) -> Self;
+  fn red(&self, flags: &args::Flags) -> Self;
+  fn custom(&self, color: &str, flags: &args::Flags) -> Self;
 }
 
 impl ColorExt for String {
-  fn reset(&self, flags: &Flags) -> Self {
+  fn reset(&self, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -32,7 +32,7 @@ impl ColorExt for String {
     }
   }
 
-  fn bright(&self, flags: &Flags) -> Self {
+  fn bright(&self, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -40,7 +40,7 @@ impl ColorExt for String {
     }
   }
 
-  fn underline(&self, flags: &Flags) -> Self {
+  fn underline(&self, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -48,7 +48,7 @@ impl ColorExt for String {
     }
   }
 
-  fn green(&self, flags: &Flags) -> Self {
+  fn green(&self, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -56,7 +56,7 @@ impl ColorExt for String {
     }
   }
 
-  fn orange(&self, flags: &Flags) -> Self {
+  fn orange(&self, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -64,7 +64,7 @@ impl ColorExt for String {
     }
   }
 
-  fn cyan(&self, flags: &Flags) -> Self {
+  fn cyan(&self, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -72,7 +72,7 @@ impl ColorExt for String {
     }
   }
 
-  fn white(&self, flags: &Flags) -> Self {
+  fn white(&self, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -80,7 +80,7 @@ impl ColorExt for String {
     }
   }
 
-  fn grey(&self, flags: &Flags) -> Self {
+  fn grey(&self, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -88,7 +88,7 @@ impl ColorExt for String {
     }
   }
 
-  fn red(&self, flags: &Flags) -> Self {
+  fn red(&self, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -96,7 +96,7 @@ impl ColorExt for String {
     }
   }
 
-  fn custom(&self, color: &str, flags: &Flags) -> Self {
+  fn custom(&self, color: &str, flags: &args::Flags) -> Self {
     if flags.no_color {
       self.to_string()
     } else {
@@ -111,7 +111,7 @@ mod tests {
 
   #[test]
   fn color() {
-    let flags = Flags {
+    let flags = args::Flags {
       all: false,
       size: false,
       tree: false,
@@ -124,7 +124,7 @@ mod tests {
 
   #[test]
   fn no_color() {
-    let flags = Flags {
+    let flags = args::Flags {
       all: false,
       size: false,
       tree: false,

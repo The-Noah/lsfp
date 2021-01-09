@@ -1,19 +1,18 @@
-use std::env;
 use std::ffi::OsStr;
 use std::fs;
 use std::path;
 
 mod color;
-mod config;
 mod constants;
+mod core;
 mod file_detection;
 mod git;
 mod modules;
-mod utils;
 
+use crate::core::*;
 use color::*;
 
-fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
+fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
   if !flags.all && file_detection::is_hidden(&path) {
     return;
   }
@@ -100,7 +99,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
   );
 }
 
-fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &utils::Flags) {
+fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
   if !flags.all && file_detection::is_hidden(&path_to_scan.to_path_buf()) {
     return;
   }
@@ -130,64 +129,7 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &utils::Flags) {
 }
 
 fn main() {
-  let mut args: Vec<String> = env::args().collect();
-  args.remove(0); // remove first arguement which is self
-
-  let mut flags = utils::Flags {
-    all: false,
-    size: false,
-    tree: false,
-    no_color: env::var("NO_COLOR").is_ok(),
-    no_git: false,
-  };
-
-  let mut args_to_remove = vec![];
-
-  let mut print_help = false;
-  let mut print_version = false;
-
-  for (i, arg_str) in args.iter().enumerate() {
-    let arg = arg_str.as_str();
-
-    match arg {
-      "-h" | "--help" => print_help = true,
-      "-v" | "--version" => print_version = true,
-      "-a" | "--all" => flags.all = true,
-      "-s" | "--size" => flags.size = true,
-      "-t" | "--tree" | "-r" | "--recursive" => flags.tree = true,
-      "--no-color" => flags.no_color = true,
-      "--no-git" => flags.no_git = true,
-      _ => {
-        if !config::parse_arg(arg) {
-          continue;
-        }
-      }
-    }
-
-    args_to_remove.push(i);
-  }
-
-  // config options
-  if !flags.no_git {
-    flags.no_git = !config::get_bool("git", true);
-  }
-  if !flags.no_color {
-    flags.no_color = !config::get_bool("color", true);
-  }
-
-  if print_help {
-    utils::print_help(&flags);
-    std::process::exit(0);
-  } else if print_version {
-    utils::print_name_version(&flags);
-    std::process::exit(0);
-  }
-
-  let mut removed_count = 0;
-  for arg_to_remove in args_to_remove {
-    args.remove(arg_to_remove - removed_count);
-    removed_count += 1;
-  }
+  let (flags, mut args) = args::get();
 
   let raw_path = args.pop().unwrap_or(String::from("."));
   let path_to_scan = path::Path::new(raw_path.as_str());
