@@ -8,6 +8,7 @@ mod config;
 mod constants;
 mod file_detection;
 mod git;
+mod modules;
 mod utils;
 
 use color::*;
@@ -48,7 +49,11 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &utils::Flags) {
       Err(_) => size = 0,
     }
 
-    prefix += format!("{} ", utils::human_readable_size(size)).bright(flags).grey(flags).reset(flags).as_str();
+    prefix += format!("{} ", modules::file_size::human_readable_size(size))
+      .bright(flags)
+      .grey(flags)
+      .reset(flags)
+      .as_str();
   }
 
   let the_color_so_it_lives: String; // FIXME: plz 😭
