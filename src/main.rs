@@ -6,7 +6,6 @@ mod color;
 mod constants;
 mod core;
 mod file_detection;
-mod git;
 mod modules;
 
 use crate::core::*;
@@ -73,7 +72,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
     }
 
     // file changed (git)
-    if !flags.no_git && git::changed(&final_path) {
+    if !flags.no_git && modules::git::changed(&final_path) {
       suffix += format!(
         " {}{}{}",
         "[".to_owned().grey(flags).reset(flags),
