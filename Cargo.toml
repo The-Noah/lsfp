@@ -4,6 +4,7 @@ version = "0.4.1"
 authors = ["The Noah <thenoahbz@gmail.com>"]
 edition = "2018"
 description = "Cross-platform alternative to ls, specifically designed for programmers"
+categories = ["command-line-utilities"]
 readme = "README.md"
 homepage = "https://github.com/The-Noah/lsfp"
 repository = "https://github.com/The-Noah/lsfp"
