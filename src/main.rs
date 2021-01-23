@@ -54,7 +54,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
       .as_str();
   }
 
-  let the_color_so_it_lives: String; // FIXME: plz 😭
+  let the_color_so_it_lives: String; // HACK to make the borrow checker happy
   if path.is_file() {
     if item_name.to_lowercase().starts_with("license") {
       the_color_so_it_lives = "".to_owned().white(&flags);

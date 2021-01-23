@@ -2,6 +2,7 @@
   "recommendations": [
     "bungcip.better-toml",
     "editorconfig.editorconfig",
-    "rust-lang.rust"
+    "rust-lang.rust",
+    "gruntfuggly.todo-tree"
   ]
 }

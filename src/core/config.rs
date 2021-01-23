@@ -23,7 +23,7 @@ pub fn parse_arg(arg: &str) -> bool {
       let mut contents = content_split.split("\n").collect::<Vec<&str>>();
 
       let mut found = false;
-      // FIXME: this is a hack
+      // HACK to make the borrow checker happy
       let edited_line;
       let edited_line2;
 
