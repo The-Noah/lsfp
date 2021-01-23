@@ -1,14 +1,14 @@
 # lsfp
 
-Cross-platform alternative to **ls**, specifically designed **f**or **p**rogrammers
-
 [![GitHub license](https://img.shields.io/github/license/The-Noah/lsfp.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/The-Noah/lsfp?sort=semver)](https://github.com/The-Noah/lsfp/releases)
 [![CI](https://github.com/The-Noah/lsfp/workflows/CI/badge.svg)](https://github.com/The-Noah/lsfp/actions?query=workflow%3ACI)
 [![Built with love by devs for devs](https://img.shields.io/badge/Built%20with%20%F0%9F%92%96%20by%20developers-for%20developers-blue)](https://github.com/The-Noah/lsfp/graphs/contributors)
 
-My blog post about lsfp: [blog.thenoah.dev/how-lsfp-was-created](https://blog.thenoah.dev/how-lsfp-was-created)
+Cross-platform alternative to **ls**, specifically designed **f**or **p**rogrammers
+
+> My blog post about lsfp: [blog.thenoah.dev/how-lsfp-was-created](https://blog.thenoah.dev/how-lsfp-was-created)
 
 ## Features
 
