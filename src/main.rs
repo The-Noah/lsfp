@@ -15,7 +15,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
   if !flags.all && file_detection::is_hidden(&path) {
     return;
   }
-  let mut color = if path.is_dir() { color::CYAN } else { color::RESET };
+  let mut color = if path.is_dir() { color::CYAN } else { "" };
 
   let mut prefix = String::new();
   let mut name_prefix = String::new();
