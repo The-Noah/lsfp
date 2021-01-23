@@ -9,6 +9,11 @@ readme = "README.md"
 homepage = "https://github.com/The-Noah/lsfp"
 repository = "https://github.com/The-Noah/lsfp"
 license-file = "LICENSE"
+include = [
+  "**/*.rs",
+  "Cargo.{toml,lock}",
+  "LICENSE",
+]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
