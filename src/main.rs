@@ -72,6 +72,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
     }
 
     // file changed (git)
+    #[cfg(feature = "git")]
     if !flags.no_git && modules::git::changed(&final_path) {
       suffix += format!(
         " {}{}{}",

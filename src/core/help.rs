@@ -48,6 +48,7 @@ pub fn print_help(flags: &args::Flags) {
     "--no-color".to_owned().green(flags).reset(flags),
     INDENT
   );
+  #[cfg(feature = "git")]
   println!("{}    {}   {}Do not use git integration", INDENT, "--no-git".to_owned().green(flags).reset(flags), INDENT);
   println!();
   println!("{}", "Arguments:".to_owned().orange(flags).reset(flags));

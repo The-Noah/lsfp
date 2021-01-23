@@ -5,6 +5,7 @@ pub struct Flags {
   pub size: bool,
   pub tree: bool,
   pub no_color: bool,
+  #[cfg(feature = "git")]
   pub no_git: bool,
 }
 
@@ -17,6 +18,7 @@ pub fn get() -> (Flags, Vec<String>) {
     size: false,
     tree: false,
     no_color: std::env::var("NO_COLOR").is_ok(),
+    #[cfg(feature = "git")]
     no_git: false,
   };
 
@@ -35,6 +37,7 @@ pub fn get() -> (Flags, Vec<String>) {
       "-s" | "--size" => flags.size = true,
       "-t" | "--tree" | "-r" | "--recursive" => flags.tree = true,
       "--no-color" => flags.no_color = true,
+      #[cfg(feature = "git")]
       "--no-git" => flags.no_git = true,
       _ => {
         if !config::parse_arg(arg) {
@@ -55,6 +58,7 @@ pub fn get() -> (Flags, Vec<String>) {
   }
 
   // config options
+  #[cfg(feature = "git")]
   if !flags.no_git {
     flags.no_git = !config::get_bool("git", true);
   }
