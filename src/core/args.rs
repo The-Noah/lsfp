@@ -1,9 +1,13 @@
-use crate::core::{config, help};
+#[cfg(feature = "config")]
+use crate::core::config;
+
+use crate::core::help;
 
 pub struct Flags {
   pub all: bool,
   pub size: bool,
   pub tree: bool,
+  #[cfg(feature = "color")]
   pub no_color: bool,
   #[cfg(feature = "git")]
   pub no_git: bool,
@@ -17,6 +21,7 @@ pub fn get() -> (Flags, Vec<String>) {
     all: false,
     size: false,
     tree: false,
+    #[cfg(feature = "color")]
     no_color: std::env::var("NO_COLOR").is_ok(),
     #[cfg(feature = "git")]
     no_git: false,
@@ -36,14 +41,18 @@ pub fn get() -> (Flags, Vec<String>) {
       "-a" | "--all" => flags.all = true,
       "-s" | "--size" => flags.size = true,
       "-t" | "--tree" | "-r" | "--recursive" => flags.tree = true,
+      #[cfg(feature = "color")]
       "--no-color" => flags.no_color = true,
       #[cfg(feature = "git")]
       "--no-git" => flags.no_git = true,
+      #[cfg(feature = "config")]
       _ => {
         if !config::parse_arg(arg) {
           continue;
         }
       }
+      #[cfg(not(feature = "config"))]
+      _ => {}
     }
 
     args_to_remove.push(i);
@@ -62,6 +71,7 @@ pub fn get() -> (Flags, Vec<String>) {
   if !flags.no_git {
     flags.no_git = !config::get_bool("git", true);
   }
+  #[cfg(feature = "color")]
   if !flags.no_color {
     flags.no_color = !config::get_bool("color", true);
   }

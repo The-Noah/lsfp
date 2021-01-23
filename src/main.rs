@@ -15,7 +15,10 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
   if !flags.all && file_detection::is_hidden(&path) {
     return;
   }
+  #[cfg(feature = "color")]
   let mut color = if path.is_dir() { color::CYAN } else { "" };
+  #[cfg(not(feature = "color"))]
+  let mut color = "";
 
   let mut prefix = String::new();
   let mut name_prefix = String::new();
@@ -77,7 +80,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
       suffix += format!(
         " {}{}{}",
         "[".to_owned().grey(flags).reset(flags),
-        "M".to_owned().bright(flags).orange(flags).reset(flags),
+        "M".to_owned().bright(flags).yellow(flags).reset(flags),
         "]".to_owned().grey(flags).reset(flags)
       )
       .as_str();

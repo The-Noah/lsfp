@@ -16,10 +16,10 @@ pub fn print_help(flags: &args::Flags) {
   println!("{}", env!("CARGO_PKG_DESCRIPTION"));
   println!("{}", format!("Created by {}", env!("CARGO_PKG_AUTHORS")).grey(flags).reset(flags));
   println!();
-  println!("{}", "Usage:".to_owned().orange(flags).reset(flags));
+  println!("{}", "Usage:".to_owned().yellow(flags).reset(flags));
   println!("{}{} [options] [arguments]", INDENT, env!("CARGO_PKG_NAME"));
   println!();
-  println!("{}", "Options:".to_owned().orange(flags).reset(flags));
+  println!("{}", "Options:".to_owned().yellow(flags).reset(flags));
   println!("{}{}     {}Print help information", INDENT, "-h, --help".to_owned().green(flags).reset(flags), INDENT);
   println!("{}{}  {}Print version", INDENT, "-v, --version".to_owned().green(flags).reset(flags), INDENT);
   println!(
@@ -40,8 +40,9 @@ pub fn print_help(flags: &args::Flags) {
     INDENT,
     "-r, --recursive".to_owned().green(flags).reset(flags),
     INDENT,
-    "--tree".to_owned().orange(flags).reset(flags)
+    "--tree".to_owned().yellow(flags).reset(flags)
   );
+  #[cfg(feature = "color")]
   println!(
     "{}    {} {}Do not output any color (automatically set with NO_COLOR env)",
     INDENT,
@@ -51,12 +52,12 @@ pub fn print_help(flags: &args::Flags) {
   #[cfg(feature = "git")]
   println!("{}    {}   {}Do not use git integration", INDENT, "--no-git".to_owned().green(flags).reset(flags), INDENT);
   println!();
-  println!("{}", "Arguments:".to_owned().orange(flags).reset(flags));
+  println!("{}", "Arguments:".to_owned().yellow(flags).reset(flags));
   println!(
     "{}{}{}Path to run in {}",
     INDENT,
     "path".to_owned().green(flags).reset(flags),
     INDENT,
-    "[default: .]".to_owned().orange(flags).reset(flags)
+    "[default: .]".to_owned().yellow(flags).reset(flags)
   );
 }

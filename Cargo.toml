@@ -23,7 +23,9 @@ codegen-units = 1
 opt-level = 3
 
 [features]
-default = ["git"]
-git = []
+default = ["git", "color"]
+config = []
+git = ["config"]
+color = ["config"]
 
 [dependencies]
