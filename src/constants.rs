@@ -39,7 +39,9 @@ pub const LICENSES: &[(&str, &str)] = &[
   ("AGPLv3", "GNU AFFERO GENERAL PUBLIC LICENSE\nVersion 3"),
   ("Mozilla Public License 2.0", "Mozilla Public License Version 2.0"),
   ("Apache License 2.0", "Apache License\nVersion 2.0"),
+  ("AFL-3.0", "Academic Free License 3.0"),
   ("APSL-2.0", "Apple Public Source License"),
+  ("APL-1.0", "Adaptive Public License 1.0"),
   ("BSL-1.0", "Boost Software License - Version 1.0"),
   ("The Unlicense", "This is free and unencumbered software released into the public domain."),
 ];
