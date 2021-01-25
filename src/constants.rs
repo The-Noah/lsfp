@@ -30,12 +30,15 @@ pub const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
 // https://choosealicense.com/
 pub const LICENSES: &[(&str, &str)] = &[
   ("MIT", "MIT License"),
+  ("MIT-0", "MIT No Attribution License"),
   ("GPLv3", "GNU GENERAL PUBLIC LICENSE\nVersion 3"),
   ("GPLv2", "GNU GENERAL PUBLIC LICENSE\nVersion 2"),
+  ("LGPLv2.1", "GNU LESSER GENERAL PUBLIC LICENSE\n Version 2.1")
   ("LGPLv3", "GNU LESSER GENERAL PUBLIC LICENSE\nVersion 3"),
   ("AGPLv3", "GNU AFFERO GENERAL PUBLIC LICENSE\nVersion 3"),
   ("Mozilla Public License 2.0", "Mozilla Public License Version 2.0"),
   ("Apache License 2.0", "Apache License\nVersion 2.0"),
+  ("APSL-2.0", "Apple Public Source License"),
   ("BSL-1.0", "Boost Software License - Version 1.0"),
   ("The Unlicense", "This is free and unencumbered software released into the public domain."),
 ];
