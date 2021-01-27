@@ -34,7 +34,7 @@ pub const LICENSES: &[(&str, &str)] = &[
   ("MIT-0", "MIT No Attribution License"),
   ("GPL-3.0", "GNU GENERAL PUBLIC LICENSE\nVersion 3"),
   ("GPL-2.0", "GNU GENERAL PUBLIC LICENSE\nVersion 2"),
-  ("LGPL-2.1", "GNU LESSER GENERAL PUBLIC LICENSE\n Version 2.1")
+  ("LGPL-2.1", "GNU LESSER GENERAL PUBLIC LICENSE\n Version 2.1"),
   ("LGPL-3.0", "GNU LESSER GENERAL PUBLIC LICENSE\nVersion 3"),
   ("AGPL-3.0", "GNU AFFERO GENERAL PUBLIC LICENSE\nVersion 3"),
   ("MPL-2.0", "Mozilla Public License Version 2.0"),
