@@ -11,7 +11,7 @@ pub const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
   (&["cs"], (23, 134, 0)),                  // C#
   (&["rb"], (112, 21, 22)),                 // Ruby
   (&["pl"], (2, 152, 195)),                 // Pearl
-  (&["swift"], (255, 172, 69)),             // Switft
+  (&["swift"], (255, 172, 69)),             // Swift
   (&["md", "markdown"], (8, 63, 161)),      // Markdown
   (&["py"], (53, 114, 165)),                // Python
   (&["html", "htm"], (227, 76, 38)),        // HTML
