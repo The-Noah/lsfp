@@ -11,6 +11,13 @@ mod modules;
 use crate::core::*;
 use color::*;
 
+#[cfg(target_os = "windows")]
+#[cfg(feature = "color")]
+#[link(name = "color")]
+extern "C" {
+  fn enable_color();
+}
+
 fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
   if !flags.all && file_detection::is_hidden(&path) {
     return;
@@ -133,6 +140,14 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
 
 fn main() {
   let (flags, mut args) = args::get();
+
+  #[cfg(target_os = "windows")]
+  #[cfg(feature = "color")]
+  if !flags.no_color{
+    unsafe {
+      enable_color();
+    }
+  }
 
   let raw_path = args.pop().unwrap_or(String::from("."));
   let path_to_scan = path::Path::new(raw_path.as_str());
