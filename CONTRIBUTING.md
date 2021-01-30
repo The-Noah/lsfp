@@ -12,6 +12,14 @@
 - Great! That's awesome!
 - Include relevant issue number if applicable.
 
+### Before you make a PR
+Make sure you run the following commands:
+```sh
+cargo fmt
+cargo clippy -- -D warnings
+cargo test
+```
+
 💖 Thank you for choosing lsfp!
 
 The Noah
