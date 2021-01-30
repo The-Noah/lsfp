@@ -143,7 +143,7 @@ fn main() {
 
   #[cfg(target_os = "windows")]
   #[cfg(feature = "color")]
-  if !flags.no_color{
+  if !flags.no_color {
     unsafe {
       enable_color();
     }
