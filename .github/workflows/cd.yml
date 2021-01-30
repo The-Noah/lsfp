@@ -1,0 +1,84 @@
+name: CD
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Setup repo ✨
+        uses: actions/checkout@v2
+
+      - name: Release build 🧱
+        run: cargo build --release --verbose
+
+      - name: Strip binary ✂
+        run: strip target/release/lsfp
+
+      - name: Release 📦
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/lsfp
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-win:
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup repo ✨
+        uses: actions/checkout@v2
+
+      - name: Release build 🧱
+        run: cargo build --release --verbose
+
+      - name: Release 📦
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/lsfp.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-win-lite:
+    runs-on: windows-latest
+
+    steps:
+      - name: Setup repo ✨
+        uses: actions/checkout@v2
+
+      - name: Release build 🧱
+        run: cargo build --release --verbose --no-default-features && move target/release/lsfp.exe target/release/lsfp-lite.exe
+
+      - name: Release 📦
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/lsfp-lite.exe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  release-macos:
+    runs-on: macos-latest
+
+    steps:
+      - name: Setup repo ✨
+        uses: actions/checkout@v2
+
+      - name: Release build 🧱
+        run: cargo build --release --verbose && mv target/release/lsfp target/release/lsfp_macos
+
+      - name: Strip binary ✂
+        run: strip target/release/lsfp_macos
+
+      - name: Release 📦
+        uses: softprops/action-gh-release@v1
+        with:
+          files: target/release/lsfp_macos
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

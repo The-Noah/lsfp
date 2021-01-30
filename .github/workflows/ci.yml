@@ -1,22 +1,26 @@
 name: CI
 
-on:
-  push:
-    branches: [ master ]
-  pull_request:
-    branches: [ master ]
+on: [push, pull_request]
 
 env:
   CARGO_TERM_COLOR: always
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
+      - name: Setup repo ✨
+        uses: actions/checkout@v2
+
+      - name: Check formatting 🧼
+        run: cargo fmt -- --check
+
+      - name: Lint 🛑
+        run: cargo clippy -- -D warnings
+
+      - name: Build 🧱
+        run: cargo build --verbose
+
+      - name: Test 🧪
+        run: cargo test --verbose
