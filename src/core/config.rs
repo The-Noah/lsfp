@@ -5,10 +5,10 @@ const ARG_PREFIX: &str = "--config-";
 
 pub fn parse_arg(arg: &str) -> bool {
   if arg.starts_with(ARG_PREFIX) {
-    let body = &arg[ARG_PREFIX.len()..]; // strip argument prefix
+    let body = arg.strip_prefix(ARG_PREFIX).unwrap(); // strip argument prefix
 
-    if body.contains("=") {
-      let parts: Vec<&str> = body.split("=").collect();
+    if body.contains('=') {
+      let parts: Vec<&str> = body.split('=').collect();
       let name = parts[0];
       let value = parts[1];
 
@@ -20,7 +20,7 @@ pub fn parse_arg(arg: &str) -> bool {
           return true;
         }
       };
-      let mut contents = content_split.split("\n").collect::<Vec<&str>>();
+      let mut contents = content_split.split('\n').collect::<Vec<&str>>();
 
       let mut found = false;
       // HACK to make the borrow checker happy
@@ -58,12 +58,12 @@ pub fn parse_arg(arg: &str) -> bool {
 
       let mut found = false;
 
-      for line in contents.split("\n") {
+      for line in contents.split('\n') {
         let final_line = &(line.trim().to_string());
         if final_line.starts_with(format!("- config: {}=", body).as_str()) {
           found = true;
 
-          let parts: Vec<&str> = final_line.split("=").collect();
+          let parts: Vec<&str> = final_line.split('=').collect();
           println!("{}: {}", body, parts[1]);
 
           break;
@@ -88,10 +88,10 @@ pub fn get_bool(name: &str, default: bool) -> bool {
   }
   .replace("\r", "");
 
-  for line in contents.split("\n") {
+  for line in contents.split('\n') {
     let final_line = &(line.trim().to_string());
     if final_line.starts_with(format!("- config: {}=", name).as_str()) {
-      let parts: Vec<&str> = final_line.split("=").collect();
+      let parts: Vec<&str> = final_line.split('=').collect();
 
       return parts[1] == "true";
     }

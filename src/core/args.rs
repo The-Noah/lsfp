@@ -76,10 +76,8 @@ pub fn get() -> (Flags, Vec<String>) {
     flags.no_color = !config::get_bool("color", true);
   }
 
-  let mut removed_count = 0;
-  for arg_to_remove in args_to_remove {
+  for (removed_count, arg_to_remove) in args_to_remove.iter().enumerate() {
     args.remove(arg_to_remove - removed_count);
-    removed_count += 1;
   }
 
   (flags, args)

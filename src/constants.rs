@@ -1,5 +1,7 @@
+type FileExtensionColor<'a> = (&'a [&'a str], (u8, u8, u8));
+
 // https://github.com/ozh/github-colors/blob/master/colors.json
-pub const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
+pub const FILE_EXTENSION_COLORS: &[FileExtensionColor] = &[
   (&["js"], (241, 224, 90)),                // JavaScript
   (&["ts"], (43, 116, 137)),                // TypeScript
   (&["cpp", "cxx", "hpp"], (243, 75, 125)), // C++

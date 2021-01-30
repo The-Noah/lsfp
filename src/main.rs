@@ -76,7 +76,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
     }
 
     // file path for git
-    let mut final_path = root.clone().to_path_buf();
+    let mut final_path = root.to_path_buf();
     if !root.is_file() {
       final_path.push(file_path);
     }
@@ -149,7 +149,7 @@ fn main() {
     }
   }
 
-  let raw_path = args.pop().unwrap_or(String::from("."));
+  let raw_path = args.pop().unwrap_or_else(|| String::from("."));
   let path_to_scan = path::Path::new(raw_path.as_str());
 
   if !path_to_scan.exists() {
@@ -159,27 +159,25 @@ fn main() {
 
   if path_to_scan.is_file() {
     print_item(path_to_scan, path::PathBuf::from(path_to_scan), &flags);
+  } else if flags.tree {
+    do_scan(path_to_scan, path_to_scan, &flags);
   } else {
-    if flags.tree {
-      do_scan(path_to_scan, path_to_scan, &flags);
-    } else {
-      let read_dir = fs::read_dir(path_to_scan);
-      if read_dir.is_ok() {
-        for entry in read_dir.unwrap() {
-          let path = entry.unwrap().path();
-          print_item(path_to_scan, path, &flags);
-        }
-      } else if read_dir.is_err() {
-        println!(
-          "{}",
-          format!(
-            "{} {}",
-            "error:".to_owned().bright(&flags).red(&flags).reset(&flags),
-            "this file or directory is hidden or cannot be accessed"
-          )
-        );
-        std::process::exit(0);
+    let read_dir = fs::read_dir(path_to_scan);
+    if read_dir.is_ok() {
+      for entry in read_dir.unwrap() {
+        let path = entry.unwrap().path();
+        print_item(path_to_scan, path, &flags);
       }
+    } else if read_dir.is_err() {
+      println!(
+        "{}",
+        format!(
+          "{} {}",
+          "error:".to_owned().bright(&flags).red(&flags).reset(&flags),
+          "this file or directory is hidden or cannot be accessed"
+        )
+      );
+      std::process::exit(0);
     }
   }
 }

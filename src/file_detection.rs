@@ -37,7 +37,7 @@ pub fn is_hidden(path: &path::PathBuf) -> bool {
     None => "??",
   };
 
-  item_name.chars().nth(0).unwrap() == '.' || is_hidden_extra(path)
+  item_name.starts_with('.') || is_hidden_extra(path)
 }
 
 pub fn get_license(path: &path::Path) -> String {
@@ -45,7 +45,7 @@ pub fn get_license(path: &path::Path) -> String {
   contents = contents.replace("\r", "").trim().to_string();
 
   let mut final_contents = String::new();
-  for line in contents.split("\n") {
+  for line in contents.split('\n') {
     final_contents += &(line.trim().to_string() + "\n");
   }
 
@@ -76,13 +76,8 @@ pub fn file_extension_color(path: &path::PathBuf) -> String {
 }
 
 fn extension_matches(path: &std::path::PathBuf, extension: &str) -> bool {
-  if match path.extension() {
+  return match path.extension() {
     Some(val) => OsStr::new(val).to_str().unwrap_or(""),
     None => "",
-  } == extension
-  {
-    true
-  } else {
-    false
-  }
+  } == extension;
 }
