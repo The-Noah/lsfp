@@ -31,17 +31,18 @@ pub const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
 // https://opensource.org/licenses/
 pub const LICENSES: &[(&str, &str)] = &[
   ("MIT", "MIT License"),
-  ("MIT-0", "MIT No Attribution License"),
+  ("MIT-0", "MIT No Attribution"),
   ("GPL-3.0", "GNU GENERAL PUBLIC LICENSE\nVersion 3"),
   ("GPL-2.0", "GNU GENERAL PUBLIC LICENSE\nVersion 2"),
-  ("LGPL-2.1", "GNU LESSER GENERAL PUBLIC LICENSE\n Version 2.1"),
+  ("LGPL-2.1", "GNU LESSER GENERAL PUBLIC LICENSE\nVersion 2.1"),
   ("LGPL-3.0", "GNU LESSER GENERAL PUBLIC LICENSE\nVersion 3"),
   ("AGPL-3.0", "GNU AFFERO GENERAL PUBLIC LICENSE\nVersion 3"),
   ("MPL-2.0", "Mozilla Public License Version 2.0"),
   ("Apache-2.0", "Apache License\nVersion 2.0"),
-  ("AFL-3.0", "Academic Free License 3.0"),
-  ("APSL-2.0", "Apple Public Source License"),
-  ("APL-1.0", "Adaptive Public License 1.0"),
+  ("AFL-3.0", "Academic Free License (\"AFL\") v. 3.0"),
+  ("APSL-1.0", "APPLE PUBLIC SOURCE LICENSE\nVersion 1.0"),
+  ("APL-2.0", "APPLE PUBLIC SOURCE LICENSE\nVersion 2.0"),
+  ("APL-1.0", "ADAPTIVE PUBLIC LICENSE\nVersion 1.0"),
   ("BSL-1.0", "Boost Software License - Version 1.0"),
   ("Unlicense", "This is free and unencumbered software released into the public domain."),
 ];
