@@ -13,7 +13,7 @@ pub const FILE_EXTENSION_COLORS: &[FileExtensionColor] = &[
   (&["cs"], (23, 134, 0)),                  // C#
   (&["rb"], (112, 21, 22)),                 // Ruby
   (&["pl"], (2, 152, 195)),                 // Pearl
-  (&["swift"], (255, 172, 69)),             // Switft
+  (&["swift"], (255, 172, 69)),             // Swift
   (&["md", "markdown"], (8, 63, 161)),      // Markdown
   (&["py"], (53, 114, 165)),                // Python
   (&["html", "htm"], (227, 76, 38)),        // HTML
@@ -30,16 +30,26 @@ pub const FILE_EXTENSION_COLORS: &[FileExtensionColor] = &[
 ];
 
 // https://choosealicense.com/
+// https://opensource.org/licenses/
+// https://spdx.org/licenses/
+// LICENSES LIST: ("SPDX identifier", "Start of the license file/text")
+//  Licenses are ordered alphabetically based on their SPDX identifier
 pub const LICENSES: &[(&str, &str)] = &[
+  ("AFL-3.0", "Academic Free License (\"AFL\") v. 3.0"),
+  ("AGPL-3.0", "GNU AFFERO GENERAL PUBLIC LICENSE\nVersion 3"),
+  ("Apache-2.0", "Apache License\nVersion 2.0"),
+  ("APL-1.0", "ADAPTIVE PUBLIC LICENSE\nVersion 1.0"),
+  ("APSL-1.0", "APPLE PUBLIC SOURCE LICENSE\nVersion 1.0"),
+  ("APSL-2.0", "APPLE PUBLIC SOURCE LICENSE\nVersion 2.0"),
+  ("BSL-1.0", "Boost Software License - Version 1.0"),
+  ("GPL-2.0", "GNU GENERAL PUBLIC LICENSE\nVersion 2"),
+  ("GPL-3.0", "GNU GENERAL PUBLIC LICENSE\nVersion 3"),
+  ("LGPL-2.1", "GNU LESSER GENERAL PUBLIC LICENSE\nVersion 2.1"),
+  ("LGPL-3.0", "GNU LESSER GENERAL PUBLIC LICENSE\nVersion 3"),
   ("MIT", "MIT License"),
-  ("GPLv3", "GNU GENERAL PUBLIC LICENSE\nVersion 3"),
-  ("GPLv2", "GNU GENERAL PUBLIC LICENSE\nVersion 2"),
-  ("LGPLv3", "GNU LESSER GENERAL PUBLIC LICENSE\nVersion 3"),
-  ("AGPLv3", "GNU AFFERO GENERAL PUBLIC LICENSE\nVersion 3"),
-  ("Mozilla Public License 2.0", "Mozilla Public License Version 2.0"),
-  ("Apache License 2.0", "Apache License\nVersion 2.0"),
-  ("Boost Software License 1.0", "Boost Software License - Version 1.0"),
-  ("The Unlicense", "This is free and unencumbered software released into the public domain."),
+  ("MIT-0", "MIT No Attribution"),
+  ("MPL-2.0", "Mozilla Public License Version 2.0"),
+  ("Unlicense", "This is free and unencumbered software released into the public domain."),
 ];
 
 pub const COLLAPSED_DIRECTORIES: &[&str] = &[
