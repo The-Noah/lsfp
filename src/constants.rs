@@ -29,6 +29,7 @@ pub const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
 
 // https://choosealicense.com/
 // https://opensource.org/licenses/
+// https://spdx.org/licenses/
 pub const LICENSES: &[(&str, &str)] = &[
   ("MIT", "MIT License"),
   ("MIT-0", "MIT No Attribution"),
