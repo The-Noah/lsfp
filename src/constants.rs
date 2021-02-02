@@ -30,6 +30,8 @@ pub const FILE_EXTENSION_COLORS: &[(&[&str], (u8, u8, u8))] = &[
 // https://choosealicense.com/
 // https://opensource.org/licenses/
 // https://spdx.org/licenses/
+// LICENSES LIST: ("SPDX identifier", "Start of the license file/text")
+//  Licenses are ordered alphabetically based on their SPDX identifier
 pub const LICENSES: &[(&str, &str)] = &[
   ("AFL-3.0", "Academic Free License (\"AFL\") v. 3.0"),
   ("AGPL-3.0", "GNU AFFERO GENERAL PUBLIC LICENSE\nVersion 3"),
