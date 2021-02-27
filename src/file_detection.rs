@@ -4,29 +4,18 @@ use std::path;
 
 use crate::constants;
 
-#[cfg(target_os = "win")]
+#[cfg(target_os = "windows")]
 fn is_hidden_extra(path: &path::PathBuf) -> bool {
   use std::os::windows::fs::MetadataExt;
 
-  let file = fs::metadata(path).expect("Failed Getting metadata");
-  let mut attribs = file.file_attributes();
+  let file_metadata = fs::metadata(path).expect("Failed Getting metadata");
+  let attribs = file_metadata.file_attributes();
 
-  if file.is_dir() {
-    attribs -= 16;
-    if attribs == 2 {
-      true
-    }
-  } else if file.is_file() {
-    attribs -= 32;
-    if attribs == 2 {
-      true
-    }
-  }
-
-  false
+  // https://docs.microsoft.com/en-us/dotnet/api/system.io.fileattributes?view=net-5.0#fields
+  attribs & 2 == 2
 }
 
-#[cfg(not(target_os = "win"))]
+#[cfg(not(target_os = "windows"))]
 fn is_hidden_extra(_path: &path::PathBuf) -> bool {
   false
 }
