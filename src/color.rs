@@ -1,23 +1,23 @@
 use crate::core::*;
 
 #[cfg(feature = "color")]
-pub const RESET: &str = "\x1b[0m";
+const RESET: &str = "\x1b[0m";
 #[cfg(feature = "color")]
-pub const BRIGHT: &str = "\x1b[1m";
+const BRIGHT: &str = "\x1b[1m";
 #[cfg(feature = "color")]
-pub const UNDERLINE: &str = "\x1b[4m";
+const UNDERLINE: &str = "\x1b[4m";
 #[cfg(feature = "color")]
-pub const GREEN: &str = "\x1b[32m";
+const GREEN: &str = "\x1b[32m";
 #[cfg(feature = "color")]
-pub const YELLOW: &str = "\x1b[33m";
+const YELLOW: &str = "\x1b[33m";
 #[cfg(feature = "color")]
-pub const CYAN: &str = "\x1b[36m";
+const CYAN: &str = "\x1b[36m";
 #[cfg(feature = "color")]
-pub const WHITE: &str = "\x1b[37m";
+const WHITE: &str = "\x1b[37m";
 #[cfg(feature = "color")]
-pub const GREY: &str = "\x1b[90m";
+const GREY: &str = "\x1b[90m";
 #[cfg(feature = "color")]
-pub const RED: &str = "\x1b[31m";
+const RED: &str = "\x1b[31m";
 
 pub trait ColorExt {
   fn reset(&self, flags: &args::Flags) -> Self;
