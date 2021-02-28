@@ -18,10 +18,22 @@ include = [
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
+[profile.dev]
+lto = false
+codegen-units = 8
+opt-level = 2
+overflow-checks = true
+debug-assertions = true
+incremental = true
+
 [profile.release]
 lto = true
 codegen-units = 1
 opt-level = 3
+overflow-checks = false
+debug-assertions = false
+panic = "abort"
+debug = false
 
 [features]
 default = ["git", "color"]
