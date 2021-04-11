@@ -18,8 +18,8 @@ extern "C" {
   fn enable_color();
 }
 
-fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
-  if !flags.all && file_detection::is_hidden(&path) {
+fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, single_item: bool) {
+  if !flags.all && file_detection::is_hidden(&path) && !single_item {
     return;
   }
   #[cfg(feature = "color")]
@@ -120,7 +120,7 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
 
   if path_to_scan.is_file() {
     let path = path::PathBuf::from(path_to_scan);
-    print_item(root, path, flags);
+    print_item(root, path, flags, false);
   } else {
     if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
       return;
@@ -129,7 +129,7 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
     for entry in fs::read_dir(path_to_scan).unwrap() {
       let path = entry.unwrap().path();
 
-      print_item(root, path.clone(), flags);
+      print_item(root, path.clone(), flags, false);
 
       if path.is_dir() {
         do_scan(root, path.as_path(), flags);
@@ -158,7 +158,7 @@ fn main() {
   }
 
   if path_to_scan.is_file() {
-    print_item(path_to_scan, path::PathBuf::from(path_to_scan), &flags);
+    print_item(path_to_scan, path::PathBuf::from(path_to_scan), &flags, true); // Only situation where single_item will be true
   } else if flags.tree {
     do_scan(path_to_scan, path_to_scan, &flags);
   } else {
@@ -166,7 +166,7 @@ fn main() {
     if read_dir.is_ok() {
       for entry in read_dir.unwrap() {
         let path = entry.unwrap().path();
-        print_item(path_to_scan, path, &flags);
+        print_item(path_to_scan, path, &flags, false);
       }
     } else if read_dir.is_err() {
       println!(
