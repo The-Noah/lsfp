@@ -5,7 +5,7 @@ use std::path;
 use crate::constants;
 
 #[cfg(target_os = "windows")]
-fn is_hidden_extra(path: &path::PathBuf) -> bool {
+fn is_hidden_extra(path: &path::Path) -> bool {
   use std::os::windows::fs::MetadataExt;
 
   let file_metadata = fs::metadata(path).expect("Failed Getting metadata");
@@ -16,11 +16,11 @@ fn is_hidden_extra(path: &path::PathBuf) -> bool {
 }
 
 #[cfg(not(target_os = "windows"))]
-fn is_hidden_extra(_path: &path::PathBuf) -> bool {
+fn is_hidden_extra(_path: &path::Path) -> bool {
   false
 }
 
-pub fn is_hidden(path: &path::PathBuf) -> bool {
+pub fn is_hidden(path: &path::Path) -> bool {
   let item_name = match path.file_name() {
     Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
     None => "??",
@@ -49,7 +49,7 @@ pub fn get_license(path: &path::Path) -> String {
   license_type.to_string()
 }
 
-pub fn file_extension_color(path: &path::PathBuf) -> String {
+pub fn file_extension_color(path: &path::Path) -> String {
   let mut color = String::new();
 
   'extension_loop: for extension_color in constants::FILE_EXTENSION_COLORS.iter() {
@@ -64,7 +64,7 @@ pub fn file_extension_color(path: &path::PathBuf) -> String {
   color
 }
 
-fn extension_matches(path: &std::path::PathBuf, extension: &str) -> bool {
+fn extension_matches(path: &std::path::Path, extension: &str) -> bool {
   return match path.extension() {
     Some(val) => OsStr::new(val).to_str().unwrap_or(""),
     None => "",

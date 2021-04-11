@@ -36,7 +36,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
 
   let file_path = match path.strip_prefix(root) {
     Ok(val) => OsStr::new(val).to_str().unwrap_or("??"),
-    Err(err) => panic!(err),
+    Err(err) => panic!("{}", err),
   };
 
   let mut indentation: u32 = 0;
