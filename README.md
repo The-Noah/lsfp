@@ -72,8 +72,9 @@ Contributions are welcome and much appreciated! For more details you can view th
 
 ## Contributors
 
-[<img src="https://github.com/The-Noah.png?size=64" title="Author">](https://github.com/The-Noah)
-[<img src="https://github.com/MattPlays.png?size=64" title="Core Contributor">](https://github.com/MattPlays)
+[<img src="https://github.com/The-Noah.png?size=64" style="border-radius:100%" title="Author">](https://github.com/The-Noah)
+[<img src="https://github.com/MattPlays.png?size=64" style="border-radius:100%" title="Core Contributor">](https://github.com/MattPlays)
+[<img src="https://github.com/HipyCas.png?size=64" style="border-radius:100%" title="Contributor">](https://github.com/HipyCas)
 
 ## License
 
