@@ -88,7 +88,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
       .as_str();
     }
   } else if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
-    name_prefix = String::new().underline(&flags);
+    name_prefix = String::new().underline(flags);
   }
 
   suffix += String::new().reset(&flags).as_str();
@@ -97,10 +97,10 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
     prefix,
     (3..indentation * 3).map(|_| " ").collect::<String>(),
     if indentation > 0 { "└──" } else { "" },
-    if !color.is_empty() { "".to_owned().bright(&flags) } else { String::new() },
-    name_prefix.custom(color.as_str(), &flags),
-    item_name,
-    suffix
+    if !color.is_empty() { "".to_owned().bright(flags) } else { String::new() },
+    name_prefix.custom(color.as_str(), flags),
+    item_name.to_owned().reset(flags),
+    suffix,
   );
 }
 
