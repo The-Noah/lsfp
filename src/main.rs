@@ -22,10 +22,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
   if !flags.all && file_detection::is_hidden(&path) && !single_item {
     return;
   }
-  #[cfg(feature = "color")]
-  let mut color = if path.is_dir() { color::CYAN } else { "" };
-  #[cfg(not(feature = "color"))]
-  let mut color = "";
+  let mut color = if path.is_dir() { "".to_owned().cyan(flags) } else { "".to_owned() };
 
   let mut prefix = String::new();
   let mut name_prefix = String::new();
@@ -64,15 +61,12 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
       .as_str();
   }
 
-  let the_color_so_it_lives: String; // HACK to make the borrow checker happy
   if path.is_file() {
     if item_name.to_lowercase().starts_with("license") {
-      the_color_so_it_lives = "".to_owned().white(&flags);
-      color = the_color_so_it_lives.as_str();
+      color = "".to_owned().white(&flags);
       suffix += format!(" [{}]", file_detection::get_license(path.as_path())).grey(flags).as_str();
     } else {
-      the_color_so_it_lives = file_detection::file_extension_color(&path);
-      color = the_color_so_it_lives.as_str();
+      color = file_detection::file_extension_color(&path);
     }
 
     // file path for git
@@ -103,7 +97,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
     (3..indentation * 3).map(|_| " ").collect::<String>(),
     if indentation > 0 { "└──" } else { "" },
     if !color.is_empty() { "".to_owned().bright(&flags) } else { String::new() },
-    name_prefix.custom(color, &flags),
+    name_prefix.custom(color.as_str(), &flags),
     item_name,
     suffix
   );
