@@ -29,31 +29,27 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags) {
   let mut name_prefix = String::new();
   let mut suffix = String::new();
 
-  let item_name = match path.file_name() {
-    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
-    None => "??",
-  };
+  let item_name = OsStr::new(path.file_name().expect("Unable to get file name")).to_str().expect("Unable to parse file name");
 
-  let file_path = match path.strip_prefix(root) {
-    Ok(val) => OsStr::new(val).to_str().unwrap_or("??"),
-    Err(err) => panic!("{}", err),
-  };
+  let file_path = OsStr::new(path.strip_prefix(root).expect("Unable to get file path"))
+    .to_str()
+    .expect("Unable to parse file path");
 
   let mut indentation: u32 = 0;
   if flags.tree {
-    let mut parent_path = path.parent().unwrap().to_path_buf();
+    let mut parent_path = path.parent().expect("Failed to get parent path").to_path_buf();
+
     while parent_path != root {
-      parent_path = parent_path.parent().unwrap().to_path_buf();
+      parent_path = parent_path.parent().expect("Failed to get parent path").to_path_buf();
       indentation += 1;
     }
   }
 
   if flags.size {
-    let size;
-    match path.metadata() {
-      Ok(metadata) => size = metadata.len(),
-      Err(_) => size = 0,
-    }
+    let size = match path.metadata() {
+      Ok(metadata) => metadata.len(),
+      Err(_) => 0,
+    };
 
     prefix += format!("{} ", modules::file_size::human_readable_size(size))
       .bright(flags)
@@ -108,10 +104,10 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
   if !flags.all && file_detection::is_hidden(&path_to_scan.to_path_buf()) {
     return;
   }
-  let item_name = match path_to_scan.file_name() {
-    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
-    None => "??",
-  };
+
+  let item_name = OsStr::new(path_to_scan.file_name().expect("Unable to get file name"))
+    .to_str()
+    .expect("Unable to parse file name");
 
   if path_to_scan.is_file() {
     let path = path::PathBuf::from(path_to_scan);
@@ -121,8 +117,8 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
       return;
     }
 
-    for entry in fs::read_dir(path_to_scan).unwrap() {
-      let path = entry.unwrap().path();
+    for entry in fs::read_dir(path_to_scan).expect("Directory cannot be accessed") {
+      let path = entry.expect("Failed retrieving path").path();
 
       print_item(root, path.clone(), flags);
 

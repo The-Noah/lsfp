@@ -1,14 +1,14 @@
 use std::ffi::OsStr;
 use std::fs;
-use std::path;
+use std::path::Path;
 
 use crate::constants;
 
 #[cfg(target_os = "windows")]
-fn is_hidden_extra(path: &path::Path) -> bool {
+fn is_hidden_extra(path: &Path) -> bool {
   use std::os::windows::fs::MetadataExt;
 
-  let file_metadata = fs::metadata(path).expect("Failed Getting metadata");
+  let file_metadata = fs::metadata(path).expect("Failed getting metadata");
   let attribs = file_metadata.file_attributes();
 
   // https://docs.microsoft.com/en-us/dotnet/api/system.io.fileattributes?view=net-5.0#fields
@@ -16,21 +16,18 @@ fn is_hidden_extra(path: &path::Path) -> bool {
 }
 
 #[cfg(not(target_os = "windows"))]
-fn is_hidden_extra(_path: &path::Path) -> bool {
+fn is_hidden_extra(_path: &Path) -> bool {
   false
 }
 
-pub fn is_hidden(path: &path::Path) -> bool {
-  let item_name = match path.file_name() {
-    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
-    None => "??",
-  };
+pub fn is_hidden(path: &Path) -> bool {
+  let item_name = OsStr::new(path.file_name().expect("Unable to get file name")).to_str().expect("Unable to parse file name");
 
   item_name.starts_with('.') || is_hidden_extra(path)
 }
 
-pub fn get_license(path: &path::Path) -> String {
-  let mut contents = fs::read_to_string(path).expect("Something went wrong reading the file");
+pub fn get_license(path: &Path) -> String {
+  let mut contents = fs::read_to_string(path).expect("Failed reading license file");
   contents = contents.replace("\r", "").trim().to_string();
 
   let mut final_contents = String::new();
@@ -49,7 +46,7 @@ pub fn get_license(path: &path::Path) -> String {
   license_type.to_string()
 }
 
-pub fn file_extension_color(path: &path::Path) -> String {
+pub fn file_extension_color(path: &Path) -> String {
   let mut color = String::new();
 
   'extension_loop: for extension_color in constants::FILE_EXTENSION_COLORS.iter() {
@@ -64,9 +61,9 @@ pub fn file_extension_color(path: &path::Path) -> String {
   color
 }
 
-fn extension_matches(path: &std::path::Path, extension: &str) -> bool {
-  return match path.extension() {
-    Some(val) => OsStr::new(val).to_str().unwrap_or(""),
-    None => "",
-  } == extension;
+fn extension_matches(path: &Path, extension: &str) -> bool {
+  OsStr::new(path.extension().expect("Unable to get file extension"))
+    .to_str()
+    .expect("Unable to parse file extension")
+    == extension
 }
