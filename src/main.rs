@@ -28,31 +28,27 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
   let mut name_prefix = String::new();
   let mut suffix = String::new();
 
-  let item_name = match path.file_name() {
-    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
-    None => "??",
-  };
+  let item_name = OsStr::new(path.file_name().expect("Unable to get file name")).to_str().expect("Unable to parse file name");
 
-  let file_path = match path.strip_prefix(root) {
-    Ok(val) => OsStr::new(val).to_str().unwrap_or("??"),
-    Err(err) => panic!(err),
-  };
+  let file_path = OsStr::new(path.strip_prefix(root).expect("Unable to get file path"))
+    .to_str()
+    .expect("Unable to parse file path");
 
   let mut indentation: u32 = 0;
   if flags.tree {
-    let mut parent_path = path.parent().unwrap().to_path_buf();
+    let mut parent_path = path.parent().expect("Failed to get parent path").to_path_buf();
+
     while parent_path != root {
-      parent_path = parent_path.parent().unwrap().to_path_buf();
+      parent_path = parent_path.parent().expect("Failed to get parent path").to_path_buf();
       indentation += 1;
     }
   }
 
   if flags.size {
-    let size;
-    match path.metadata() {
-      Ok(metadata) => size = metadata.len(),
-      Err(_) => size = 0,
-    }
+    let size = match path.metadata() {
+      Ok(metadata) => metadata.len(),
+      Err(_) => 0,
+    };
 
     prefix += format!("{} ", modules::file_size::human_readable_size(size))
       .bright(flags)
@@ -87,7 +83,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
       .as_str();
     }
   } else if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
-    name_prefix = String::new().underline(&flags);
+    name_prefix = String::new().underline(flags);
   }
 
   suffix += String::new().reset(&flags).as_str();
@@ -96,10 +92,10 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
     prefix,
     (3..indentation * 3).map(|_| " ").collect::<String>(),
     if indentation > 0 { "└──" } else { "" },
-    if !color.is_empty() { "".to_owned().bright(&flags) } else { String::new() },
-    name_prefix.custom(color.as_str(), &flags),
-    item_name,
-    suffix
+    if !color.is_empty() { "".to_owned().bright(flags) } else { String::new() },
+    name_prefix.custom(color.as_str(), flags),
+    item_name.to_owned().reset(flags),
+    suffix,
   );
 }
 
@@ -107,10 +103,10 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
   if !flags.all && file_detection::is_hidden(&path_to_scan.to_path_buf()) {
     return;
   }
-  let item_name = match path_to_scan.file_name() {
-    Some(val) => OsStr::new(val).to_str().unwrap_or("??"),
-    None => "??",
-  };
+
+  let item_name = OsStr::new(path_to_scan.file_name().expect("Unable to get file name"))
+    .to_str()
+    .expect("Unable to parse file name");
 
   if path_to_scan.is_file() {
     let path = path::PathBuf::from(path_to_scan);
@@ -120,8 +116,8 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
       return;
     }
 
-    for entry in fs::read_dir(path_to_scan).unwrap() {
-      let path = entry.unwrap().path();
+    for entry in fs::read_dir(path_to_scan).expect("Directory cannot be accessed") {
+      let path = entry.expect("Failed retrieving path").path();
 
       print_item(root, path.clone(), flags, false);
 
@@ -156,22 +152,9 @@ fn main() {
   } else if flags.tree {
     do_scan(path_to_scan, path_to_scan, &flags);
   } else {
-    let read_dir = fs::read_dir(path_to_scan);
-    if read_dir.is_ok() {
-      for entry in read_dir.unwrap() {
-        let path = entry.unwrap().path();
-        print_item(path_to_scan, path, &flags, false);
-      }
-    } else if read_dir.is_err() {
-      println!(
-        "{}",
-        format!(
-          "{} {}",
-          "error:".to_owned().bright(&flags).red(&flags).reset(&flags),
-          "this file or directory is hidden or cannot be accessed"
-        )
-      );
-      std::process::exit(0);
+    for entry in fs::read_dir(path_to_scan).expect("Directory cannot be accessed") {
+      let path = entry.expect("Failed retrieving path").path();
+      print_item(path_to_scan, path, &flags);
     }
   }
 }

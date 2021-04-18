@@ -8,7 +8,7 @@ pub fn changed(file_path: &path::Path) -> bool {
     return false;
   }
 
-  let final_result = result.expect("failed to run git");
+  let final_result = result.expect("Failed to run git");
 
   !final_result.stdout.is_empty()
 }

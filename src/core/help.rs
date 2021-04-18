@@ -75,7 +75,7 @@ pub fn print_help(flags: &args::Flags) {
   println!("{}", env!("CARGO_PKG_DESCRIPTION"));
   println!("{}", format!("Created by {}", env!("CARGO_PKG_AUTHORS")).grey(flags).reset(flags));
   println!();
-  println!("{}", "Usage:".to_owned().bright(flags).yellow(flags).reset(flags));
+  println!("{}:", "Usage".to_owned().bright(flags).yellow(flags).reset(flags));
   println!(
     "{}{} {}[options] [arguments]{}",
     INDENT,
