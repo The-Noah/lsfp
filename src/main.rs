@@ -154,7 +154,7 @@ fn main() {
   } else {
     for entry in fs::read_dir(path_to_scan).expect("Directory cannot be accessed") {
       let path = entry.expect("Failed retrieving path").path();
-      print_item(path_to_scan, path, &flags);
+      print_item(path_to_scan, path, &flags, false);
     }
   }
 }
