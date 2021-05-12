@@ -65,9 +65,6 @@ pub fn file_extension_color(path: &Path, flags: &Flags) -> String {
   color
 }
 
-fn extension_matches(path: &Path, extension: &str, flags: &Flags) -> bool {
-  OsStr::new(path.extension().die("Unable to get file extension", flags))
-    .to_str()
-    .die("Unable to parse file extension", flags)
-    == extension
+fn extension_matches(path: &Path, extension: &str) -> bool {
+  path.extension().unwrap_or(OsStr::new("")).to_str().expect("Unable to parse file extension") == extension
 }
