@@ -1,7 +1,7 @@
 use std::fs;
 
 use crate::core::args::Flags;
-use crate::helper::Die;
+use crate::die::Die;
 
 const CONFIG_NAME: &str = ".lsfprc";
 const ARG_PREFIX: &str = "--config-";
