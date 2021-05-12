@@ -6,10 +6,12 @@ mod color;
 mod constants;
 mod core;
 mod file_detection;
+mod helper;
 mod modules;
 
 use crate::core::*;
 use color::*;
+use helper::Die;
 
 #[cfg(target_os = "windows")]
 #[cfg(feature = "color")]
@@ -19,7 +21,7 @@ extern "C" {
 }
 
 fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, single_item: bool) {
-  if !flags.all && file_detection::is_hidden(&path) && !single_item {
+  if !flags.all && file_detection::is_hidden(&path, flags) && !single_item {
     return;
   }
   let mut color = if path.is_dir() { "".to_owned().cyan(flags) } else { "".to_owned() };
@@ -28,18 +30,20 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
   let mut name_prefix = String::new();
   let mut suffix = String::new();
 
-  let item_name = OsStr::new(path.file_name().expect("Unable to get file name")).to_str().expect("Unable to parse file name");
-
-  let file_path = OsStr::new(path.strip_prefix(root).expect("Unable to get file path"))
+  let item_name = OsStr::new(path.file_name().die("Unable to get file name", flags))
     .to_str()
-    .expect("Unable to parse file path");
+    .die("Unable to parse file name", flags);
+
+  let file_path = OsStr::new(path.strip_prefix(root).die("Unable to get file path", flags))
+    .to_str()
+    .die("Unable to parse file path", flags);
 
   let mut indentation: u32 = 0;
   if flags.tree {
-    let mut parent_path = path.parent().expect("Failed to get parent path").to_path_buf();
+    let mut parent_path = path.parent().die("Failed to get parent path", flags).to_path_buf();
 
     while parent_path != root {
-      parent_path = parent_path.parent().expect("Failed to get parent path").to_path_buf();
+      parent_path = parent_path.parent().die("Failed to get parent path", flags).to_path_buf();
       indentation += 1;
     }
   }
@@ -60,9 +64,9 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
   if path.is_file() {
     if item_name.to_lowercase().starts_with("license") {
       color = "".to_owned().white(&flags);
-      suffix += format!(" [{}]", file_detection::get_license(path.as_path())).grey(flags).as_str();
+      suffix += format!(" [{}]", file_detection::get_license(path.as_path(), flags)).grey(flags).as_str();
     } else {
-      color = file_detection::file_extension_color(&path);
+      color = file_detection::file_extension_color(&path, flags);
     }
 
     // file path for git
@@ -73,7 +77,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
 
     // file changed (git)
     #[cfg(feature = "git")]
-    if !flags.no_git && modules::git::changed(&final_path) {
+    if !flags.no_git && modules::git::changed(&final_path, flags) {
       suffix += format!(
         " {}{}{}",
         "[".to_owned().grey(flags).reset(flags),
@@ -100,13 +104,13 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
 }
 
 fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
-  if !flags.all && file_detection::is_hidden(&path_to_scan.to_path_buf()) {
+  if !flags.all && file_detection::is_hidden(&path_to_scan.to_path_buf(), flags) {
     return;
   }
 
-  let item_name = OsStr::new(path_to_scan.file_name().expect("Unable to get file name"))
+  let item_name = OsStr::new(path_to_scan.file_name().die("Unable to get file name", flags))
     .to_str()
-    .expect("Unable to parse file name");
+    .die("Unable to parse file name", flags);
 
   if path_to_scan.is_file() {
     let path = path::PathBuf::from(path_to_scan);
@@ -116,8 +120,8 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
       return;
     }
 
-    for entry in fs::read_dir(path_to_scan).expect("Directory cannot be accessed") {
-      let path = entry.expect("Failed retrieving path").path();
+    for entry in fs::read_dir(path_to_scan).die("Directory cannot be accessed", flags) {
+      let path = entry.die("Failed retrieving path", flags).path();
 
       print_item(root, path.clone(), flags, false);
 
@@ -152,8 +156,8 @@ fn main() {
   } else if flags.tree {
     do_scan(path_to_scan, path_to_scan, &flags);
   } else {
-    for entry in fs::read_dir(path_to_scan).expect("Directory cannot be accessed") {
-      let path = entry.expect("Failed retrieving path").path();
+    for entry in fs::read_dir(path_to_scan).die("Directory cannot be accessed", &flags) {
+      let path = entry.die("Failed retrieving path", &flags).path();
       print_item(path_to_scan, path, &flags, false);
     }
   }
