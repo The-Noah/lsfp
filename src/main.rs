@@ -5,13 +5,14 @@ use std::path;
 mod color;
 mod constants;
 mod core;
+mod die;
 mod file_detection;
-mod helper;
 mod modules;
+mod prelude;
 
 use crate::core::*;
 use color::*;
-use helper::Die;
+use die::Die;
 
 #[cfg(target_os = "windows")]
 #[cfg(feature = "color")]
