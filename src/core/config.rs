@@ -1,9 +1,12 @@
 use std::fs;
 
+use crate::core::args::Flags;
+use crate::helper::Die;
+
 const CONFIG_NAME: &str = ".lsfprc";
 const ARG_PREFIX: &str = "--config-";
 
-pub fn parse_arg(arg: &str) -> bool {
+pub fn parse_arg(arg: &str, flags: &Flags) -> bool {
   if arg.starts_with(ARG_PREFIX) {
     let body = arg.strip_prefix(ARG_PREFIX).unwrap(); // strip argument prefix
 
@@ -16,7 +19,7 @@ pub fn parse_arg(arg: &str) -> bool {
       let content_split = match fs::read_to_string(CONFIG_NAME) {
         Ok(x) => x,
         Err(_) => {
-          fs::write(CONFIG_NAME, format!("- config: {}={}", name, value)).expect("unable to save config file");
+          fs::write(CONFIG_NAME, format!("- config: {}={}", name, value)).die("unable to save config file", flags);
           return true;
         }
       };
@@ -45,7 +48,7 @@ pub fn parse_arg(arg: &str) -> bool {
         contents.push(edited_line2.as_str());
       }
 
-      fs::write(CONFIG_NAME, contents.join("\n")).expect("unable to save config file");
+      fs::write(CONFIG_NAME, contents.join("\n")).die("unable to save config file", flags);
     } else {
       let contents = match fs::read_to_string(CONFIG_NAME) {
         Ok(x) => x,

@@ -47,7 +47,7 @@ pub fn get() -> (Flags, Vec<String>) {
       "--no-git" => flags.no_git = true,
       #[cfg(feature = "config")]
       _ => {
-        if !config::parse_arg(arg) {
+        if !config::parse_arg(arg, &flags) {
           continue;
         }
       }
