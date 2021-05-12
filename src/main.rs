@@ -11,8 +11,7 @@ mod modules;
 mod prelude;
 
 use crate::core::*;
-use color::*;
-use die::Die;
+use prelude::*;
 
 #[cfg(target_os = "windows")]
 #[cfg(feature = "color")]
