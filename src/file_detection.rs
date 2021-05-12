@@ -62,5 +62,5 @@ pub fn file_extension_color(path: &Path) -> String {
 }
 
 fn extension_matches(path: &Path, extension: &str) -> bool {
-  path.extension().unwrap_or(OsStr::new("")).to_str().expect("Unable to parse file extension") == extension
+  path.extension().unwrap_or_else(|| OsStr::new("")).to_str().expect("Unable to parse file extension") == extension
 }
