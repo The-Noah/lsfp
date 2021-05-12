@@ -7,10 +7,10 @@ use crate::core::args::Flags;
 use crate::helper::Die;
 
 #[cfg(target_os = "windows")]
-fn is_hidden_extra(path: &Path) -> bool {
+fn is_hidden_extra(path: &Path, flags: &Flags) -> bool {
   use std::os::windows::fs::MetadataExt;
 
-  let file_metadata = fs::metadata(path).die("Failed getting metadata");
+  let file_metadata = fs::metadata(path).die("Failed getting metadata", flags);
   let attribs = file_metadata.file_attributes();
 
   // https://docs.microsoft.com/en-us/dotnet/api/system.io.fileattributes?view=net-5.0#fields
@@ -18,7 +18,7 @@ fn is_hidden_extra(path: &Path) -> bool {
 }
 
 #[cfg(not(target_os = "windows"))]
-fn is_hidden_extra(_path: &Path) -> bool {
+fn is_hidden_extra(_path: &Path, _flags: &Flags) -> bool {
   false
 }
 
@@ -27,7 +27,7 @@ pub fn is_hidden(path: &Path, flags: &Flags) -> bool {
     .to_str()
     .die("Unable to parse file name", flags);
 
-  item_name.starts_with('.') || is_hidden_extra(path)
+  item_name.starts_with('.') || is_hidden_extra(path, flags)
 }
 
 pub fn get_license(path: &Path, flags: &Flags) -> String {
@@ -65,6 +65,6 @@ pub fn file_extension_color(path: &Path, flags: &Flags) -> String {
   color
 }
 
-fn extension_matches(path: &Path, extension: &str) -> bool {
-  path.extension().unwrap_or(OsStr::new("")).to_str().expect("Unable to parse file extension") == extension
+fn extension_matches(path: &Path, extension: &str, flags: &Flags) -> bool {
+  path.extension().unwrap_or(OsStr::new("")).to_str().die("Unable to parse file extension", flags) == extension
 }
