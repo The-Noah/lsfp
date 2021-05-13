@@ -20,16 +20,66 @@ const GREY: &str = "\x1b[90m";
 const RED: &str = "\x1b[31m";
 
 pub trait ColorExt {
-  fn reset(self, flags: &args::Flags) -> Self;
-  fn bright(self, flags: &args::Flags) -> Self;
-  fn underline(self, flags: &args::Flags) -> Self;
-  fn green(self, flags: &args::Flags) -> Self;
-  fn yellow(self, flags: &args::Flags) -> Self;
-  fn cyan(self, flags: &args::Flags) -> Self;
-  fn white(self, flags: &args::Flags) -> Self;
-  fn grey(self, flags: &args::Flags) -> Self;
-  fn red(self, flags: &args::Flags) -> Self;
-  fn custom(self, color: &str, flags: &args::Flags) -> Self;
+  fn reset(self, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
+  fn bright(self, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
+  fn underline(self, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
+  fn green(self, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
+  fn yellow(self, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
+  fn cyan(self, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
+  fn white(self, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
+  fn grey(self, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
+  fn red(self, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
+  fn custom(self, _color: &str, _flags: &args::Flags) -> Self
+  where
+    Self: Sized,
+  {
+    self
+  }
 }
 
 #[cfg(feature = "color")]
@@ -116,47 +166,7 @@ impl ColorExt for String {
 }
 
 #[cfg(not(feature = "color"))]
-impl ColorExt for String {
-  fn reset(self, _flags: &args::Flags) -> Self {
-    self
-  }
-
-  fn bright(self, _flags: &args::Flags) -> Self {
-    self
-  }
-
-  fn underline(self, _flags: &args::Flags) -> Self {
-    self
-  }
-
-  fn green(self, _flags: &args::Flags) -> Self {
-    self
-  }
-
-  fn yellow(self, _flags: &args::Flags) -> Self {
-    self
-  }
-
-  fn cyan(self, _flags: &args::Flags) -> Self {
-    self
-  }
-
-  fn white(self, _flags: &args::Flags) -> Self {
-    self
-  }
-
-  fn grey(self, _flags: &args::Flags) -> Self {
-    self
-  }
-
-  fn red(self, _flags: &args::Flags) -> Self {
-    self
-  }
-
-  fn custom(self, _color: &str, _flags: &args::Flags) -> Self {
-    self
-  }
-}
+impl ColorExt for String {}
 
 #[cfg(test)]
 mod tests {
