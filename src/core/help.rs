@@ -113,7 +113,7 @@ pub fn print_help(flags: &args::Flags) {
         "{}{}{}{}{}{}",
         INDENT,
         argument.name.unwrap_or("").to_owned().green(flags).reset(flags),
-        formatted_aliases[i].green(flags).reset(flags),
+        &formatted_aliases[i].to_string().green(flags).reset(flags),
         (0..max_alias_text_length - formatted_aliases[i].len()).map(|_| " ").collect::<String>(),
         INDENT,
         argument
