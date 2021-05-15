@@ -64,9 +64,9 @@ struct Argument<'a> {
 pub fn print_name_version(flags: &args::Flags) {
   println!(
     "{} {}{}",
-    env!("CARGO_PKG_NAME").to_owned().bright(flags).reset(flags),
-    "v".to_owned().green(flags).reset(flags),
-    env!("CARGO_PKG_VERSION").to_owned().green(flags).reset(flags)
+    env!("CARGO_PKG_NAME").bright(flags).reset(flags),
+    "v".green(flags).reset(flags),
+    env!("CARGO_PKG_VERSION").green(flags).reset(flags)
   );
 }
 
@@ -75,18 +75,12 @@ pub fn print_help(flags: &args::Flags) {
   println!("{}", env!("CARGO_PKG_DESCRIPTION"));
   println!("{}", format!("Created by {}", env!("CARGO_PKG_AUTHORS")).grey(flags).reset(flags));
   println!();
-  println!("{}:", "Usage".to_owned().bright(flags).yellow(flags).reset(flags));
-  println!(
-    "{}{} {}[options] [arguments]{}",
-    INDENT,
-    env!("CARGO_PKG_NAME"),
-    "".to_owned().yellow(flags),
-    "".to_owned().reset(flags)
-  );
+  println!("{}:", "Usage".bright(flags).yellow(flags).reset(flags));
+  println!("{}{} {}[options] [arguments]{}", INDENT, env!("CARGO_PKG_NAME"), "".yellow(flags), "".reset(flags));
 
   for help_section in HELP_SECTIONS {
     println!();
-    println!("{}:", help_section.0.to_owned().bright(flags).yellow(flags).reset(flags));
+    println!("{}:", help_section.0.bright(flags).yellow(flags).reset(flags));
 
     let mut formatted_aliases = vec![];
     let mut max_alias_text_length = 0;
@@ -112,14 +106,14 @@ pub fn print_help(flags: &args::Flags) {
       println!(
         "{}{}{}{}{}{}",
         INDENT,
-        argument.name.unwrap_or("").to_owned().green(flags).reset(flags),
+        argument.name.unwrap_or("").green(flags).reset(flags),
         &formatted_aliases[i].to_string().green(flags).reset(flags),
         (0..max_alias_text_length - formatted_aliases[i].len()).map(|_| " ").collect::<String>(),
         INDENT,
         argument
           .description
-          .replace("[", "[".to_owned().yellow(flags).as_str())
-          .replace("]", "]".to_owned().reset(flags).as_str())
+          .replace("[", "[".yellow(flags).as_str())
+          .replace("]", "]".reset(flags).as_str())
           .reset(flags)
       );
     }

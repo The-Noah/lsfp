@@ -15,7 +15,7 @@ where
   fn die(self, msg: &str, flags: &Flags) -> T {
     #[cfg(not(debug_assertions))]
     if let Err(_) = self {
-      println!("{} {}", "ERROR".to_owned().red(flags).bright(flags).reset(flags), msg);
+      println!("{} {}", "ERROR".red(flags).bright(flags).reset(flags), msg);
       std::process::exit(1)
     } else {
       self.unwrap()
@@ -29,7 +29,7 @@ impl<T> Die<T> for Option<T> {
   fn die(self, msg: &str, flags: &Flags) -> T {
     #[cfg(not(debug_assertions))]
     if let None = self {
-      println!("{} {}", "ERROR".to_owned().red(flags).bright(flags).reset(flags), msg);
+      println!("{} {}", "ERROR".red(flags).bright(flags).reset(flags), msg);
       std::process::exit(1)
     } else {
       self.unwrap()
