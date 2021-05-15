@@ -187,7 +187,7 @@ mod tests {
       no_git: false,
     };
 
-    assert_eq!(format!("{}abc{}", CYAN, RESET), format!("{}", "abc".to_owned().cyan(&flags).reset(&flags)));
+    assert_eq!(format!("{}abc{}", CYAN, RESET), format!("{}", "abc".cyan(&flags).reset(&flags)));
   }
 
   #[test]
@@ -200,6 +200,6 @@ mod tests {
       no_git: false,
     };
 
-    assert_eq!("abc", format!("{}", "abc".to_owned().cyan(&flags).reset(&flags)));
+    assert_eq!("abc", format!("{}", "abc".cyan(&flags).reset(&flags)));
   }
 }
