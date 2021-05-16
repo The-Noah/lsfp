@@ -28,54 +28,63 @@ pub trait ColorExt {
   {
     format!("{}", self)
   }
+
   fn bright(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
     format!("{}", self)
   }
+
   fn underline(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
     format!("{}", self)
   }
+
   fn green(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
     format!("{}", self)
   }
+
   fn yellow(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
     format!("{}", self)
   }
+
   fn cyan(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
     format!("{}", self)
   }
+
   fn white(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
     format!("{}", self)
   }
+
   fn grey(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
     format!("{}", self)
   }
+
   fn red(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
     format!("{}", self)
   }
+
   fn custom(self, _color: &str, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
