@@ -46,6 +46,21 @@ const HELP_SECTIONS: &[(&str, &[Argument])] = &[
     ],
   ),
   (
+    "Config",
+    &[
+      Argument {
+        name: None,
+        aliases: Some(&["config-color=<true|false>"]),
+        description: "Control colored output",
+      },
+      Argument {
+        name: None,
+        aliases: Some(&["config-git=<true|false>"]),
+        description: "Control git integration",
+      },
+    ],
+  ),
+  (
     "Arguments",
     &[Argument {
       name: Some("path"),
