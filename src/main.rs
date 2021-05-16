@@ -5,13 +5,13 @@ use std::path;
 mod color;
 mod constants;
 mod core;
+mod die;
 mod file_detection;
-mod helper;
 mod modules;
+mod prelude;
 
 use crate::core::*;
-use color::*;
-use helper::Die;
+use prelude::*;
 
 #[cfg(target_os = "windows")]
 #[cfg(feature = "color")]
@@ -24,7 +24,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
   if !flags.all && file_detection::is_hidden(&path, flags) && !single_item {
     return;
   }
-  let mut color = if path.is_dir() { "".to_owned().cyan(flags) } else { "".to_owned() };
+  let mut color = if path.is_dir() { "".cyan(flags) } else { "".to_owned() };
 
   let mut prefix = String::new();
   let mut name_prefix = String::new();
@@ -63,7 +63,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
 
   if path.is_file() {
     if item_name.to_lowercase().starts_with("license") {
-      color = "".to_owned().white(&flags);
+      color = "".white(&flags);
       suffix += format!(" [{}]", file_detection::get_license(path.as_path(), flags)).grey(flags).as_str();
     } else {
       color = file_detection::file_extension_color(&path, flags);
@@ -80,9 +80,9 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
     if !flags.no_git && modules::git::changed(&final_path, flags) {
       suffix += format!(
         " {}{}{}",
-        "[".to_owned().grey(flags).reset(flags),
-        "M".to_owned().bright(flags).yellow(flags).reset(flags),
-        "]".to_owned().grey(flags).reset(flags)
+        "[".grey(flags).reset(flags),
+        "M".bright(flags).yellow(flags).reset(flags),
+        "]".grey(flags).reset(flags)
       )
       .as_str();
     }
@@ -96,9 +96,9 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
     prefix,
     (3..indentation * 3).map(|_| " ").collect::<String>(),
     if indentation > 0 { "└──" } else { "" },
-    if !color.is_empty() { "".to_owned().bright(flags) } else { String::new() },
+    if !color.is_empty() { "".bright(flags) } else { String::new() },
     name_prefix.custom(color.as_str(), flags),
-    item_name.to_owned().reset(flags),
+    item_name.reset(flags),
     suffix,
   );
 }

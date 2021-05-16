@@ -4,7 +4,7 @@ use std::path::Path;
 
 use crate::constants;
 use crate::core::args::Flags;
-use crate::helper::Die;
+use crate::die::Die;
 
 #[cfg(target_os = "windows")]
 fn is_hidden_extra(path: &Path, flags: &Flags) -> bool {

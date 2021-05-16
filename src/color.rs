@@ -1,3 +1,5 @@
+use std::fmt::Display;
+
 use crate::core::*;
 
 #[cfg(feature = "color")]
@@ -20,95 +22,148 @@ const GREY: &str = "\x1b[90m";
 const RED: &str = "\x1b[31m";
 
 pub trait ColorExt {
-  fn reset(&self, flags: &args::Flags) -> Self;
-  fn bright(&self, flags: &args::Flags) -> Self;
-  fn underline(&self, flags: &args::Flags) -> Self;
-  fn green(&self, flags: &args::Flags) -> Self;
-  fn yellow(&self, flags: &args::Flags) -> Self;
-  fn cyan(&self, flags: &args::Flags) -> Self;
-  fn white(&self, flags: &args::Flags) -> Self;
-  fn grey(&self, flags: &args::Flags) -> Self;
-  fn red(&self, flags: &args::Flags) -> Self;
-  fn custom(&self, color: &str, flags: &args::Flags) -> Self;
+  fn reset(self, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
+  fn bright(self, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
+  fn underline(self, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
+  fn green(self, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
+  fn yellow(self, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
+  fn cyan(self, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
+  fn white(self, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
+  fn grey(self, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
+  fn red(self, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
+  fn custom(self, _color: &str, _flags: &args::Flags) -> String
+  where
+    Self: Sized + Display,
+  {
+    format!("{}", self)
+  }
 }
 
 #[cfg(feature = "color")]
-impl ColorExt for String {
-  fn reset(&self, flags: &args::Flags) -> Self {
+impl<T> ColorExt for T
+where
+  T: std::fmt::Display,
+{
+  fn reset(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", self, String::from(RESET))
     }
   }
 
-  fn bright(&self, flags: &args::Flags) -> Self {
+  fn bright(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", String::from(BRIGHT), self)
     }
   }
 
-  fn underline(&self, flags: &args::Flags) -> Self {
+  fn underline(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", String::from(UNDERLINE), self)
     }
   }
 
-  fn green(&self, flags: &args::Flags) -> Self {
+  fn green(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", String::from(GREEN), self)
     }
   }
 
-  fn yellow(&self, flags: &args::Flags) -> Self {
+  fn yellow(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", String::from(YELLOW), self)
     }
   }
 
-  fn cyan(&self, flags: &args::Flags) -> Self {
+  fn cyan(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", String::from(CYAN), self)
     }
   }
 
-  fn white(&self, flags: &args::Flags) -> Self {
+  fn white(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", String::from(WHITE), self)
     }
   }
 
-  fn grey(&self, flags: &args::Flags) -> Self {
+  fn grey(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", String::from(GREY), self)
     }
   }
 
-  fn red(&self, flags: &args::Flags) -> Self {
+  fn red(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", String::from(RED), self)
     }
   }
 
-  fn custom(&self, color: &str, flags: &args::Flags) -> Self {
+  fn custom(self, color: &str, flags: &args::Flags) -> String {
     if flags.no_color {
-      self.to_string()
+      format!("{}", self)
     } else {
       format!("{}{}", String::from(color), self)
     }
@@ -116,47 +171,7 @@ impl ColorExt for String {
 }
 
 #[cfg(not(feature = "color"))]
-impl ColorExt for String {
-  fn reset(&self, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-
-  fn bright(&self, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-
-  fn underline(&self, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-
-  fn green(&self, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-
-  fn yellow(&self, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-
-  fn cyan(&self, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-
-  fn white(&self, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-
-  fn grey(&self, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-
-  fn red(&self, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-
-  fn custom(&self, _color: &str, _flags: &args::Flags) -> Self {
-    self.to_string()
-  }
-}
+impl<T> ColorExt for T where T: std::fmt::Display {}
 
 #[cfg(test)]
 mod tests {
@@ -172,7 +187,7 @@ mod tests {
       no_git: false,
     };
 
-    assert_eq!(format!("{}abc{}", CYAN, RESET), format!("{}", "abc".to_owned().cyan(&flags).reset(&flags)));
+    assert_eq!(format!("{}abc{}", CYAN, RESET), format!("{}", "abc".cyan(&flags).reset(&flags)));
   }
 
   #[test]
@@ -185,6 +200,6 @@ mod tests {
       no_git: false,
     };
 
-    assert_eq!("abc", format!("{}", "abc".to_owned().cyan(&flags).reset(&flags)));
+    assert_eq!("abc", format!("{}", "abc".cyan(&flags).reset(&flags)));
   }
 }
