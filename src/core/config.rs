@@ -15,11 +15,11 @@ pub fn parse_arg(arg: &str, flags: &Flags) -> bool {
       let name = parts[0];
       let value = parts[1];
 
-      println!("config set {}={}", name, value);
+      println!("set {}={}\n", name, value);
       let content_split = match fs::read_to_string(CONFIG_NAME) {
         Ok(x) => x,
         Err(_) => {
-          fs::write(CONFIG_NAME, format!("{}={}", name, value)).die("unable to save config file", flags);
+          fs::write(CONFIG_NAME, format!("{}={}", name, value)).die("Unable to save config file", flags);
           return true;
         }
       };
@@ -48,7 +48,7 @@ pub fn parse_arg(arg: &str, flags: &Flags) -> bool {
         contents.push(edited_line2.as_str());
       }
 
-      fs::write(CONFIG_NAME, contents.join("\n")).die("unable to save config file", flags);
+      fs::write(CONFIG_NAME, contents.join("\n")).die("Unable to save config file", flags);
     } else {
       let contents = match fs::read_to_string(CONFIG_NAME) {
         Ok(x) => x,
