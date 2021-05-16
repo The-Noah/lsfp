@@ -144,7 +144,7 @@ fn main() {
   }
 
   let raw_path = args.pop().unwrap_or_else(|| String::from("."));
-  let path_to_scan = path::Path::new(raw_path.as_str());
+  let path_to_scan = &(path::Path::new(raw_path.as_str()).canonicalize().die("Unable to canonicalize path", &flags)).as_path();
 
   if !path_to_scan.exists() {
     println!("File or directory does not exist");
