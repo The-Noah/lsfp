@@ -19,7 +19,7 @@ pub fn parse_arg(arg: &str, flags: &Flags) -> bool {
       let content_split = match fs::read_to_string(CONFIG_NAME) {
         Ok(x) => x,
         Err(_) => {
-          fs::write(CONFIG_NAME, format!("- config: {}={}", name, value)).die("unable to save config file", flags);
+          fs::write(CONFIG_NAME, format!("{}={}", name, value)).die("unable to save config file", flags);
           return true;
         }
       };
@@ -32,10 +32,10 @@ pub fn parse_arg(arg: &str, flags: &Flags) -> bool {
 
       for (i, line) in contents.iter().enumerate() {
         let final_line = &(line.replace("\r", "").trim().to_string());
-        if final_line.starts_with(format!("- config: {}=", name).as_str()) {
+        if final_line.starts_with(format!("{}=", name).as_str()) {
           found = true;
 
-          edited_line = format!("- config: {}={}", name, value);
+          edited_line = format!("{}={}", name, value);
           contents[i] = edited_line.as_str();
 
           break;
@@ -44,7 +44,7 @@ pub fn parse_arg(arg: &str, flags: &Flags) -> bool {
 
       // append to file
       if !found {
-        edited_line2 = format!("- config: {}={}", name, value);
+        edited_line2 = format!("{}={}", name, value);
         contents.push(edited_line2.as_str());
       }
 
@@ -63,7 +63,7 @@ pub fn parse_arg(arg: &str, flags: &Flags) -> bool {
 
       for line in contents.split('\n') {
         let final_line = &(line.trim().to_string());
-        if final_line.starts_with(format!("- config: {}=", body).as_str()) {
+        if final_line.starts_with(format!("{}=", body).as_str()) {
           found = true;
 
           let parts: Vec<&str> = final_line.split('=').collect();
@@ -93,7 +93,7 @@ pub fn get_bool(name: &str, default: bool) -> bool {
 
   for line in contents.split('\n') {
     let final_line = &(line.trim().to_string());
-    if final_line.starts_with(format!("- config: {}=", name).as_str()) {
+    if final_line.starts_with(format!("{}=", name).as_str()) {
       let parts: Vec<&str> = final_line.split('=').collect();
 
       return parts[1] == "true";
