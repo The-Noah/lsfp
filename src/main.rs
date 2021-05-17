@@ -144,7 +144,7 @@ fn main() {
   }
 
   let raw_path = args.pop().unwrap_or_else(|| String::from("."));
-  let path_to_scan = path::Path::new(raw_path.as_str()).canonicalize().die("Unable to canonicalize path", &flags);
+  let path_to_scan = path::Path::new(raw_path.as_str()).canonicalize().die("Invalid or inexistent path", &flags);
   let path_to_scan = path_to_scan.as_path();
 
   if !path_to_scan.exists() {
