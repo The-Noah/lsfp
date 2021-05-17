@@ -152,7 +152,7 @@ fn main() {
 
     if !path_to_scan.exists() {
       println!("File or directory does not exist");
-      std::process::exit(0);
+      std::process::exit(1);
     }
 
     if path_to_scan.is_file() {
