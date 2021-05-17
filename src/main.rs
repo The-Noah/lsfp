@@ -86,7 +86,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
       )
       .as_str();
     }
-  } else if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
+  } else if !flags.all && flags.tree && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
     name_prefix = String::new().underline(flags);
   }
 
@@ -116,7 +116,7 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
     let path = path::PathBuf::from(path_to_scan);
     print_item(root, path, flags, false);
   } else {
-    if !flags.all && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
+    if !flags.all && flags.tree && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
       return;
     }
 
