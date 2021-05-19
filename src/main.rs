@@ -143,23 +143,37 @@ fn main() {
     }
   }
 
-  let raw_path = args.pop().unwrap_or_else(|| String::from("."));
-  let path_to_scan = path::Path::new(raw_path.as_str()).canonicalize().die("Invalid or inexistent path", &flags);
-  let path_to_scan = path_to_scan.as_path();
-
-  if !path_to_scan.exists() {
-    println!("File or directory does not exist");
-    std::process::exit(0);
+  if args.is_empty() {
+    args.push(String::from("."));
   }
+  for arg in &args {
+    let path_to_scan = path::Path::new(arg.as_str()).canonicalize().die("Invalid or inexistent path", &flags);
+    let path_to_scan = path_to_scan.as_path();
 
-  if path_to_scan.is_file() {
-    print_item(path_to_scan, path::PathBuf::from(path_to_scan), &flags, true); // Only situation where single_item will be true
-  } else if flags.tree {
-    do_scan(path_to_scan, path_to_scan, &flags);
-  } else {
-    for entry in fs::read_dir(path_to_scan).die("Directory cannot be accessed", &flags) {
-      let path = entry.die("Failed retrieving path", &flags).path();
-      print_item(path_to_scan, path, &flags, false);
+    if !path_to_scan.exists() {
+      println!("File or directory does not exist");
+      std::process::exit(1);
+    }
+
+    if path_to_scan.is_file() {
+      print_item(path_to_scan, path::PathBuf::from(path_to_scan), &flags, true);
+    // Only situation where single_item will be true
+    } else if flags.tree {
+      do_scan(path_to_scan, path_to_scan, &flags);
+    } else {
+      if args.len() > 1 {
+        let newline: &str;
+        if args.iter().position(|a| a == arg).die("Unexpected error when listing directory", &flags) == 0 {
+          newline = "";
+        } else {
+          newline = "\n";
+        }
+        println!("{}", format!("{}Folder {}:", newline, arg).underline(&flags).bright(&flags));
+      }
+      for entry in fs::read_dir(path_to_scan).die("Directory cannot be accessed", &flags) {
+        let path = entry.die("Failed retrieving path", &flags).path();
+        print_item(path_to_scan, path, &flags, false);
+      }
     }
   }
 }
