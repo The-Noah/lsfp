@@ -1,6 +1,6 @@
 [package]
 name = "lsfp"
-version = "0.4.3"
+version = "0.5.0"
 authors = ["The Noah <thenoahbz@gmail.com>"]
 edition = "2018"
 description = "Cross-platform alternative to ls, specifically designed for programmers"
