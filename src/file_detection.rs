@@ -50,19 +50,26 @@ pub fn get_license(path: &Path, flags: &Flags) -> String {
   license_type.to_string()
 }
 
-pub fn file_extension_color(path: &Path, flags: &Flags) -> String {
-  let mut color = String::new();
-
-  'extension_loop: for extension_color in constants::FILE_EXTENSION_COLORS.iter() {
+pub fn file_extension_styles(path: &Path, flags: &Flags) -> (String, String) {
+  for extension_color in constants::FILE_EXTENSION_COLORS.iter() {
     for extension in extension_color.0 {
       if extension_matches(path, extension, flags) {
-        color = format!("\x1b[38;2;{};{};{}m", extension_color.1 .0, extension_color.1 .1, extension_color.1 .2);
-        break 'extension_loop;
+        return (
+          format!("\x1b[38;2;{};{};{}m", extension_color.1 .0, extension_color.1 .1, extension_color.1 .2,),
+          #[cfg(feature = "icons")]
+          if flags.icons { extension_color.2.to_owned() } else { String::new() },
+          #[cfg(not(feature = "icons"))]
+          String::new(),
+        );
       }
     }
   }
 
-  color
+  #[cfg(feature = "icons")]
+  if flags.icons {
+    return (String::new(), constants::ICON_GENERIC.to_owned());
+  }
+  (String::new(), String::new())
 }
 
 fn extension_matches(path: &Path, extension: &str, flags: &Flags) -> bool {
