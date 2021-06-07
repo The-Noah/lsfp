@@ -38,6 +38,17 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
     .to_str()
     .die("Unable to parse file path", flags);
 
+  let mut icon = String::new();
+
+  #[cfg(feature = "icons")]
+  if path.is_dir() && flags.icons {
+    if !flags.all && flags.tree && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
+      icon = constants::ICON_FOLDER_CLOSED.to_owned(); // Closed folder icon (font awesome outline)
+    } else {
+      icon = constants::ICON_FOLDER_OPEN.to_owned(); // Open folder icon (font awesome outline)
+    }
+  }
+
   let mut indentation: u32 = 0;
   if flags.tree {
     let mut parent_path = path.parent().die("Failed to get parent path", flags).to_path_buf();
@@ -63,10 +74,20 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
 
   if path.is_file() {
     if item_name.to_lowercase().starts_with("license") {
+      // Add license icon if the flag is passed
       color = "".white(&flags);
+      #[cfg(feature = "icons")]
+      if flags.icons {
+        icon = constants::ICON_LICENSE.white(&flags);
+      }
       suffix += format!(" [{}]", file_detection::get_license(path.as_path(), flags)).grey(flags).as_str();
     } else {
-      color = file_detection::file_extension_color(&path, flags);
+      let styles = file_detection::file_extension_styles(&path, flags);
+      color = styles.0;
+      #[cfg(feature = "icons")]
+      if flags.icons {
+        icon = styles.1;
+      }
     }
 
     // file path for git
@@ -91,13 +112,37 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
   }
 
   suffix += String::new().reset(&flags).as_str();
+
+  #[cfg(feature = "icons")]
+  let leading_space = if flags.icons { " " } else { "" };
+  #[cfg(not(feature = "icons"))]
+  let leading_space = "";
+
+  /*println!(
+    "prefix: {}; name_prefix: {}; color: {}; item_name: {}; sufix: {};",
+    prefix, name_prefix, color, item_name, suffix
+  );*/
   println!(
-    "{}{}{}{}{}{}{}",
+    "{}{}{}{}{}{}{}{}{}{}{}",
+    if indentation == 0 && leading_space == " " {
+      leading_space.to_owned()
+    } else if leading_space == " " {
+      (0..indentation).map(|_| leading_space).collect::<String>()
+    } else {
+      String::new()
+    }, // Align tree branches properly when leading spaces appear
     prefix,
     (3..indentation * 3).map(|_| " ").collect::<String>(),
     if indentation > 0 { "└──" } else { "" },
+    if indentation > 0 { leading_space } else { "" },
     if !color.is_empty() { "".bright(flags) } else { String::new() },
     name_prefix.custom(color.as_str(), flags),
+    icon,
+    if path.extension().unwrap_or(&std::ffi::OsString::new()) != "pl" {
+      leading_space
+    } else {
+      ""
+    }, // Perl's icon already includes an space after it, so this ensure that it is not shown when printing a perl file
     item_name.reset(flags),
     suffix,
   );

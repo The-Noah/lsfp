@@ -31,6 +31,12 @@ const HELP_SECTIONS: &[(&str, &[Argument])] = &[
         aliases: Some(&["t", "r", "tree", "recursive"]),
         description: "Show output as a tree (recursive)",
       },
+      #[cfg(feature = "icons")]
+      Argument {
+        name: None,
+        aliases: Some(&["i", "icons"]),
+        description: "Show icons before filename, requires Nerd Font",
+      },
       #[cfg(feature = "color")]
       Argument {
         name: None,
@@ -45,18 +51,27 @@ const HELP_SECTIONS: &[(&str, &[Argument])] = &[
       },
     ],
   ),
+  #[cfg(feature = "config")]
   (
     "Config",
     &[
+      #[cfg(feature = "color")]
       Argument {
         name: None,
         aliases: Some(&["config-color=<true|false>"]),
         description: "Control colored output",
       },
+      #[cfg(feature = "git")]
       Argument {
         name: None,
         aliases: Some(&["config-git=<true|false>"]),
         description: "Control git integration",
+      },
+      #[cfg(feature = "icons")]
+      Argument {
+        name: None,
+        aliases: Some(&["config-icons=<true|false>"]),
+        description: "Control icons",
       },
     ],
   ),

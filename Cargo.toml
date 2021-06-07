@@ -9,12 +9,7 @@ readme = "README.md"
 homepage = "https://github.com/The-Noah/lsfp"
 repository = "https://github.com/The-Noah/lsfp"
 license-file = "LICENSE"
-include = [
-  "**/*.rs",
-  "**/*.c",
-  "Cargo.{toml,lock}",
-  "LICENSE",
-]
+include = ["**/*.rs", "**/*.c", "Cargo.{toml,lock}", "LICENSE"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -36,10 +31,11 @@ panic = "abort"
 debug = false
 
 [features]
-default = ["git", "color"]
+default = ["git", "color", "icons"]
 config = []
 git = ["config"]
 color = ["config"]
+icons = ["config"]
 
 [dependencies]
 

@@ -192,6 +192,7 @@ mod tests {
       all: false,
       size: false,
       tree: false,
+      icons: false,
       no_color: false,
       no_git: false,
     };
@@ -205,6 +206,7 @@ mod tests {
       all: false,
       size: false,
       tree: false,
+      icons: false,
       no_color: true,
       no_git: false,
     };

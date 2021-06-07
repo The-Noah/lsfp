@@ -7,6 +7,8 @@ pub struct Flags {
   pub all: bool,
   pub size: bool,
   pub tree: bool,
+  #[cfg(feature = "icons")]
+  pub icons: bool,
   #[cfg(feature = "color")]
   pub no_color: bool,
   #[cfg(feature = "git")]
@@ -15,12 +17,14 @@ pub struct Flags {
 
 pub fn get() -> (Flags, Vec<String>) {
   let mut args: Vec<String> = std::env::args().collect();
-  args.remove(0); // remove first arguement which is self
+  args.remove(0); // remove first argument which is self
 
   let mut flags = Flags {
     all: false,
     size: false,
     tree: false,
+    #[cfg(feature = "icons")]
+    icons: false,
     #[cfg(feature = "color")]
     no_color: std::env::var("NO_COLOR").is_ok(),
     #[cfg(feature = "git")]
@@ -41,6 +45,8 @@ pub fn get() -> (Flags, Vec<String>) {
       "-a" | "--all" => flags.all = true,
       "-s" | "--size" => flags.size = true,
       "-t" | "--tree" | "-r" | "--recursive" => flags.tree = true,
+      #[cfg(feature = "icons")]
+      "-i" | "--icons" => flags.icons = true,
       #[cfg(feature = "color")]
       "--no-color" => flags.no_color = true,
       #[cfg(feature = "git")]
@@ -74,6 +80,10 @@ pub fn get() -> (Flags, Vec<String>) {
   #[cfg(feature = "color")]
   if !flags.no_color {
     flags.no_color = !config::get_bool("color", true);
+  }
+  #[cfg(feature = "icons")]
+  if !flags.icons {
+    flags.icons = config::get_bool("icons", false);
   }
 
   for (removed_count, arg_to_remove) in args_to_remove.iter().enumerate() {
