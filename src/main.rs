@@ -213,7 +213,7 @@ fn main() {
         } else {
           newline = "\n";
         }
-        println!("{}", format!("{}Folder {}:", newline, arg).underline(&flags).bright(&flags));
+        println!("{}", format!("{}Folder {}:", newline, arg).underline(&flags).bright(&flags).reset(&flags));
       }
       for entry in fs::read_dir(path_to_scan).die("Directory cannot be accessed", &flags) {
         let path = entry.die("Failed retrieving path", &flags).path();
