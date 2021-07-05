@@ -58,7 +58,9 @@ pub fn get() -> (Flags, Vec<String>) {
         }
       }
       #[cfg(not(feature = "config"))]
-      _ => {}
+      _ => {
+        continue;
+      }
     }
 
     args_to_remove.push(i);
