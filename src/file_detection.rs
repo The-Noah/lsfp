@@ -5,6 +5,9 @@ use std::path::Path;
 use crate::constants;
 use crate::core::args::Flags;
 use crate::die::Die;
+#[cfg(feature = "icons")]
+use crate::modules::icon;
+use crate::themes::Theme;
 
 #[cfg(target_os = "windows")]
 fn is_hidden_extra(path: &Path, flags: &Flags) -> bool {
@@ -50,14 +53,14 @@ pub fn get_license(path: &Path, flags: &Flags) -> String {
   license_type.to_string()
 }
 
-pub fn file_extension_styles(path: &Path, flags: &Flags) -> (String, String) {
-  for extension_color in constants::FILE_EXTENSION_COLORS.iter() {
+pub fn file_extension_styles(path: &Path, theme: &Theme, flags: &Flags) -> (String, String) {
+  for extension_color in theme.iter() {
     for extension in extension_color.0 {
       if extension_matches(path, extension, flags) {
         return (
           format!("\x1b[38;2;{};{};{}m", extension_color.1 .0, extension_color.1 .1, extension_color.1 .2,),
           #[cfg(feature = "icons")]
-          if flags.icons { extension_color.2.to_owned() } else { String::new() },
+          if flags.icons { icon::from(extension_color.2) } else { String::new() },
           #[cfg(not(feature = "icons"))]
           String::new(),
         );
@@ -67,7 +70,7 @@ pub fn file_extension_styles(path: &Path, flags: &Flags) -> (String, String) {
 
   #[cfg(feature = "icons")]
   if flags.icons {
-    return (String::new(), constants::ICON_GENERIC.to_owned());
+    return (String::new(), icon::from(constants::ICON_GENERIC));
   }
   (String::new(), String::new())
 }

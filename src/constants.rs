@@ -1,42 +1,44 @@
-type FileExtensionColor<'a> = (&'a [&'a str], (u8, u8, u8), &'a str);
+use crate::themes::Theme;
+
+// type FileExtensionColor<'a> = (&'a [&'a str], (u8, u8, u8), &'a str);
 
 // https://github.com/ozh/github-colors/blob/master/colors.json
-pub const FILE_EXTENSION_COLORS: &[FileExtensionColor] = &[
-  (&["js"], (241, 224, 90), "\u{e60c}"),                // JavaScript
-  (&["ts"], (43, 116, 137), "\u{e628}"),                // TypeScript
-  (&["cpp", "cxx", "hpp"], (243, 75, 125), "\u{fb71}"), // C++
-  (&["c", "h"], (85, 85, 85), "\u{e61e}"),              // C (alternative: fb70 [same design as c++'s, but is too big and inconsistent])
-  (&["yaml", "yml"], (203, 23, 30), "\u{e60b}"),        // YAML
-  (&["json"], (64, 212, 126), "\u{e60b}"),              // JSON
-  (&["rs"], (222, 165, 132), "\u{e7a8}"),               // Rust
-  (&["php"], (79, 93, 149), "\u{e73d}"),                // PHP
-  (&["cs"], (23, 134, 0), "\u{f81a}"),                  // C#
-  (&["rb"], (112, 21, 22), "\u{e791}"),                 // Ruby
-  (&["pl"], (2, 152, 195), "\u{f977}"),                 // Pearl (generic script icon, alternatives: `code` icon)
-  (&["swift"], (255, 172, 69), "\u{e755}"),             // Swift
-  (&["md", "markdown"], (8, 63, 161), "\u{f853}"),      // Markdown
-  (&["py"], (53, 114, 165), "\u{e73c}"),                // Python
-  (&["html", "htm"], (227, 76, 38), "\u{e736}"),        // HTML
-  (&["css"], (86, 61, 124), "\u{e74a}"),                // CSS
-  (&["scss"], (198, 83, 140), "\u{e74b}"),              // SCSS
-  (&["sass"], (165, 59, 112), "\u{e74b}"),              // SASS
-  (&["less"], (29, 54, 93), "\u{e758}"),                // Less
-  (&["bat"], (193, 241, 46), "\u{f120}"),               // Batch (generic terminal, alternatives: e795, e7a2)
-  (&["ps1", "psm1", "psd1"], (1, 36, 86), "\u{f489}"),  // Powershell
-  (&["sh"], (137, 224, 81), "\u{f120}"),                // Bash
-  (&["lua"], (0, 0, 128), "\u{e620}"),                  // LUA
-  (&["java"], (176, 114, 25), "\u{e738}"),              // Java
-  (&["m"], (67, 142, 255), "\u{e711}"),                 // Objective-C (generic apple logo)
+pub const DEFAULT_THEME: Theme = &[
+  (&["js"], (241, 224, 90), "e60c"),                // JavaScript
+  (&["ts"], (43, 116, 137), "e628"),                // TypeScript
+  (&["cpp", "cxx", "hpp"], (243, 75, 125), "fb71"), // C++
+  (&["c", "h"], (85, 85, 85), "e61e"),              // C (alternative: fb70 [same design as c++'s, but is too big and inconsistent])
+  (&["yaml", "yml"], (203, 23, 30), "e60b"),        // YAML
+  (&["json"], (64, 212, 126), "e60b"),              // JSON
+  (&["rs"], (222, 165, 132), "e7a8"),               // Rust
+  (&["php"], (79, 93, 149), "e73d"),                // PHP
+  (&["cs"], (23, 134, 0), "f81a"),                  // C#
+  (&["rb"], (112, 21, 22), "e791"),                 // Ruby
+  (&["pl"], (2, 152, 195), "f977"),                 // Pearl (generic script icon, alternatives: `code` icon)
+  (&["swift"], (255, 172, 69), "e755"),             // Swift
+  (&["md", "markdown"], (8, 63, 161), "f853"),      // Markdown
+  (&["py"], (53, 114, 165), "e73c"),                // Python
+  (&["html", "htm"], (227, 76, 38), "e736"),        // HTML
+  (&["css"], (86, 61, 124), "e74a"),                // CSS
+  (&["scss"], (198, 83, 140), "e74b"),              // SCSS
+  (&["sass"], (165, 59, 112), "e74b"),              // SASS
+  (&["less"], (29, 54, 93), "e758"),                // Less
+  (&["bat"], (193, 241, 46), "f120"),               // Batch (generic terminal, alternatives: e795, e7a2)
+  (&["ps1", "psm1", "psd1"], (1, 36, 86), "f489"),  // Powershell
+  (&["sh"], (137, 224, 81), "f120"),                // Bash
+  (&["lua"], (0, 0, 128), "e620"),                  // LUA
+  (&["java"], (176, 114, 25), "e738"),              // Java
+  (&["m"], (67, 142, 255), "e711"),                 // Objective-C (generic apple logo)
 ];
 
 #[cfg(feature = "icons")]
-pub const ICON_FOLDER_OPEN: &str = "\u{f115}";
+pub const ICON_FOLDER_OPEN: &str = "f115";
 #[cfg(feature = "icons")]
-pub const ICON_FOLDER_CLOSED: &str = "\u{f114}";
+pub const ICON_FOLDER_CLOSED: &str = "f114";
 #[cfg(feature = "icons")]
-pub const ICON_LICENSE: &str = "\u{f623}";
+pub const ICON_LICENSE: &str = "f623";
 #[cfg(feature = "icons")]
-pub const ICON_GENERIC: &str = "\u{f723}";
+pub const ICON_GENERIC: &str = "f723";
 
 // https://choosealicense.com/
 // https://opensource.org/licenses/

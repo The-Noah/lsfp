@@ -1,3 +1,6 @@
+#[cfg(feature = "index_flags")]
+use std::ops::{Index, IndexMut};
+
 #[cfg(feature = "config")]
 use crate::core::config;
 
@@ -13,6 +16,32 @@ pub struct Flags {
   pub no_color: bool,
   #[cfg(feature = "git")]
   pub no_git: bool,
+  #[cfg(feature = "themes")]
+  pub theme: Option<String>,
+}
+
+#[cfg(feature = "index_flags")]
+// Only used for options that take value, which always is Option<String>
+impl Index<&'_ str> for Flags {
+  type Output = Option<String>;
+  fn index(&self, s: &str) -> &Self::Output {
+    match s {
+      #[cfg(feature = "themes")]
+      "theme" => &self.theme,
+      _ => panic!("Cannot index field {} of flags", s),
+    }
+  }
+}
+
+#[cfg(feature = "index_flags")]
+impl IndexMut<&'_ str> for Flags {
+  fn index_mut(&mut self, s: &str) -> &mut Self::Output {
+    match s {
+      #[cfg(feature = "themes")]
+      "theme" => &mut self.theme,
+      _ => panic!("Cannot index field {} of flags", s),
+    }
+  }
 }
 
 pub fn get() -> (Flags, Vec<String>) {
@@ -29,6 +58,8 @@ pub fn get() -> (Flags, Vec<String>) {
     no_color: std::env::var("NO_COLOR").is_ok(),
     #[cfg(feature = "git")]
     no_git: false,
+    #[cfg(feature = "themes")]
+    theme: None,
   };
 
   let mut args_to_remove = vec![];
@@ -36,8 +67,19 @@ pub fn get() -> (Flags, Vec<String>) {
   let mut print_help = false;
   let mut print_version = false;
 
+  #[cfg(feature = "index_flags")]
+  let mut takes_value: &str = "";
+
   for (i, arg_str) in args.iter().enumerate() {
     let arg = arg_str.as_str();
+
+    #[cfg(feature = "index_flags")]
+    if !takes_value.is_empty() {
+      flags[takes_value] = Some(arg.to_owned());
+      takes_value = "";
+      args_to_remove.push(i);
+      continue;
+    }
 
     match arg {
       "-h" | "--help" => print_help = true,
@@ -51,6 +93,8 @@ pub fn get() -> (Flags, Vec<String>) {
       "--no-color" => flags.no_color = true,
       #[cfg(feature = "git")]
       "--no-git" => flags.no_git = true,
+      #[cfg(feature = "themes")]
+      "--theme" => takes_value = "theme",
       #[cfg(feature = "config")]
       _ => {
         if !config::parse_arg(arg, &flags) {

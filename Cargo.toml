@@ -31,11 +31,16 @@ panic = "abort"
 debug = false
 
 [features]
-default = ["git", "color", "icons"]
-config = []
+default = ["git", "color", "icons", "themes"]
+# End user features
 git = ["config"]
 color = ["config"]
 icons = ["config"]
+themes = ["index_flags", "home"]
+# Internal features
+config = []
+index_flags = []
+home = []
 
 [dependencies]
 

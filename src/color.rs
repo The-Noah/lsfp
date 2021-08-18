@@ -195,6 +195,7 @@ mod tests {
       icons: false,
       no_color: false,
       no_git: false,
+      theme: None,
     };
 
     assert_eq!(format!("{}abc{}", CYAN, RESET), format!("{}", "abc".cyan(&flags).reset(&flags)));
@@ -209,6 +210,7 @@ mod tests {
       icons: false,
       no_color: true,
       no_git: false,
+      theme: None,
     };
 
     assert_eq!("abc", format!("{}", "abc".cyan(&flags).reset(&flags)));
