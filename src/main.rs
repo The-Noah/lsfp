@@ -9,8 +9,11 @@ mod die;
 mod file_detection;
 mod modules;
 mod prelude;
+mod themes;
 
 use crate::core::*;
+#[cfg(feature = "icons")]
+use modules::icon;
 use prelude::*;
 
 #[cfg(target_os = "windows")]
@@ -20,7 +23,7 @@ extern "C" {
   fn enable_color();
 }
 
-fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, single_item: bool) {
+fn print_item(root: &path::Path, path: path::PathBuf, theme: &themes::Theme, flags: &args::Flags, single_item: bool) {
   if !flags.all && file_detection::is_hidden(&path, flags) && !single_item {
     return;
   }
@@ -38,14 +41,17 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
     .to_str()
     .die("Unable to parse file path", flags);
 
+  #[cfg(feature = "icons")]
   let mut icon = String::new();
+  #[cfg(not(feature = "icons"))]
+  let icon = String::new();
 
   #[cfg(feature = "icons")]
   if path.is_dir() && flags.icons {
     if !flags.all && flags.tree && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
-      icon = constants::ICON_FOLDER_CLOSED.to_owned(); // Closed folder icon (font awesome outline)
+      icon = icon::from(constants::ICON_FOLDER_CLOSED); // Closed folder icon (font awesome outline)
     } else {
-      icon = constants::ICON_FOLDER_OPEN.to_owned(); // Open folder icon (font awesome outline)
+      icon = icon::from(constants::ICON_FOLDER_OPEN); // Open folder icon (font awesome outline)
     }
   }
 
@@ -75,14 +81,14 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
   if path.is_file() {
     if item_name.to_lowercase().starts_with("license") {
       // Add license icon if the flag is passed
-      color = "".white(&flags);
+      color = "".white(flags);
       #[cfg(feature = "icons")]
       if flags.icons {
-        icon = constants::ICON_LICENSE.white(&flags);
+        icon = icon::from(constants::ICON_LICENSE);
       }
       suffix += format!(" [{}]", file_detection::get_license(path.as_path(), flags)).grey(flags).as_str();
     } else {
-      let styles = file_detection::file_extension_styles(&path, flags);
+      let styles = file_detection::file_extension_styles(&path, theme, flags);
       color = styles.0;
       #[cfg(feature = "icons")]
       if flags.icons {
@@ -111,17 +117,13 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
     name_prefix = String::new().underline(flags);
   }
 
-  suffix += String::new().reset(&flags).as_str();
+  suffix += String::new().reset(flags).as_str();
 
   #[cfg(feature = "icons")]
   let leading_space = if flags.icons { " " } else { "" };
   #[cfg(not(feature = "icons"))]
   let leading_space = "";
 
-  /*println!(
-    "prefix: {}; name_prefix: {}; color: {}; item_name: {}; sufix: {};",
-    prefix, name_prefix, color, item_name, suffix
-  );*/
   println!(
     "{}{}{}{}{}{}{}{}{}{}{}",
     if indentation == 0 && leading_space == " " {
@@ -148,7 +150,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, flags: &args::Flags, singl
   );
 }
 
-fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
+fn do_scan(root: &path::Path, path_to_scan: &path::Path, theme: &themes::Theme, flags: &args::Flags) {
   if !flags.all && file_detection::is_hidden(&path_to_scan.to_path_buf(), flags) {
     return;
   }
@@ -159,7 +161,7 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
 
   if path_to_scan.is_file() {
     let path = path::PathBuf::from(path_to_scan);
-    print_item(root, path, flags, false);
+    print_item(root, path, theme, flags, false);
   } else {
     if !flags.all && flags.tree && constants::COLLAPSED_DIRECTORIES.contains(&item_name) {
       return;
@@ -168,10 +170,10 @@ fn do_scan(root: &path::Path, path_to_scan: &path::Path, flags: &args::Flags) {
     for entry in fs::read_dir(path_to_scan).die("Directory cannot be accessed", flags) {
       let path = entry.die("Failed retrieving path", flags).path();
 
-      print_item(root, path.clone(), flags, false);
+      print_item(root, path.clone(), theme, flags, false);
 
       if path.is_dir() {
-        do_scan(root, path.as_path(), flags);
+        do_scan(root, path.as_path(), theme, flags);
       }
     }
   }
@@ -188,6 +190,33 @@ fn main() {
     }
   }
 
+  // Get theme
+  #[cfg(feature = "themes")]
+  let mut _theme = themes::get_theme(&flags.theme, &flags);
+  #[cfg(feature = "themes")]
+  let mut parsed = match themes::Parser::new(_theme.clone()).parse() {
+    Ok(some) => some,
+    Err(err) => {
+      _theme = String::new();
+      println!("{} {}", "THEME PARSING ERROR:".yellow(&flags), err.reset(&flags));
+      Vec::new()
+    }
+  }; // Parsed is declared here because theme borrows it
+  #[cfg(feature = "themes")]
+  let _theme = if _theme.is_empty() {
+    Vec::new()
+  } else {
+    parsed.iter_mut().map(|l| l.as_style()).collect::<Vec<_>>()
+  };
+  #[cfg(feature = "themes")]
+  let theme = if _theme.is_empty() {
+    constants::DEFAULT_THEME
+  } else {
+    _theme.as_slice() as crate::themes::Theme
+  };
+  #[cfg(not(feature = "themes"))]
+  let theme = constants::DEFAULT_THEME;
+
   if args.is_empty() {
     args.push(String::from("."));
   }
@@ -201,10 +230,10 @@ fn main() {
     }
 
     if path_to_scan.is_file() {
-      print_item(path_to_scan, path::PathBuf::from(path_to_scan), &flags, true);
+      print_item(path_to_scan, path::PathBuf::from(path_to_scan), &theme, &flags, true);
     // Only situation where single_item will be true
     } else if flags.tree {
-      do_scan(path_to_scan, path_to_scan, &flags);
+      do_scan(path_to_scan, path_to_scan, &theme, &flags);
     } else {
       if args.len() > 1 {
         let newline: &str;
@@ -217,7 +246,7 @@ fn main() {
       }
       for entry in fs::read_dir(path_to_scan).die("Directory cannot be accessed", &flags) {
         let path = entry.die("Failed retrieving path", &flags).path();
-        print_item(path_to_scan, path, &flags, false);
+        print_item(path_to_scan, path, &theme, &flags, false);
       }
     }
   }

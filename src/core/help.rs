@@ -49,6 +49,12 @@ const HELP_SECTIONS: &[(&str, &[Argument])] = &[
         aliases: Some(&["no-git"]),
         description: "Do not use git integration",
       },
+      #[cfg(feature = "themes")]
+      Argument {
+        name: None,
+        aliases: Some(&["theme <name|path>"]),
+        description: "Name or path of theme to use.",
+      },
     ],
   ),
   #[cfg(feature = "config")]
