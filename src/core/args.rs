@@ -70,7 +70,7 @@ pub fn get() -> (Flags, Vec<String>) {
     theme: None,
   };
 
-  let mut args_to_remove = vec![];
+  let mut args_to_remove = Vec::with_capacity(args.len());
 
   let mut print_help = false;
   let mut print_version = false;
@@ -107,6 +107,8 @@ pub fn get() -> (Flags, Vec<String>) {
       _ => {
         if !config::parse_arg(arg, &flags) {
           continue;
+        } else {
+          std::process::exit(0);
         }
       }
       #[cfg(not(feature = "config"))]
