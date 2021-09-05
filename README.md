@@ -12,10 +12,13 @@ Cross-platform alternative to **ls**, specifically designed **f**or **p**rogramm
 
 ## Features
 
+- Basic features (same as `ls`)
 - License type detection
 - Colored files by extension
 - Collapsed build directories
 - Git integration
+- Extension-based customizable icons
+- Custom colors and icons with [themes](https://github.com/The-Noah/lsfp/blob/master/src/themes/README.md)
 - No external dependencies
 
 ### What is it?
@@ -32,6 +35,10 @@ Replacement for the `ls` command with a bunch of helpful tools for developers
 Hopefully so much more.
 
 ## Installation
+
+### GitHub releases
+
+Head directly to the [releases page](https://github.com/The-Noah/lsfp/releases) in this repository to install a fixed version of `lsfp`. You can find builds for MacOS, Linux and Windows, including a build with minimum features for Windows. Keep in mind, you will have to manually download again every update if you use GitHub releases.
 
 ### Cargo
 
