@@ -15,7 +15,7 @@ pub fn parse_arg(arg: &str, flags: &Flags) -> bool {
       let name = parts[0];
       let value = parts[1];
 
-      println!("set {}={}\n", name, value);
+      println!("set {}={}", name, value);
       let content_split = match fs::read_to_string(CONFIG_NAME) {
         Ok(x) => x,
         Err(_) => {
