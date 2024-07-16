@@ -9,6 +9,7 @@ pub const DEFAULT_THEME: Theme = &[
   (&["cpp", "cxx", "hpp"], (243, 75, 125), "fb71"), // C++
   (&["c", "h"], (85, 85, 85), "e61e"),              // C (alternative: fb70 [same design as c++'s, but is too big and inconsistent])
   (&["yaml", "yml"], (203, 23, 30), "e60b"),        // YAML
+  (&["toml"], (156, 66, 33), "e6b2"),               // TOML
   (&["json"], (64, 212, 126), "e60b"),              // JSON
   (&["rs"], (222, 165, 132), "e7a8"),               // Rust
   (&["php"], (79, 93, 149), "e73d"),                // PHP
@@ -16,7 +17,7 @@ pub const DEFAULT_THEME: Theme = &[
   (&["rb"], (112, 21, 22), "e791"),                 // Ruby
   (&["pl"], (2, 152, 195), "f977"),                 // Pearl (generic script icon, alternatives: `code` icon)
   (&["swift"], (255, 172, 69), "e755"),             // Swift
-  (&["md", "markdown"], (8, 63, 161), "f853"),      // Markdown
+  (&["md", "markdown"], (8, 63, 161), "f48a"),      // Markdown
   (&["py"], (53, 114, 165), "e73c"),                // Python
   (&["html", "htm"], (227, 76, 38), "e736"),        // HTML
   (&["css"], (86, 61, 124), "e74a"),                // CSS
@@ -32,13 +33,13 @@ pub const DEFAULT_THEME: Theme = &[
 ];
 
 #[cfg(feature = "icons")]
-pub const ICON_FOLDER_OPEN: &str = "f115";
+pub const ICON_FOLDER_OPEN: &str = "f413";
 #[cfg(feature = "icons")]
-pub const ICON_FOLDER_CLOSED: &str = "f114";
+pub const ICON_FOLDER_CLOSED: &str = "f4d3";
 #[cfg(feature = "icons")]
-pub const ICON_LICENSE: &str = "f623";
+pub const ICON_LICENSE: &str = "f4d1";
 #[cfg(feature = "icons")]
-pub const ICON_GENERIC: &str = "f723";
+pub const ICON_GENERIC: &str = "f4a5";
 
 // https://choosealicense.com/
 // https://opensource.org/licenses/
