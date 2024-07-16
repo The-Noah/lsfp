@@ -8,7 +8,7 @@
 
 Cross-platform alternative to **ls**, specifically designed **f**or **p**rogrammers
 
-> My blog post about lsfp: [blog.thenoah.dev/how-lsfp-was-created](https://blog.noahdunbar.com/how-lsfp-was-created)
+> My blog post about lsfp: [blog.noahdunbar.com/how-lsfp-was-created](https://blog.noahdunbar.com/how-lsfp-was-created)
 
 ## Features
 
