@@ -16,13 +16,6 @@ use crate::core::*;
 use modules::icon;
 use prelude::*;
 
-#[cfg(target_os = "windows")]
-#[cfg(feature = "color")]
-#[link(name = "color")]
-extern "C" {
-  fn enable_color();
-}
-
 fn print_item(root: &path::Path, path: path::PathBuf, theme: &themes::Theme, flags: &args::Flags, single_item: bool) {
   if !flags.all && file_detection::is_hidden(&path, flags) && !single_item {
     return;
@@ -185,8 +178,17 @@ fn main() {
   #[cfg(target_os = "windows")]
   #[cfg(feature = "color")]
   if !flags.no_color {
+    use windows::Win32::System::Console::{GetConsoleMode, GetStdHandle, SetConsoleMode, CONSOLE_MODE, ENABLE_VIRTUAL_TERMINAL_PROCESSING, STD_OUTPUT_HANDLE};
+
     unsafe {
-      enable_color();
+      let handle = GetStdHandle(STD_OUTPUT_HANDLE).die("Failed to get stdout", &flags);
+      let mut mode: CONSOLE_MODE = CONSOLE_MODE(0);
+
+      GetConsoleMode(handle, &mut mode).die("Failed to get console mode", &flags);
+
+      if !mode.contains(ENABLE_VIRTUAL_TERMINAL_PROCESSING) {
+        SetConsoleMode(handle, mode | ENABLE_VIRTUAL_TERMINAL_PROCESSING).die("Failed to set console mode", &flags);
+      }
     }
   }
 
