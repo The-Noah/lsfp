@@ -238,12 +238,12 @@ fn main() {
       do_scan(path_to_scan, path_to_scan, &theme, &flags);
     } else {
       if args.len() > 1 {
-        let newline: &str;
-        if args.iter().position(|a| a == arg).die("Unexpected error when listing directory", &flags) == 0 {
-          newline = "";
+        let newline = if args.iter().position(|a| a == arg).die("Unexpected error when listing directory", &flags) == 0 {
+          ""
         } else {
-          newline = "\n";
-        }
+          "\n"
+        };
+
         println!("{}", format!("{newline}Folder {arg}:").underline(&flags).bright(&flags).reset(&flags));
       }
       for entry in fs::read_dir(path_to_scan).die("Directory cannot be accessed", &flags) {
