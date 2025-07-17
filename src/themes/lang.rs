@@ -41,15 +41,13 @@ impl<'a> Language<'a> {
           index,
           original.to_owned(),
           format!(
-            "Line must include a pair of key and value separated by a equal (=) in text line \"{key}={value}\" ({key}={value})",
-            key = key,
-            value = value
+            "Line must include a pair of key and value separated by a equal (=) in text line \"{key}={value}\" ({key}={value})"
           ),
         ));
       } else if key.is_empty() {
-        return Err(ParserError::new(index, original.to_owned(), format!("Missing key in text line \"{}={}\"", key, value)));
+        return Err(ParserError::new(index, original.to_owned(), format!("Missing key in text line \"{key}={value}\"")));
       } else if value.is_empty() {
-        return Err(ParserError::new(index, original.to_owned(), format!("Missing value in text line \"{}={}\"", key, value)));
+        return Err(ParserError::new(index, original.to_owned(), format!("Missing value in text line \"{key}={value}\"")));
       } else if key == "e" || key == "extensions" {
         let mut ext = String::new();
         for (i, mut ch) in value.char_indices() {
@@ -80,7 +78,7 @@ impl<'a> Language<'a> {
               ));
             }
             if num.len() > 3 {
-              return Err(ParserError::new(index, original.to_owned(), format!("Color must range from 0 to 255, received {}", num)));
+              return Err(ParserError::new(index, original.to_owned(), format!("Color must range from 0 to 255, received {num}")));
             }
             if ch == ',' && i == 0 {
               continue;
@@ -114,11 +112,11 @@ impl<'a> Language<'a> {
               ),
             ));
           }
-          if !value.chars().all(|c| c.is_digit(16)) {
+          if !value.chars().all(|c| c.is_ascii_hexdigit()) {
             return Err(ParserError::new(
               index,
               original.to_owned(),
-              format!("One or more characters in \"{}\" icon are not valid hexadecimal characters", value),
+              format!("One or more characters in \"{value}\" icon are not valid hexadecimal characters"),
             ));
           }
           icon = value.to_owned()

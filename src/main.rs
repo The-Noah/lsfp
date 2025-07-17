@@ -144,7 +144,7 @@ fn print_item(root: &path::Path, path: path::PathBuf, theme: &themes::Theme, fla
 }
 
 fn do_scan(root: &path::Path, path_to_scan: &path::Path, theme: &themes::Theme, flags: &args::Flags) {
-  if !flags.all && file_detection::is_hidden(&path_to_scan.to_path_buf(), flags) {
+  if !flags.all && file_detection::is_hidden(path_to_scan, flags) {
     return;
   }
 
@@ -244,7 +244,7 @@ fn main() {
         } else {
           newline = "\n";
         }
-        println!("{}", format!("{}Folder {}:", newline, arg).underline(&flags).bright(&flags).reset(&flags));
+        println!("{}", format!("{newline}Folder {arg}:").underline(&flags).bright(&flags).reset(&flags));
       }
       for entry in fs::read_dir(path_to_scan).die("Directory cannot be accessed", &flags) {
         let path = entry.die("Failed retrieving path", &flags).path();

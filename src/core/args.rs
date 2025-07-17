@@ -49,7 +49,7 @@ pub fn get() -> (Flags, Vec<String>) {
     .skip(1) // remove first argument which is self
     .flat_map(|arg: String| {
       if arg.starts_with('-') && arg.get(1..2) != Some("-") && arg.get(1..).map(|text| text.len()) > Some(1) {
-        arg.chars().skip(1).map(|c: char| format!("-{}", c)).collect::<Vec<String>>()
+        arg.chars().skip(1).map(|c: char| format!("-{c}")).collect::<Vec<String>>()
       } else {
         vec![arg]
       }

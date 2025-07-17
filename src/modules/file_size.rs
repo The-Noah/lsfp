@@ -3,7 +3,7 @@ const FILE_SIZE_WIDTH: usize = 5;
 pub fn human_readable_size(size: u64) -> String {
   if size < 1024 {
     // bytes
-    return format!("{1:>0$}B", FILE_SIZE_WIDTH, size);
+    format!("{size:>FILE_SIZE_WIDTH$}B")
   } else if size < 1049000 {
     // kibibytes
     format!("{1:>0$.1}K", FILE_SIZE_WIDTH, size as f64 / 1024f64)

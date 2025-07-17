@@ -26,70 +26,70 @@ pub trait ColorExt {
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 
   fn bright(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 
   fn underline(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 
   fn green(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 
   fn yellow(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 
   fn cyan(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 
   fn white(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 
   fn grey(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 
   fn red(self, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 
   fn custom(self, _color: &str, _flags: &args::Flags) -> String
   where
     Self: Sized + Display,
   {
-    format!("{}", self)
+    format!("{self}")
   }
 }
 
@@ -100,7 +100,7 @@ where
 {
   fn reset(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", self, String::from(RESET))
     }
@@ -108,7 +108,7 @@ where
 
   fn bright(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", String::from(BRIGHT), self)
     }
@@ -116,7 +116,7 @@ where
 
   fn underline(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", String::from(UNDERLINE), self)
     }
@@ -124,7 +124,7 @@ where
 
   fn green(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", String::from(GREEN), self)
     }
@@ -132,7 +132,7 @@ where
 
   fn yellow(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", String::from(YELLOW), self)
     }
@@ -140,7 +140,7 @@ where
 
   fn cyan(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", String::from(CYAN), self)
     }
@@ -148,7 +148,7 @@ where
 
   fn white(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", String::from(WHITE), self)
     }
@@ -156,7 +156,7 @@ where
 
   fn grey(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", String::from(GREY), self)
     }
@@ -164,7 +164,7 @@ where
 
   fn red(self, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", String::from(RED), self)
     }
@@ -172,7 +172,7 @@ where
 
   fn custom(self, color: &str, flags: &args::Flags) -> String {
     if flags.no_color {
-      format!("{}", self)
+      format!("{self}")
     } else {
       format!("{}{}", String::from(color), self)
     }
@@ -198,7 +198,7 @@ mod tests {
       theme: None,
     };
 
-    assert_eq!(format!("{}abc{}", CYAN, RESET), format!("{}", "abc".cyan(&flags).reset(&flags)));
+    assert_eq!(format!("{CYAN}abc{RESET}"), format!("{}", "abc".cyan(&flags).reset(&flags)));
   }
 
   #[test]

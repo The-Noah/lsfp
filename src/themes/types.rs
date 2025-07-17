@@ -13,7 +13,7 @@ pub trait VecConvert {
 
 impl VecConvert for Vec<u8> {
   fn as_color(&self) -> Color {
-    (*self.get(0).unwrap_or(&0), *self.get(1).unwrap_or(&0), *self.get(2).unwrap_or(&0))
+    (*self.first().unwrap_or(&0), *self.get(1).unwrap_or(&0), *self.get(2).unwrap_or(&0))
   }
 }
 
